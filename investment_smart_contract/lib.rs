@@ -29,10 +29,16 @@ mod investment_smart_contract {
         }
 
         #[ink(message, payable)]
-        pub fn invest(&mut self, investment_amount: Balance) {
+        pub fn invest(&mut self) {
+            let investment_amount = Self::env().transferred_value();
+            if investment_amount == 0 {
+                panic!("NO FUNDS ATTACHED")
+            }
+            else {
             let investor = Self::env().caller();
             self.investors.insert(investor, &investment_amount);
-            self.tokens_collected += Self::env().transferred_value();
+            self.tokens_collected += investment_amount;
+            }
         }
 
         #[ink(message, payable)]
