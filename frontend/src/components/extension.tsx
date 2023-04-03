@@ -1,10 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import { usePolkadot } from "@/hooks/usePolkadot";
 import { Fragment } from "react";
-import { SAMPLE_ADDRESS } from "@/constants/polkadot";
+import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 
 const Extension = () => {
-    const { allAccount, sendTransaction } = usePolkadot();
+    const { allAccount, invest } = usePolkadot();
 
     return (
         <>
@@ -17,7 +17,7 @@ const Extension = () => {
                                     <Typography>Account name: {account.meta.name}</Typography>
                                     <Typography>Account address: {account.address}</Typography>
                                 </Box>
-                                <Button onClick={() => { sendTransaction(account.address, SAMPLE_ADDRESS) }}>send transaction</Button>
+                                <Button onClick={() => { invest(SHIBUYA_ADDRESS,1) }}>send contract</Button>
                             </Fragment>
                         );
                     })

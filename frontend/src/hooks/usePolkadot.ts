@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { DAPP_NAME, DEFAULT_PROVIDER } from "@/constants/polkadot";
+import { DAPP_NAME, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK } from "@/constants/polkadot";
+import * as abi from "../contracts/investment_smart_contract.json";
+import { ContractPromise } from "@polkadot/api-contract";
+import { createStartupAddress } from "@/constants/contracts";
+import { WeightV2 } from "@polkadot/types/interfaces";
 
 export const usePolkadot = () => {
+    const storageDepositLimit = null;
     const [allAccount, setAllAccount] = useState<InjectedAccountWithMeta[]>([]);
-    const wsProvider = new WsProvider(DEFAULT_PROVIDER);
+    const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
     const getAccounts = async () => {
         const extensions = await web3Enable(DAPP_NAME);
@@ -27,7 +32,7 @@ export const usePolkadot = () => {
 
         try {
             const txHash = await api.tx.balances
-                .transfer(receiverAddress, 123456)
+                .transfer(receiverAddress, 1)
                 .signAndSend(senderAddress, { signer: injector.signer });
 
             alert(`Submitted with hash ${txHash}`);
@@ -36,5 +41,38 @@ export const usePolkadot = () => {
         }
     };
 
-    return { allAccount, sendTransaction };
+    const invest = async (accountAddress: string, investValue: any) => {
+        //@ts-ignore
+        const value = BigInt(investValue) * 1000000000000000000n;
+        const api = await ApiPromise.create({ provider: wsProvider });
+        const contract = new ContractPromise(api, abi, createStartupAddress);
+        const injector = await web3FromAddress(accountAddress);
+
+        const options = {
+            storageDepositLimit: null,
+            gasLimit: api.registry.createType('WeightV2', {
+                refTime: MAX_CALL_WEIGHT,
+                proofSize: PROOFSIZE,
+            }) as WeightV2,
+        };
+
+        const { gasRequired, result } = await contract.query.invest(
+            accountAddress,
+            options
+        );
+
+        if (result.isOk) {
+            await contract.tx
+                .invest({ storageDepositLimit, gasLimit: gasRequired, value })
+                .signAndSend(accountAddress, { signer: injector.signer }, result => {
+                    if (result.status.isInBlock) {
+                        console.log('in a block');
+                    } else if (result.status.isFinalized) {
+                        console.log('finalized');
+                    };
+                });
+        };
+    };
+
+    return { allAccount, sendTransaction, invest };
 };

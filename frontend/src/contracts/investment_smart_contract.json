@@ -1,0 +1,242 @@
+{
+  "source": {
+    "hash": "0xa921da742b9b2b0456da33d4b5b13aa8073811b44064a3ee28cb696d879fbb7b",
+    "language": "ink! 4.1.0",
+    "compiler": "rustc 1.68.0-nightly",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "2.1.0",
+      "rust_toolchain": "nightly-x86_64-unknown-linux-gnu",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
+  },
+  "contract": {
+    "name": "investment_smart_contract",
+    "version": "0.1.0",
+    "authors": [
+      "[your_name] <[your_email]>"
+    ]
+  },
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "investment_goal",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "label": "startup_name",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
+          ],
+          "type": 2
+        },
+        "selector": "0x9bae9d5e"
+      }
+    ],
+    "docs": [],
+    "events": [],
+    "lang_error": {
+      "displayName": [
+        "ink",
+        "LangError"
+      ],
+      "type": 4
+    },
+    "messages": [
+      {
+        "args": [],
+        "docs": [],
+        "label": "invest",
+        "mutates": true,
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 2
+        },
+        "selector": "0x84f0cb9d"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "label": "withdraw",
+        "mutates": true,
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 2
+        },
+        "selector": "0x410fcc9d"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              },
+              "name": "startup_name"
+            },
+            {
+              "layout": {
+                "root": {
+                  "layout": {
+                    "leaf": {
+                      "key": "0x39fb6f42",
+                      "ty": 1
+                    }
+                  },
+                  "root_key": "0x39fb6f42"
+                }
+              },
+              "name": "investors"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 1
+                }
+              },
+              "name": "tokens_collected"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 1
+                }
+              },
+              "name": "investment_goal"
+            }
+          ],
+          "name": "InvestmentSmartContract"
+        }
+      },
+      "root_key": "0x00000000"
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 3
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 3
+          },
+          {
+            "name": "E",
+            "type": 4
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ]
+      }
+    }
+  ],
+  "version": "4"
+}
