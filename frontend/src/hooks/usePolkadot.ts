@@ -41,7 +41,7 @@ export const usePolkadot = () => {
         }
     };
 
-    const invest = async (accountAddress: string, investValue: any) => {
+    const invest = async (accountAddress: string, investValue: number) => {
         //@ts-ignore
         const value = BigInt(investValue) * 1000000000000000000n;
         const api = await ApiPromise.create({ provider: wsProvider });
@@ -74,5 +74,36 @@ export const usePolkadot = () => {
         };
     };
 
-    return { allAccount, sendTransaction, invest };
+    const withdraw = async (accountAddress: string) => {
+        const api = await ApiPromise.create({ provider: wsProvider });
+        const contract = new ContractPromise(api, abi, createStartupAddress);
+        const injector = await web3FromAddress(accountAddress);
+
+        const options = {
+            storageDepositLimit: null,
+            gasLimit: api.registry.createType('WeightV2', {
+                refTime: MAX_CALL_WEIGHT,
+                proofSize: PROOFSIZE,
+            }) as WeightV2,
+        };
+
+        const { gasRequired, result } = await contract.query.invest(
+            accountAddress,
+            options
+        );
+
+        if (result.isOk) {
+            await contract.tx
+                .withdraw({ storageDepositLimit, gasLimit: gasRequired })
+                .signAndSend(accountAddress, { signer: injector.signer }, result => {
+                    if (result.status.isInBlock) {
+                        console.log('in a block');
+                    } else if (result.status.isFinalized) {
+                        console.log('finalized');
+                    };
+                });
+        };
+    };
+
+    return { allAccount, sendTransaction, invest, withdraw };
 };

@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 
 const Extension = () => {
-    const { allAccount, invest } = usePolkadot();
+    const { allAccount, invest, withdraw } = usePolkadot();
 
     return (
         <>
@@ -17,7 +17,8 @@ const Extension = () => {
                                     <Typography>Account name: {account.meta.name}</Typography>
                                     <Typography>Account address: {account.address}</Typography>
                                 </Box>
-                                <Button onClick={() => { invest(SHIBUYA_ADDRESS,1) }}>send contract</Button>
+                                <Button onClick={() => { invest(SHIBUYA_ADDRESS, 1) }}>invest</Button>
+                                <Button onClick={() => { withdraw(SHIBUYA_ADDRESS) }}>withdraw</Button>
                             </Fragment>
                         );
                     })
