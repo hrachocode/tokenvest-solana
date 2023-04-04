@@ -2,15 +2,16 @@ import { Box, Button, Typography } from "@mui/material";
 import { usePolkadot } from "@/hooks/usePolkadot";
 import { Fragment } from "react";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 const Extension = () => {
-    const { allAccount, invest, withdraw } = usePolkadot();
+    const { allAccounts, invest, withdraw } = usePolkadot();
 
     return (
         <>
             <Box>
-                {typeof allAccount !== "undefined"
-                    ? allAccount.map((account: any, index: number) => {
+                {typeof allAccounts !== "undefined"
+                    ? allAccounts.map((account: InjectedAccountWithMeta, index: number) => {
                         return (
                             <Fragment key={index + 1}>
                                 <Box>

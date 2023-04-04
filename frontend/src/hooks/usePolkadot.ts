@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { DAPP_NAME, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK } from "@/constants/polkadot";
+import { DAPP_NAME, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit } from "@/constants/polkadot";
 import * as abi from "../contracts/investment_smart_contract.json";
 import { ContractPromise } from "@polkadot/api-contract";
 import { createStartupAddress } from "@/constants/contracts";
 import { WeightV2 } from "@polkadot/types/interfaces";
 
 export const usePolkadot = () => {
-    const storageDepositLimit = null;
-    const [allAccount, setAllAccount] = useState<InjectedAccountWithMeta[]>([]);
+    const [allAccounts, setAllAccount] = useState<InjectedAccountWithMeta[]>([]);
     const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
     const getAccounts = async () => {
@@ -49,7 +48,7 @@ export const usePolkadot = () => {
         const injector = await web3FromAddress(accountAddress);
 
         const options = {
-            storageDepositLimit: null,
+            storageDepositLimit,
             gasLimit: api.registry.createType('WeightV2', {
                 refTime: MAX_CALL_WEIGHT,
                 proofSize: PROOFSIZE,
@@ -105,5 +104,5 @@ export const usePolkadot = () => {
         };
     };
 
-    return { allAccount, sendTransaction, invest, withdraw };
+    return { allAccounts, sendTransaction, invest, withdraw };
 };
