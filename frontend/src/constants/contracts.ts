@@ -1,1 +1,1 @@
-export const createStartupAddress = "bH1T84aanwyVxaMxTKKRPEYkUPCrQXGzUuKVrSLpGpnKezw";
+export const createStartupAddress = "YZMYRjucZyTLNQqJUcZqXznaAYkwimqejAixdUxPjZuJTwD";
