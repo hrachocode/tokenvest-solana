@@ -1,34 +1,26 @@
-import { useEffect, useState } from "react";
-import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
+import { Box, Button, Typography } from "@mui/material";
+import { usePolkadot } from "@/hooks/usePolkadot";
+import { Fragment } from "react";
+import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
-import { Box, Typography } from "@mui/material";
 
 const Extension = () => {
-    const [allAccount, setAllAccount] = useState<InjectedAccountWithMeta[]>([]);
-
-    const getAccounts = async () => {
-        const extensions = await web3Enable("my cool dapp");
-        if (extensions.length === 0) {
-            return;
-        }
-        const allAccounts = await web3Accounts();
-        setAllAccount(allAccounts);
-    };
-
-    useEffect(() => {
-        getAccounts();
-    }, []);
+    const { allAccounts, invest, withdraw } = usePolkadot();
 
     return (
         <>
             <Box>
-                {typeof allAccount !== "undefined"
-                    ? allAccount.map((account, index) => {
+                {typeof allAccounts !== "undefined"
+                    ? allAccounts.map((account: InjectedAccountWithMeta, index: number) => {
                         return (
-                            <Box key={index + 1}>
-                                <Typography>Account name: {account.meta.name}</Typography>
-                                <Typography>Account address: {account.address}</Typography>
-                            </Box>
+                            <Fragment key={index + 1}>
+                                <Box>
+                                    <Typography>Account name: {account.meta.name}</Typography>
+                                    <Typography>Account address: {account.address}</Typography>
+                                </Box>
+                                <Button onClick={() => { invest(SHIBUYA_ADDRESS, 1) }}>invest</Button>
+                                <Button onClick={() => { withdraw(SHIBUYA_ADDRESS) }}>withdraw</Button>
+                            </Fragment>
                         );
                     })
                     : <></>}

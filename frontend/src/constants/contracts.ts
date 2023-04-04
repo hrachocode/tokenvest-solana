@@ -1,0 +1,1 @@
+export const createStartupAddress = "bH1T84aanwyVxaMxTKKRPEYkUPCrQXGzUuKVrSLpGpnKezw";
