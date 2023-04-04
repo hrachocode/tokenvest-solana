@@ -4,27 +4,26 @@
 mod investment_smart_contract {
     use ink::storage::Mapping;
     use ink_prelude::string::String;
+    use ink_env::*;
 
     #[ink(storage)]
     pub struct InvestmentSmartContract {
-        // Name of the startup
+        startup_owner: AccountId,
         startup_name: String,
-        // HashMap with investors and the amount invested
         investors: Mapping<AccountId, Balance>,
-        // Vault where the xrd payments will be stored.
         tokens_collected: Balance,
-        // Investment goal for the startup
         investment_goal: u128,
     }
 
     impl InvestmentSmartContract {
         #[ink(constructor)]
-        pub fn new(investment_goal: u128, startup_name: String) -> Self {
+        pub fn new(startup_owner: AccountId, investment_goal: u128, startup_name: String) -> Self {
             Self {
-                startup_name: startup_name,
+                startup_owner,
+                startup_name,
                 investors: Mapping::default(),
                 tokens_collected: Balance::default(),
-                investment_goal: investment_goal,
+                investment_goal,
             }
         }
 
@@ -32,24 +31,28 @@ mod investment_smart_contract {
         pub fn invest(&mut self) {
             let investment_amount = Self::env().transferred_value();
             if investment_amount == 0 {
-                panic!("NO FUNDS ATTACHED")
-            }
-            else {
-            let investor = Self::env().caller();
-            self.investors.insert(investor, &investment_amount);
-            self.tokens_collected += investment_amount;
+                ink_env::debug_message("NO FUNDS ATTACHED")
+            } else {
+                let investor = Self::env().caller();
+                self.investors.insert(investor, &investment_amount);
+                self.tokens_collected += investment_amount;
             }
         }
 
         #[ink(message, payable)]
         pub fn withdraw(&mut self) {
-            if self.tokens_collected >= self.investment_goal {
-                let caller = self.env().caller();
+            let caller = self.env().caller();
+            if self.tokens_collected >= self.investment_goal || self.startup_owner == caller {
                 let amount = self.tokens_collected;
                 self.env().transfer(caller, amount).unwrap();
             } else {
-                panic!("NOT ENOUGH FUNDS TO WITHDRAW");
+                ink_env::debug_message("NOT ENOUGH FUNDS TO WITHDRAW");
             }
+        }
+
+        #[ink(message)]
+        pub fn show_amount(&mut self) {
+            ink_env::debug_println!("Amount is {}", self.tokens_collected);
         }
     }
 }
