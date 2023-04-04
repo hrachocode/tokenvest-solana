@@ -4,7 +4,7 @@
 mod investment_smart_contract {
     use ink::storage::Mapping;
     use ink_prelude::string::String;
-    use ink_env::*;
+    use ink_env::{debug_println, debug_message};
 
     #[ink(storage)]
     pub struct InvestmentSmartContract {
@@ -17,7 +17,8 @@ mod investment_smart_contract {
 
     impl InvestmentSmartContract {
         #[ink(constructor)]
-        pub fn new(startup_owner: AccountId, investment_goal: u128, startup_name: String) -> Self {
+        pub fn new(investment_goal: u128, startup_name: String) -> Self {
+            let startup_owner = Self::env().caller();
             Self {
                 startup_owner,
                 startup_name,
