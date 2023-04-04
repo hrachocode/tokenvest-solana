@@ -61,15 +61,15 @@ export const usePolkadot = () => {
         );
 
         if (result.isOk) {
-            await contract.tx
-                .invest({ storageDepositLimit, gasLimit: gasRequired, value })
-                .signAndSend(accountAddress, { signer: injector.signer }, result => {
-                    if (result.status.isInBlock) {
-                        console.log('in a block');
-                    } else if (result.status.isFinalized) {
-                        console.log('finalized');
-                    };
-                });
+            const tx = await contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value })
+            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, result => {
+                if (result.status.isInBlock) {
+                    console.log('in a block');
+                } else if (result.status.isFinalized) {
+                    console.log('finalized');
+                    unsub();
+                };
+            });
         };
     };
 
@@ -92,15 +92,15 @@ export const usePolkadot = () => {
         );
 
         if (result.isOk) {
-            await contract.tx
-                .withdraw({ storageDepositLimit, gasLimit: gasRequired })
-                .signAndSend(accountAddress, { signer: injector.signer }, result => {
-                    if (result.status.isInBlock) {
-                        console.log('in a block');
-                    } else if (result.status.isFinalized) {
-                        console.log('finalized');
-                    };
-                });
+            const tx = await contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired })
+            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, result => {
+                if (result.status.isInBlock) {
+                    console.log('in a block');
+                } else if (result.status.isFinalized) {
+                    console.log('finalized');
+                    unsub();
+                };
+            });
         };
     };
 
@@ -111,22 +111,25 @@ export const usePolkadot = () => {
 
         console.log(code, "code");
 
-        const options = {
-            storageDepositLimit: null,
-            gasLimit: api.registry.createType('WeightV2', {
-                refTime: MAX_CALL_WEIGHT,
-                proofSize: PROOFSIZE,
-            }) as WeightV2,
-        };
-        const tx = await code.tx.new(options, "100", "test").signAndSend(accountAddress, { signer: injector.signer }, result => {
-            if (result.status.isInBlock) {
-                console.log('in a block');
-            } else if (result.status.isFinalized) {
-                console.log('finalized');
-            };
-        });
+        //@ts-ignore
+        const gasLimit = 100000n * 1000000n
 
-        console.log(tx, "tx");
+        const options = {
+            gasLimit,
+            storageDepositLimit
+        };
+        const tx = await code.tx.new(options, "100", "test");
+        const unsub = await tx.signAndSend(
+            accountAddress,
+            { signer: injector.signer },
+            ({ status }) => {
+                if (status.isInBlock) {
+                    console.log("in a block");
+                } else if (status.isFinalized) {
+                    console.log("finalized");
+                    unsub();
+                };
+            });
     };
 
     return { allAccounts, sendTransaction, invest, withdraw, deploy };
