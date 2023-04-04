@@ -4,7 +4,7 @@ import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 import { DAPP_NAME, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit } from "@/constants/polkadot";
 import * as abi from "../contracts/investment_smart_contract.json";
-import { ContractPromise } from "@polkadot/api-contract";
+import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { createStartupAddress } from "@/constants/contracts";
 import { WeightV2 } from "@polkadot/types/interfaces";
 
@@ -104,5 +104,30 @@ export const usePolkadot = () => {
         };
     };
 
-    return { allAccounts, sendTransaction, invest, withdraw };
+    const deploy = async (accountAddress: string, wasm: any) => {
+        const api = await ApiPromise.create({ provider: wsProvider });
+        const injector = await web3FromAddress(accountAddress);
+        const code = new CodePromise(api, abi, wasm);
+
+        console.log(code, "code");
+
+        const options = {
+            storageDepositLimit: null,
+            gasLimit: api.registry.createType('WeightV2', {
+                refTime: MAX_CALL_WEIGHT,
+                proofSize: PROOFSIZE,
+            }) as WeightV2,
+        };
+        const tx = await code.tx.new(options, "100", "test").signAndSend(accountAddress, { signer: injector.signer }, result => {
+            if (result.status.isInBlock) {
+                console.log('in a block');
+            } else if (result.status.isFinalized) {
+                console.log('finalized');
+            };
+        });
+
+        console.log(tx, "tx");
+    };
+
+    return { allAccounts, sendTransaction, invest, withdraw, deploy };
 };
