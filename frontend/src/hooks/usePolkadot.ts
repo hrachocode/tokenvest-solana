@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { DAPP_NAME, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit } from "@/constants/polkadot";
+import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit } from "@/constants/polkadot";
 import * as abi from "../contracts/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { createStartupAddress } from "@/constants/contracts";
@@ -35,7 +35,6 @@ export const usePolkadot = () => {
             const txHash = await api.tx.balances
                 .transfer(receiverAddress, 1)
                 .signAndSend(senderAddress, { signer: injector.signer });
-
             alert(`Submitted with hash ${txHash}`);
         } catch (error) {
             alert((error as { message: string }).message);
@@ -43,8 +42,7 @@ export const usePolkadot = () => {
     };
 
     const invest = async (accountAddress: string, investValue: number) => {
-        //@ts-ignore
-        const value = BigInt(investValue) * 1000000000000000000n;
+        const value = BigInt(investValue) * INVEST_VALUE_MULTIPLIER;
         const api = await ApiPromise.create({ provider: wsProvider });
         const contract = new ContractPromise(api, abi, createStartupAddress);
         const injector = await web3FromAddress(accountAddress);
@@ -111,18 +109,11 @@ export const usePolkadot = () => {
         const injector = await web3FromAddress(accountAddress);
         const code = new CodePromise(api, abi, wasm);
 
-        console.log(code, "code");
-
-        //@ts-ignore
-        const refTime = 100000n * 1000000n;
-        //@ts-ignore
-        const proofSize = 100000n;
-
         const options = {
             storageDepositLimit,
             gasLimit: api.registry.createType('WeightV2', {
-                refTime,
-                proofSize
+                refTime: DEPLOY_REF_TIME,
+                proofSize: DEPLOY_PROOF_SIZE
             }) as WeightV2,
         };
 

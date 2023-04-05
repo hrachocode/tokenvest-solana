@@ -12,4 +12,13 @@ export const MAX_CALL_WEIGHT = new BN(CALL_WEIGHT).isub(BN_ONE);
 export const PROOFSIZE = new BN(PROOFSIZE_NUM);
 export const storageDepositLimit = null;
 
+//@ts-ignore
+export const DEPLOY_REF_TIME = 100000n * 1000000n;
+
+//@ts-ignore
+export const DEPLOY_PROOF_SIZE = 100000n;
+
+//@ts-ignore
+export const INVEST_VALUE_MULTIPLIER = 1000000000000000000n;
+
 export const SAMPLE_ADDRESS: string = "5DRe5jhpn7fUNBbNuzBWaQSDRVntopfYGhSuoMuU6kdXEaia";
