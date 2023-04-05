@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit } from "@/constants/polkadot";
+import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
 import * as abi from "../contracts/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { createStartupAddress } from "@/constants/contracts";
@@ -49,7 +49,7 @@ export const usePolkadot = () => {
 
         const options = {
             storageDepositLimit,
-            gasLimit: api.registry.createType('WeightV2', {
+            gasLimit: api.registry.createType(WEIGHT_V2, {
                 refTime: MAX_CALL_WEIGHT,
                 proofSize: PROOFSIZE,
             }) as WeightV2,
@@ -80,7 +80,7 @@ export const usePolkadot = () => {
 
         const options = {
             storageDepositLimit: null,
-            gasLimit: api.registry.createType('WeightV2', {
+            gasLimit: api.registry.createType(WEIGHT_V2, {
                 refTime: MAX_CALL_WEIGHT,
                 proofSize: PROOFSIZE,
             }) as WeightV2,
@@ -111,7 +111,7 @@ export const usePolkadot = () => {
 
         const options = {
             storageDepositLimit,
-            gasLimit: api.registry.createType('WeightV2', {
+            gasLimit: api.registry.createType(WEIGHT_V2, {
                 refTime: DEPLOY_REF_TIME,
                 proofSize: DEPLOY_PROOF_SIZE
             }) as WeightV2,
