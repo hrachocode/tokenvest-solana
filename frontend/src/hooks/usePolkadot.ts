@@ -112,12 +112,18 @@ export const usePolkadot = () => {
         console.log(code, "code");
 
         //@ts-ignore
-        const gasLimit = 100000n * 1000000n
+        const refTime = 100000n * 1000000n;
+        //@ts-ignore
+        const proofSize = 100000n;
 
         const options = {
-            gasLimit,
-            storageDepositLimit
+            storageDepositLimit,
+            gasLimit: api.registry.createType('WeightV2', {
+                refTime,
+                proofSize
+            }) as WeightV2,
         };
+
         const tx = await code.tx.new(options, "100", "test");
         const unsub = await tx.signAndSend(
             accountAddress,
