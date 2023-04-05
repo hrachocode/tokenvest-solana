@@ -7,11 +7,11 @@ const Extension = dynamic(() => import("../components/extension"), {
 });
 
 export default function Home() {
-    const [showExtention, setShowExtention] = useState(false);
+  const [showExtention, setShowExtention] = useState(false);
   return (
     <>
       <Button onClick={() => setShowExtention(true)}>Show Accounts</Button>
-      {showExtention == true && <Extension/>}
+      {showExtention == true && <Extension />}
     </>
   );
 }
