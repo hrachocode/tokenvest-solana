@@ -6,7 +6,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 const Extension = () => {
     const [proposal, setProposal] = useState({});
-    const { allAccounts, invest, withdraw, deploy } = usePolkadot();
+    const { allAccounts, invest, withdraw, deploy, deployedContractAddress } = usePolkadot();
 
     const bufferToHex = (buffer: any) => {
         return Array.from(new Uint8Array(buffer))
@@ -51,7 +51,8 @@ const Extension = () => {
                         id="file"
                         onChange={(e: any) => handleFileChosen(e.target.files[0])}
                     />
-                    <Button onClick={() => { deploy(SHIBUYA_ADDRESS, proposal) }}>deploy</Button>
+                    <Button onClick={() => { deploy(SHIBUYA_ADDRESS, proposal, "test2", "200") }}>deploy</Button>
+                    <Typography>Deployed Contract address: {deployedContractAddress}</Typography>
                 </Box>
             </Box>
         </>

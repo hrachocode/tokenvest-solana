@@ -7,9 +7,11 @@ import * as abi from "../contracts/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { createStartupAddress } from "@/constants/contracts";
 import { WeightV2 } from "@polkadot/types/interfaces";
+import { IUnsubRes } from "@/interfaces/polkadotInterface";
 
 export const usePolkadot = () => {
     const [allAccounts, setAllAccount] = useState<InjectedAccountWithMeta[]>([]);
+    const [deployedContractAddress, setDeployedContractAddress] = useState("");
     const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
     const getAccounts = async () => {
@@ -61,11 +63,11 @@ export const usePolkadot = () => {
         );
 
         if (result.isOk) {
-            const tx = await contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value })
-            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, result => {
-                if (result.status.isInBlock) {
+            const tx = contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value })
+            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+                if (status.isInBlock) {
                     console.log('in a block');
-                } else if (result.status.isFinalized) {
+                } else if (status.isFinalized) {
                     console.log('finalized');
                     unsub();
                 };
@@ -92,11 +94,11 @@ export const usePolkadot = () => {
         );
 
         if (result.isOk) {
-            const tx = await contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired })
-            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, result => {
-                if (result.status.isInBlock) {
+            const tx = contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired })
+            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+                if (status.isInBlock) {
                     console.log('in a block');
-                } else if (result.status.isFinalized) {
+                } else if (status.isFinalized) {
                     console.log('finalized');
                     unsub();
                 };
@@ -104,7 +106,7 @@ export const usePolkadot = () => {
         };
     };
 
-    const deploy = async (accountAddress: string, wasm: any) => {
+    const deploy = async (accountAddress: string, wasm: any, startupName: string, raiseGoal: string) => {
         const api = await ApiPromise.create({ provider: wsProvider });
         const injector = await web3FromAddress(accountAddress);
         const code = new CodePromise(api, abi, wasm);
@@ -124,19 +126,23 @@ export const usePolkadot = () => {
             }) as WeightV2,
         };
 
-        const tx = await code.tx.new(options, "100", "test");
+        const tx = code.tx.new(options, raiseGoal, startupName);
         const unsub = await tx.signAndSend(
             accountAddress,
             { signer: injector.signer },
-            ({ status }) => {
+            ({ status, contract }: IUnsubRes) => {
                 if (status.isInBlock) {
                     console.log("in a block");
                 } else if (status.isFinalized) {
+                    if (contract) {
+                        setDeployedContractAddress(contract.address.toString());
+                        console.log(contract.address.toString(), "contract address");
+                    };
                     console.log("finalized");
                     unsub();
                 };
             });
     };
 
-    return { allAccounts, sendTransaction, invest, withdraw, deploy };
+    return { allAccounts, sendTransaction, invest, withdraw, deploy, deployedContractAddress };
 };
