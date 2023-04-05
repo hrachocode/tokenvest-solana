@@ -61,15 +61,19 @@ export const usePolkadot = () => {
         );
 
         if (result.isOk) {
-            const tx = contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value })
-            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
-                if (status.isInBlock) {
-                    console.log('in a block');
-                } else if (status.isFinalized) {
-                    console.log('finalized');
-                    unsub();
-                };
-            });
+            try {
+                const tx = contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value })
+                const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+                    if (status.isInBlock) {
+                        console.log('in a block');
+                    } else if (status.isFinalized) {
+                        console.log('finalized');
+                        unsub();
+                    };
+                });
+            } catch (error) {
+                alert((error as { message: string }).message);
+            }
         };
     };
 
@@ -92,15 +96,19 @@ export const usePolkadot = () => {
         );
 
         if (result.isOk) {
-            const tx = contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired })
-            const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
-                if (status.isInBlock) {
-                    console.log('in a block');
-                } else if (status.isFinalized) {
-                    console.log('finalized');
-                    unsub();
-                };
-            });
+            try {
+                const tx = contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired })
+                const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+                    if (status.isInBlock) {
+                        console.log('in a block');
+                    } else if (status.isFinalized) {
+                        console.log('finalized');
+                        unsub();
+                    };
+                });
+            } catch (error) {
+                alert((error as { message: string }).message);
+            }
         };
     };
 
@@ -117,22 +125,26 @@ export const usePolkadot = () => {
             }) as WeightV2,
         };
 
-        const tx = code.tx.new(options, raiseGoal, startupName);
-        const unsub = await tx.signAndSend(
-            accountAddress,
-            { signer: injector.signer },
-            ({ status, contract }: IUnsubRes) => {
-                if (status.isInBlock) {
-                    console.log("in a block");
-                } else if (status.isFinalized) {
-                    if (contract) {
-                        setDeployedContractAddress(contract.address.toString());
-                        console.log(contract.address.toString(), "contract address");
+        try {
+            const tx = code.tx.new(options, raiseGoal, startupName);
+            const unsub = await tx.signAndSend(
+                accountAddress,
+                { signer: injector.signer },
+                ({ status, contract }: IUnsubRes) => {
+                    if (status.isInBlock) {
+                        console.log("in a block");
+                    } else if (status.isFinalized) {
+                        if (contract) {
+                            setDeployedContractAddress(contract.address.toString());
+                            console.log(contract.address.toString(), "contract address");
+                        };
+                        console.log("finalized");
+                        unsub();
                     };
-                    console.log("finalized");
-                    unsub();
-                };
-            });
+                });
+        } catch (error) {
+            alert((error as { message: string }).message);
+        }
     };
 
     return { allAccounts, sendTransaction, invest, withdraw, deploy, deployedContractAddress };
