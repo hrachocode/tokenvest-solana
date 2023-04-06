@@ -1,3 +1,63 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "semi": "warn",
+    "no-unused-vars": "warn",
+    "array-callback-return": "warn",
+    "max-len": [
+      "warn",
+      {
+        "code": 120,
+        "tabWidth": 2,
+        "comments": 120,
+        "ignoreComments": true,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
+    "quotes": [
+      "warn",
+      "double"
+    ],
+    "prefer-const": 0,
+    "consistent-return": 0,
+    "no-unused-expressions": 0,
+    "no-param-reassign": 0,
+    "no-return-await": 0,
+    "no-return-assign": 0,
+    "no-console": "warn",
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "eol-last": ["warn", "always"],
+    "no-multiple-empty-lines": ["warn", { "max": 1 }],
+    "object-curly-spacing": ["warn", "always"],
+    "array-bracket-spacing": ["warn", "always"],
+    "key-spacing":"warn",
+    "keyword-spacing":"warn",
+    "arrow-spacing":"warn",
+    "block-spacing":["warn","always"],
+    "comma-spacing":"warn",
+    "import/no-unresolved": "error"
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "project": ".",
+        "alwaysTryTypes": true
+      }
+    }
+  }
 }
