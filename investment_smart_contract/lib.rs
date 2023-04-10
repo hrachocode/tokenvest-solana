@@ -4,7 +4,7 @@
 mod investment_smart_contract {
     use ink::storage::Mapping;
     use ink_prelude::string::String;
-    use ink_env::{debug_println, debug_message};
+    use ink_env;
 
     #[ink(storage)]
     pub struct InvestmentSmartContract {
