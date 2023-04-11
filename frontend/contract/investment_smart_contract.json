@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x5c32d2f663a2a9a7d52d6b15cd23e296939695c7c48b6401427f0831cfb8513a",
+    "hash": "0x80cb0d0307bea6948435ff82b40d704ed0b272e2eada898fc310f50644672636",
     "language": "ink! 4.1.0",
     "compiler": "rustc 1.68.0-nightly",
     "build_info": {
@@ -40,6 +40,15 @@
                 "String"
               ],
               "type": 3
+            }
+          },
+          {
+            "label": "share_percentage",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 4
             }
           }
         ],
@@ -167,6 +176,15 @@
                 }
               },
               "name": "investment_goal"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 4
+                }
+              },
+              "name": "share_percentage"
             }
           ],
           "name": "InvestmentSmartContract"

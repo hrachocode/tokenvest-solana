@@ -57,10 +57,5 @@ mod investment_smart_contract {
         pub fn show_amount(&mut self) {
             ink_env::debug_println!("Amount is {}", self.tokens_collected);
         }
-
-        #[ink(message)]
-        pub fn show_investors(&mut self) {
-            ink_env::debug_println!("Investeros and their shares are {:?}", self.investors);
-        }
     }
 }
