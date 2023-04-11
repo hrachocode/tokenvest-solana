@@ -112,15 +112,16 @@ export const usePolkadot = () => {
     };
   };
 
-  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string) => {
+  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage:string) => {
     const res = await fetch("http://localhost:3000/api/readWasm");
     const resData = await res.json();
-    const enc = new TextEncoder();
-    const wasmBuffer = enc.encode(resData);
+    
+    // const enc = new TextEncoder();
+    // const wasmBuffer = enc.encode(resData);
     
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
-    const code = new CodePromise(api, abi, wasmBuffer);
+    const code = new CodePromise(api, abi, resData);
 
     const options = {
       storageDepositLimit,
@@ -130,8 +131,11 @@ export const usePolkadot = () => {
       }) as WeightV2,
     };
 
+    console.log(code,"CODE");
+    
+
     try {
-      const tx = code.tx.new(options, raiseGoal, startupName);
+      const tx = code.tx.new(options, raiseGoal, startupName, sharePercentage);
       const unsub = await tx.signAndSend(
         accountAddress,
         { signer: injector.signer },
