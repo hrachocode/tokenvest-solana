@@ -1,11 +1,11 @@
 use std::fs;
-use std::path::Path;
+use std::env;
 
 fn main() {
     let path_json = "../investment_smart_contract/target/ink/investment_smart_contract.json";
-    let destination_json = "../frontend/contracts/investment_smart_contract.json";
+    let destination_json = "../frontend/contract/investment_smart_contract.json";
     let contract_wasm = "../investment_smart_contract/target/ink/investment_smart_contract.wasm";
-    let destination_wasm = "../frontend/contracts/investment_smart_contract.wasm";
+    let destination_wasm = "../frontend/contract/investment_smart_contract.wasm";
     let result_json = fs::copy(path_json, destination_json);
 
     match result_json {
@@ -18,6 +18,9 @@ fn main() {
         Ok(v) => println!("Copied {:?} bytes", v),
         Err(e) => println!("{:?}", e),
     }
+
+    let path = env::current_dir();
+    println!("The current directory is {:?}", path);
 
 }
 
