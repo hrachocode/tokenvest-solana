@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["[your_name] <[your_email]>"]
 edition = "2021"
 
+
 [dependencies]
 ink = { version = "4.0.1", default-features = false }
 ink_env = { version = "4.0.1", default-features = false }

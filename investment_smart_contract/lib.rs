@@ -10,14 +10,15 @@ mod investment_smart_contract {
     pub struct InvestmentSmartContract {
         startup_owner: AccountId,
         startup_name: String,
-        investors: Mapping<AccountId, Balance>,
+        investors: Mapping<AccountId, u128>,
         tokens_collected: Balance,
         investment_goal: u128,
+        share_percentage: u128,
     }
 
     impl InvestmentSmartContract {
         #[ink(constructor)]
-        pub fn new(investment_goal: u128, startup_name: String) -> Self {
+        pub fn new(investment_goal: u128, startup_name: String, share_percentage: u128) -> Self {
             let startup_owner = Self::env().caller();
             Self {
                 startup_owner,
@@ -25,6 +26,7 @@ mod investment_smart_contract {
                 investors: Mapping::default(),
                 tokens_collected: Balance::default(),
                 investment_goal,
+                share_percentage,
             }
         }
 
@@ -54,6 +56,11 @@ mod investment_smart_contract {
         #[ink(message)]
         pub fn show_amount(&mut self) {
             ink_env::debug_println!("Amount is {}", self.tokens_collected);
+        }
+
+        #[ink(message)]
+        pub fn show_investors(&mut self) {
+            ink_env::debug_println!("Investeros and their shares are {:?}", self.investors);
         }
     }
 }
