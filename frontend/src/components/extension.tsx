@@ -27,7 +27,7 @@ const Extension = () => {
           })
           : <></>}
         <Box>
-          <Button onClick={() => { deploy(SHIBUYA_ADDRESS, "test2", "200","20"); }}>deploy</Button>
+          <Button onClick={() => { deploy(SHIBUYA_ADDRESS, "test2", "200", "20"); }}>deploy</Button>
           <Typography>Deployed Contract address: {deployedContractAddress}</Typography>
         </Box>
       </Box>
