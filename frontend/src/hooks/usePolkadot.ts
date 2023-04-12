@@ -113,15 +113,9 @@ export const usePolkadot = () => {
   };
 
   const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage:string) => {
-    const res = await fetch("http://localhost:3000/api/readWasm");
-    const resData = await res.json();
-    
-    // const enc = new TextEncoder();
-    // const wasmBuffer = enc.encode(resData);
-    
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
-    const code = new CodePromise(api, abi, resData);
+    const code = new CodePromise(api, abi, abi.source.wasm);
 
     const options = {
       storageDepositLimit,
