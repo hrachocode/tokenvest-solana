@@ -131,9 +131,6 @@ export const usePolkadot = () => {
       }) as WeightV2,
     };
 
-    console.log(code,"CODE");
-    
-
     try {
       const tx = code.tx.new(options, raiseGoal, startupName, sharePercentage);
       const unsub = await tx.signAndSend(
