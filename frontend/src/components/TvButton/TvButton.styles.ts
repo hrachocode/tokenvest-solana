@@ -7,7 +7,7 @@ const baseButtonStyles = {
   ":hover": {
     background: "#2B2B2B"
   }
-}
+};
 
 const primaryButtonStyles = {
   ...baseButtonStyles,
