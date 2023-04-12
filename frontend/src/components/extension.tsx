@@ -1,28 +1,10 @@
-import { Box, Button, Input, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { usePolkadot } from "@/hooks/usePolkadot";
-import { useState } from "react";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 const Extension = () => {
-  const [ proposal, setProposal ] = useState({});
   const { allAccounts, invest, withdraw, deploy, deployedContractAddress } = usePolkadot();
-
-  const bufferToHex = (buffer: any) => {
-    return Array.from(new Uint8Array(buffer))
-      .map(b => b.toString(16).padStart(2, "0"))
-      .join("");
-  };
-
-  const handleFileChosen = (file: any) => {
-    const fileReader = new FileReader();
-    fileReader.onloadend = () => {
-      const content = bufferToHex(fileReader.result);
-      setProposal(`0x${content}`);
-    };
-
-    fileReader.readAsArrayBuffer(file);
-  };
 
   return (
     <>
@@ -45,12 +27,7 @@ const Extension = () => {
           })
           : <></>}
         <Box>
-          <Input
-            type="file"
-            id="file"
-            onChange={(e: any) => handleFileChosen(e.target.files[0])}
-          />
-          <Button onClick={() => { deploy(SHIBUYA_ADDRESS, proposal, "test2", "200"); }}>deploy</Button>
+          <Button onClick={() => { deploy(SHIBUYA_ADDRESS, "test2", "200", "20"); }}>deploy</Button>
           <Typography>Deployed Contract address: {deployedContractAddress}</Typography>
         </Box>
       </Box>
