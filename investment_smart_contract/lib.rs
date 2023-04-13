@@ -3,14 +3,14 @@
 #[ink::contract]
 mod investment_smart_contract {
     use ink::storage::Mapping;
-    use ink_prelude::string::String;
     use ink_env;
+    use ink_prelude::string::String;
 
     #[ink(storage)]
     pub struct InvestmentSmartContract {
         startup_owner: AccountId,
         startup_name: String,
-        investors: Mapping<AccountId, u128>,
+        investors: Mapping<AccountId, Balance>,
         tokens_collected: Balance,
         investment_goal: u128,
         share_percentage: u128,
@@ -43,7 +43,7 @@ mod investment_smart_contract {
         }
 
         #[ink(message, payable)]
-        pub fn withdraw(&mut self) {
+        pub fn withdraw_owner(&mut self) {
             let caller = self.env().caller();
             if self.tokens_collected >= self.investment_goal && self.startup_owner == caller {
                 let amount = self.tokens_collected;
@@ -52,6 +52,18 @@ mod investment_smart_contract {
                 ink_env::debug_message("NOT ENOUGH FUNDS TO WITHDRAW");
             }
         }
+
+       #[ink(message, payable)]
+        pub fn withdraw_investor(&mut self) {
+            let caller = self.env().caller();
+            if self.tokens_collected >= self.investment_goal {
+                let amount = self.investors.get(caller).unwrap();     
+                self.env().transfer(caller, amount).unwrap();  
+            }
+            else {
+                ink_env::debug_message("NOT ENOUGH FUNDS TO WITHDRAW");
+            }
+        } 
 
         #[ink(message)]
         pub fn show_amount(&mut self) {
