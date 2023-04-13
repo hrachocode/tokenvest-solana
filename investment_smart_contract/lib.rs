@@ -43,7 +43,7 @@ mod investment_smart_contract {
         }
 
         #[ink(message, payable)]
-        pub fn withdraw_po(&mut self) {
+        pub fn withdraw_owner(&mut self) {
             let caller = self.env().caller();
             if self.tokens_collected >= self.investment_goal && self.startup_owner == caller {
                 let amount = self.tokens_collected;
