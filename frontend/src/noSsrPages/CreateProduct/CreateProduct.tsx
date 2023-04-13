@@ -13,16 +13,16 @@ const CreateProduct = (): JSX.Element => {
   const [ sharePercentage, setSharePercentage ] = useState("");
   const { deploy } = usePolkadot();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, func: Function) => {
-    func(e.target.value);
+  const handleChange = (value: string, cb: Function) => {
+    cb(value);
   };
 
   const handleClick = async () => {
-    const isValid = inputValidator(sharePercentage);
-    if (isValid.success) {
+    const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
+    if (success) {
       await deploy(SHIBUYA_ADDRESS, name, raiseGoal, sharePercentage);
     } else {
-      alert(isValid.message);
+      alert(message);
     }
 
   };
@@ -31,15 +31,15 @@ const CreateProduct = (): JSX.Element => {
     <Box sx={styles.createProductWrapper}>
       <Box>
         <Typography>Name</Typography>
-        <TvInput customVariant="tertiary" onChange={(e) => { handleChange(e, setName); }} />
+        <TvInput customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setName); }} />
       </Box>
       <Box>
         <Typography>Raise Goal</Typography>
-        <TvInput type="number" customVariant="tertiary" onChange={(e) => { handleChange(e, setRaiseGoal); }} />
+        <TvInput type="number" customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setRaiseGoal); }} />
       </Box>
       <Box>
         <Typography>Share percentage</Typography>
-        <TvInput type="number" customVariant="tertiary" onChange={(e) => { handleChange(e, setSharePercentage); }} />
+        <TvInput type="number" customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setSharePercentage); }} />
       </Box>
       <Box>
         <TvButton onClick={handleClick}>Create Product</TvButton>

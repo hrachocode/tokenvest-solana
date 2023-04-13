@@ -16,16 +16,14 @@ const Header = (): JSX.Element => {
         </Link>
       </Box>
       <Box sx={styles.headerRoutes}>
-        {ROUTES.map((item, index) => {
-          return (
-            <Link
-              key={index + 1}
-              href={item.slug}
-            >
-              <Typography variant="h5">{item.title}</Typography>
-            </Link>
-          );
-        })}
+        {ROUTES.map((item, index) =>
+          <Link
+            key={index + 1}
+            href={item.slug}
+          >
+            <Typography variant="h5">{item.title}</Typography>
+          </Link>
+        )}
         <TvButton customVariant="secondary">{isConnected ? "Connected" : "Not Connected"}</TvButton>
       </Box>
     </Box>
