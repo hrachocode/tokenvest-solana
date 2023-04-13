@@ -3,3 +3,12 @@
   margin: 0;
   box-sizing: border-box;
 }
+a{
+  text-decoration: unset;
+}
+p, h1, h2, h3 ,h4 ,h5, caption{
+  color: white;
+}
+body {
+  background: #2B2B2B;
+}
