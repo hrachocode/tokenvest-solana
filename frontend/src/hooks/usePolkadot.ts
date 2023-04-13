@@ -3,7 +3,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
-import * as abi from "../../contract/investment_smart_contract.json";
+import abi from "../../contract/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { createStartupAddress } from "@/constants/contracts";
 import { WeightV2 } from "@polkadot/types/interfaces";
@@ -112,7 +112,7 @@ export const usePolkadot = () => {
     };
   };
 
-  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage:string) => {
+  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string) => {
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);
