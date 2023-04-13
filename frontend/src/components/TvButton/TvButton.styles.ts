@@ -2,7 +2,7 @@ const baseButtonStyles = {
   background: "#A259FF",
   borderRadius: "20px",
   color: "#FFFFFF",
-  padding: "0px 50px 0px 50px",
+  paddingX: 5,
   border: "2px solid #A259FF",
   ":hover": {
     background: "#2B2B2B"
