@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
 import dynamic from "next/dynamic";
-import { ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import { theme } from "../theme/theme";
+import { appStyles } from "@/styles/App.styles";
 
 const Header = dynamic(() => import("../components/Header/Header"), {
   ssr: false
@@ -11,8 +12,10 @@ const Header = dynamic(() => import("../components/Header/Header"), {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <Header/>
-      <Component {...pageProps} />
+      <Header />
+      <Box sx={appStyles.component}>
+        <Component {...pageProps} />
+      </Box>
     </ThemeProvider>
   );
 }

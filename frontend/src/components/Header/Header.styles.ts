@@ -7,9 +7,6 @@ export const styles = {
         justifyContent:"space-between",
         alignItems:"center"
     },
-    logo:{
-        color:"common.white"
-    },
     headerRoutes:{
         display:"flex",
         gap:5,

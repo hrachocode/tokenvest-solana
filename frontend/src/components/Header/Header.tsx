@@ -12,7 +12,7 @@ const Header = (): JSX.Element => {
             <Box sx={styles.header}>
                 <Box>
                     <Link href="/">
-                        <Typography variant="h5" sx={styles.logo}>Tokenvest</Typography>
+                        <Typography variant="h5">Tokenvest</Typography>
                     </Link>
                 </Box>
                 <Box sx={styles.headerRoutes}>
@@ -22,7 +22,7 @@ const Header = (): JSX.Element => {
                                 key={index + 1}
                                 href={item.slug}
                             >
-                                <Typography variant="h5" sx={styles.logo}>{item.title}</Typography>
+                                <Typography variant="h5">{item.title}</Typography>
                             </Link>
                         )
                     })}
