@@ -1,7 +1,7 @@
 export const styles = {
-    createProductWrapper:{
-        display:"flex",
-        flexDirection:"column",
-        gap:2
-    }
+  createProductWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2
+  }
 };

@@ -6,9 +6,9 @@ interface ITvInputProps extends InputProps {
 };
 
 export const TvInput = (props: ITvInputProps): JSX.Element => {
-    const { customVariant = "primary", ...rest } = props;
-    const styles = inputStyles[customVariant as keyof typeof inputStyles];
-    return (
-        <Input {...rest} sx={styles} />
-    );
+  const { customVariant = "primary", ...rest } = props;
+  const styles = inputStyles[customVariant as keyof typeof inputStyles];
+  return (
+    <Input {...rest} sx={styles} />
+  );
 };
