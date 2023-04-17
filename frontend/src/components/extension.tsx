@@ -3,9 +3,17 @@ import { usePolkadot } from "@/hooks/usePolkadot";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { TvButton } from "./TvButton/TvButton";
+import { createStartupAddress } from "@/constants/contracts";
 
 const Extension = () => {
-  const { allAccounts, invest, withdraw, deploy, deployedContractAddress } = usePolkadot();
+  const {
+    allAccounts,
+    invest,
+    withdrawInvestor,
+    withdrawPo,
+    deploy,
+    deployedContractAddress
+  } = usePolkadot();
 
   return (
     <>
@@ -21,8 +29,9 @@ const Extension = () => {
                   <Typography>Account name: {account.meta.name}</Typography>
                   <Typography>Account address: {account.address}</Typography>
                 </Box>
-                <TvButton onClick={() => { invest(SHIBUYA_ADDRESS, 1); }}>invest</TvButton>
-                <TvButton onClick={() => { withdraw(SHIBUYA_ADDRESS); }}>withdraw</TvButton>
+                <TvButton onClick={() => { invest(SHIBUYA_ADDRESS, 2, createStartupAddress); }}>invest</TvButton>
+                <TvButton onClick={() => { withdrawInvestor(SHIBUYA_ADDRESS, createStartupAddress); }}>withdraw Investor</TvButton>
+                <TvButton onClick={() => { withdrawPo(SHIBUYA_ADDRESS, createStartupAddress); }}>withdraw Po</TvButton>
               </Box>
             );
           })
