@@ -5,7 +5,6 @@ import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-d
 import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
 import abi from "../../contract/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
-import { createStartupAddress } from "@/constants/contracts";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 
@@ -41,10 +40,10 @@ export const usePolkadot = () => {
     }
   };
 
-  const invest = async (accountAddress: string, investValue: number) => {
+  const invest = async (accountAddress: string, investValue: number, contractAddress: string) => {
     const value = BigInt(investValue) * INVEST_VALUE_MULTIPLIER;
     const api = await ApiPromise.create({ provider: wsProvider });
-    const contract = new ContractPromise(api, abi, createStartupAddress);
+    const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
     const options = {
@@ -77,9 +76,9 @@ export const usePolkadot = () => {
     };
   };
 
-  const withdraw = async (accountAddress: string) => {
+  const withdrawInvestor = async (accountAddress: string, contractAddress: string) => {
     const api = await ApiPromise.create({ provider: wsProvider });
-    const contract = new ContractPromise(api, abi, createStartupAddress);
+    const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
     const options = {
@@ -97,7 +96,42 @@ export const usePolkadot = () => {
 
     if (result.isOk) {
       try {
-        const tx = contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired });
+        const tx = contract.tx.withdrawInvestor({ storageDepositLimit, gasLimit: gasRequired });
+        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+          if (status.isInBlock) {
+            console.log("in a block");
+          } else if (status.isFinalized) {
+            console.log("finalized");
+            unsub();
+          };
+        });
+      } catch (error) {
+        alert((error as { message: string }).message);
+      }
+    };
+  };
+
+  const withdrawPo = async (accountAddress: string, contractAddress: string) => {
+    const api = await ApiPromise.create({ provider: wsProvider });
+    const contract = new ContractPromise(api, abi, contractAddress);
+    const injector = await web3FromAddress(accountAddress);
+
+    const options = {
+      storageDepositLimit: null,
+      gasLimit: api.registry.createType(WEIGHT_V2, {
+        refTime: MAX_CALL_WEIGHT,
+        proofSize: PROOFSIZE,
+      }) as WeightV2,
+    };
+
+    const { gasRequired, result } = await contract.query.invest(
+      accountAddress,
+      options
+    );
+
+    if (result.isOk) {
+      try {
+        const tx = contract.tx.withdrawPo({ storageDepositLimit, gasLimit: gasRequired });
         const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
           if (status.isInBlock) {
             console.log("in a block");
@@ -147,5 +181,5 @@ export const usePolkadot = () => {
     }
   };
 
-  return { allAccounts, sendTransaction, invest, withdraw, deploy, deployedContractAddress };
+  return { allAccounts, sendTransaction, invest, withdrawInvestor, withdrawPo, deploy, deployedContractAddress };
 };
