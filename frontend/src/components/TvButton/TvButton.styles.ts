@@ -1,11 +1,13 @@
+import { ICustomTheme } from "@/theme/theme";
+
 const baseButtonStyles = {
-  background: "#A259FF",
+  backgroundColor: "callToAction",
   borderRadius: "20px",
-  color: "#FFFFFF",
+  color: "textPrimary",
   paddingX: 5,
-  border: "2px solid #A259FF",
+  border: (theme: ICustomTheme) => `2px solid ${theme.palette.callToAction}`,
   ":hover": {
-    background: "#2B2B2B"
+    backgroundColor: "backgroundPrimary"
   }
 };
 
