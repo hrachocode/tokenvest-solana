@@ -8,7 +8,7 @@ import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_PRODUCTS } from "@/constants/cms";
+import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, IMAGE_FIELD } from "@/constants/cms";
 
 export const usePolkadot = () => {
   const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
@@ -147,7 +147,7 @@ export const usePolkadot = () => {
     };
   };
 
-  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string) => {
+  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string, imageFile: Blob) => {
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);
@@ -180,7 +180,25 @@ export const usePolkadot = () => {
                   }
                 });
                 if (postRes?.data?.id) {
-                  alert("Created successfully!");
+                  const id = postRes.data.id;
+                  if (imageFile) {
+                    const formData = new FormData();
+                    formData.append("ref", CMS_PRODUCTS_REF);
+                    formData.append("refId", id);
+                    formData.append("field", IMAGE_FIELD);
+                    formData.append("files", imageFile);
+                    const postRes = await fetch(`${CMS_API}${CMS_UPLOAD}`, {
+                      method: METHODS.POST,
+                      body: formData
+                    });
+                    if (postRes.ok) {
+                      alert("Product successfully created!!!");
+                    } else {
+                      alert("There was a problem with image");
+                    }
+                  } else {
+                    alert("Product successfully created!!!");
+                  }
                 }
               } catch (error) {
                 alert((error as { message: string }).message);
