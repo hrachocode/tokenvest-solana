@@ -187,11 +187,8 @@ export const usePolkadot = () => {
                     formData.append("refId", id);
                     formData.append("field", IMAGE_FIELD);
                     formData.append("files", imageFile);
-                    const postRes = await fetch(`${CMS_API}${CMS_UPLOAD}`, {
-                      method: METHODS.POST,
-                      body: formData
-                    });
-                    if (postRes.ok) {
+                    const postRes = await handleRequest(`${CMS_API}${CMS_UPLOAD}`, METHODS.POST, formData, true);
+                    if (postRes.length !== 0) {
                       alert("Product successfully created!!!");
                     } else {
                       alert("There was a problem with image");
