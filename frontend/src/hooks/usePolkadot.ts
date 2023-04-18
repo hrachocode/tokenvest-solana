@@ -7,10 +7,11 @@ import abi from "../../contract/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
+import { handleRequest, METHODS } from "@/utils/handleRequest";
+import { CMS_API, CMS_PRODUCTS } from "@/constants/cms";
 
 export const usePolkadot = () => {
   const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
-  const [ deployedContractAddress, setDeployedContractAddress ] = useState("");
   const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
   const getAccounts = async () => {
@@ -164,13 +165,26 @@ export const usePolkadot = () => {
       const unsub = await tx.signAndSend(
         accountAddress,
         { signer: injector.signer },
-        ({ status, contract }: IUnsubRes) => {
+        async ({ status, contract }: IUnsubRes) => {
           if (status.isInBlock) {
             console.log("in a block");
           } else if (status.isFinalized) {
             if (contract) {
-              setDeployedContractAddress(contract.address.toString());
-              console.log(contract.address.toString(), "contract address");
+              try {
+                const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
+                  "data": {
+                    "title": startupName,
+                    "raiseGoal": raiseGoal,
+                    "sharePercentage": sharePercentage,
+                    "address": contract.address.toString()
+                  }
+                });
+                if (postRes?.data?.id) {
+                  alert("Created successfully!");
+                }
+              } catch (error) {
+                alert((error as { message: string }).message);
+              }
             };
             console.log("finalized");
             unsub();
@@ -181,5 +195,5 @@ export const usePolkadot = () => {
     }
   };
 
-  return { allAccounts, sendTransaction, invest, withdrawInvestor, withdrawPo, deploy, deployedContractAddress };
+  return { allAccounts, sendTransaction, invest, withdrawInvestor, withdrawPo, deploy };
 };

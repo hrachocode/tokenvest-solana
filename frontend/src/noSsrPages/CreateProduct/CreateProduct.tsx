@@ -3,7 +3,7 @@ import { TvInput } from "@/components/TvInput/TvInput";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { usePolkadot } from "@/hooks/usePolkadot";
 import { Box, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { styles } from "./CreateProduct.styles";
 import { inputValidator } from "./utils";
 

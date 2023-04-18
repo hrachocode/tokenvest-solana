@@ -10,9 +10,7 @@ const Extension = () => {
     allAccounts,
     invest,
     withdrawInvestor,
-    withdrawPo,
-    deploy,
-    deployedContractAddress
+    withdrawPo
   } = usePolkadot();
 
   return (
@@ -36,10 +34,6 @@ const Extension = () => {
             );
           })
           : <></>}
-        <Box>
-          <TvButton onClick={() => { deploy(SHIBUYA_ADDRESS, "test2", "200", "20"); }}>deploy</TvButton>
-          <Typography>Deployed Contract address: {deployedContractAddress}</Typography>
-        </Box>
       </Box>
     </>
   );
