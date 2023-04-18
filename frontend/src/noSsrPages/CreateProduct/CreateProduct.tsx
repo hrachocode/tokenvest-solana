@@ -18,8 +18,8 @@ const CreateProduct = (): JSX.Element => {
     cb(value);
   };
 
-  const handleFileChange = (e: any) => {
-    setFiles(e.target.files);
+  const handleFileChange = ({ target: { files = [] } = {} }: any) => {
+    setFiles(files);
   };
 
   const handleClick = async () => {
