@@ -3,15 +3,15 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
 import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
-import * as abi from "../../contract/investment_smart_contract.json";
+import abi from "../../contract/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
-import { createStartupAddress } from "@/constants/contracts";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
+import { handleRequest, METHODS } from "@/utils/handleRequest";
+import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, IMAGE_FIELD } from "@/constants/cms";
 
 export const usePolkadot = () => {
   const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
-  const [ deployedContractAddress, setDeployedContractAddress ] = useState("");
   const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
   const getAccounts = async () => {
@@ -41,10 +41,10 @@ export const usePolkadot = () => {
     }
   };
 
-  const invest = async (accountAddress: string, investValue: number) => {
+  const invest = async (accountAddress: string, investValue: number, contractAddress: string) => {
     const value = BigInt(investValue) * INVEST_VALUE_MULTIPLIER;
     const api = await ApiPromise.create({ provider: wsProvider });
-    const contract = new ContractPromise(api, abi, createStartupAddress);
+    const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
     const options = {
@@ -77,9 +77,9 @@ export const usePolkadot = () => {
     };
   };
 
-  const withdraw = async (accountAddress: string) => {
+  const withdrawInvestor = async (accountAddress: string, contractAddress: string) => {
     const api = await ApiPromise.create({ provider: wsProvider });
-    const contract = new ContractPromise(api, abi, createStartupAddress);
+    const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
     const options = {
@@ -97,7 +97,7 @@ export const usePolkadot = () => {
 
     if (result.isOk) {
       try {
-        const tx = contract.tx.withdraw({ storageDepositLimit, gasLimit: gasRequired });
+        const tx = contract.tx.withdrawInvestor({ storageDepositLimit, gasLimit: gasRequired });
         const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
           if (status.isInBlock) {
             console.log("in a block");
@@ -112,7 +112,42 @@ export const usePolkadot = () => {
     };
   };
 
-  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage:string) => {
+  const withdrawPo = async (accountAddress: string, contractAddress: string) => {
+    const api = await ApiPromise.create({ provider: wsProvider });
+    const contract = new ContractPromise(api, abi, contractAddress);
+    const injector = await web3FromAddress(accountAddress);
+
+    const options = {
+      storageDepositLimit: null,
+      gasLimit: api.registry.createType(WEIGHT_V2, {
+        refTime: MAX_CALL_WEIGHT,
+        proofSize: PROOFSIZE,
+      }) as WeightV2,
+    };
+
+    const { gasRequired, result } = await contract.query.invest(
+      accountAddress,
+      options
+    );
+
+    if (result.isOk) {
+      try {
+        const tx = contract.tx.withdrawPo({ storageDepositLimit, gasLimit: gasRequired });
+        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+          if (status.isInBlock) {
+            console.log("in a block");
+          } else if (status.isFinalized) {
+            console.log("finalized");
+            unsub();
+          };
+        });
+      } catch (error) {
+        alert((error as { message: string }).message);
+      }
+    };
+  };
+
+  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string, imageFile: Blob) => {
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);
@@ -130,13 +165,44 @@ export const usePolkadot = () => {
       const unsub = await tx.signAndSend(
         accountAddress,
         { signer: injector.signer },
-        ({ status, contract }: IUnsubRes) => {
+        async ({ status, contract }: IUnsubRes) => {
           if (status.isInBlock) {
             console.log("in a block");
           } else if (status.isFinalized) {
             if (contract) {
-              setDeployedContractAddress(contract.address.toString());
-              console.log(contract.address.toString(), "contract address");
+              try {
+                const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
+                  "data": {
+                    "title": startupName,
+                    "raiseGoal": raiseGoal,
+                    "sharePercentage": sharePercentage,
+                    "address": contract.address.toString()
+                  }
+                });
+                if (postRes?.data?.id) {
+                  const id = postRes.data.id;
+                  if (imageFile) {
+                    const formData = new FormData();
+                    formData.append("ref", CMS_PRODUCTS_REF);
+                    formData.append("refId", id);
+                    formData.append("field", IMAGE_FIELD);
+                    formData.append("files", imageFile);
+                    const postRes = await fetch(`${CMS_API}${CMS_UPLOAD}`, {
+                      method: METHODS.POST,
+                      body: formData
+                    });
+                    if (postRes.ok) {
+                      alert("Product successfully created!!!");
+                    } else {
+                      alert("There was a problem with image");
+                    }
+                  } else {
+                    alert("Product successfully created!!!");
+                  }
+                }
+              } catch (error) {
+                alert((error as { message: string }).message);
+              }
             };
             console.log("finalized");
             unsub();
@@ -147,5 +213,5 @@ export const usePolkadot = () => {
     }
   };
 
-  return { allAccounts, sendTransaction, invest, withdraw, deploy, deployedContractAddress };
+  return { allAccounts, sendTransaction, invest, withdrawInvestor, withdrawPo, deploy };
 };
