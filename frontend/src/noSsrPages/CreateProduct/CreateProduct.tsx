@@ -11,16 +11,21 @@ const CreateProduct = (): JSX.Element => {
   const [ name, setName ] = useState("");
   const [ raiseGoal, setRaiseGoal ] = useState("");
   const [ sharePercentage, setSharePercentage ] = useState("");
+  const [ files, setFiles ] = useState([]);
   const { deploy } = usePolkadot();
 
   const handleChange = (value: string, cb: Function) => {
     cb(value);
   };
 
+  const handleFileChange = ({ target: { files = [] } = {} }: any) => {
+    setFiles(files);
+  };
+
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
-      await deploy(SHIBUYA_ADDRESS, name, raiseGoal, sharePercentage);
+      await deploy(SHIBUYA_ADDRESS, name, raiseGoal, sharePercentage, files[0]);
     } else {
       alert(message);
     }
@@ -40,6 +45,10 @@ const CreateProduct = (): JSX.Element => {
       <Box>
         <Typography>Share percentage</Typography>
         <TvInput type="number" customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setSharePercentage); }} />
+      </Box>
+      <Box>
+        <Typography>Image</Typography>
+        <TvInput type="file" customVariant="tertiary" onChange={handleFileChange} />
       </Box>
       <Box>
         <TvButton onClick={handleClick}>Create Product</TvButton>
