@@ -1,4 +1,5 @@
 import { CMS_URL } from "@/constants/cms";
+import { RAISED, RAISE_GOAL } from "@/constants/general";
 import { IProduct } from "@/interfaces/cmsinterace";
 import { Box, Typography } from "@mui/material";
 import { styles } from "./TvProduct.styles";
@@ -22,11 +23,11 @@ export const TvProduct = ({ product }: ITvProduct): JSX.Element => {
         </Box>
         <Box sx={styles.raiseInfoWrapper}>
           <Box sx={styles.raiseInfo}>
-            <Typography sx={styles.raiseInfoTitle} variant="caption">Raise Goal</Typography>
+            <Typography sx={styles.raiseInfoTitle} variant="caption">{RAISE_GOAL}</Typography>
             <Typography>{product.raiseGoal}</Typography>
           </Box>
           <Box sx={styles.raiseInfo}>
-            <Typography sx={styles.raiseInfoTitle} variant="caption">Raised</Typography>
+            <Typography sx={styles.raiseInfoTitle} variant="caption">{RAISED}</Typography>
             <Typography>{product.raisedAmount}</Typography>
           </Box>
         </Box>
