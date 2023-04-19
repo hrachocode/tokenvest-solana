@@ -1,6 +1,6 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
-import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
+import { SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { usePolkadot } from "@/hooks/usePolkadot";
 import { Box, Typography } from "@mui/material";
 import { useState } from "react";
@@ -25,7 +25,7 @@ const CreateProduct = (): JSX.Element => {
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
-      await deploy(SHIBUYA_ADDRESS, name, raiseGoal, sharePercentage, files[0]);
+      await deploy(SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS, name, raiseGoal, sharePercentage, files[0]);
     } else {
       alert(message);
     }

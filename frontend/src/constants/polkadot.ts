@@ -8,6 +8,7 @@ const CALL_WEIGHT = 5_000_000_000_000;
 const PROOFSIZE_NUM = 1_000_000;
 
 export const SHIBUYA_ADDRESS:string = "bCPAiC9adx7UuvTke9qYDsfk2oiFFyMPS4LDZRc6YKPBKZC";
+export const SHIBUYA_ACCOUNT_NAME:string = "Test1";
 export const MAX_CALL_WEIGHT = new BN(CALL_WEIGHT).isub(BN_ONE);
 export const PROOFSIZE = new BN(PROOFSIZE_NUM);
 export const WEIGHT_V2:string = "WeightV2";
