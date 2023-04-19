@@ -8,7 +8,7 @@ import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, IMAGE_FIELD } from "@/constants/cms";
+import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, DEFAULT_RAISED_AMOUNT, IMAGE_FIELD } from "@/constants/cms";
 
 export const usePolkadot = () => {
   const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
@@ -147,7 +147,7 @@ export const usePolkadot = () => {
     };
   };
 
-  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string, imageFile: Blob) => {
+  const deploy = async (accountName: string, accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string, imageFile: Blob) => {
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);
@@ -176,7 +176,10 @@ export const usePolkadot = () => {
                     "title": startupName,
                     "raiseGoal": raiseGoal,
                     "sharePercentage": sharePercentage,
-                    "address": contract.address.toString()
+                    "address": contract.address.toString(),
+                    "ownerAddress": accountAddress,
+                    "ownerName": accountName,
+                    "raisedAmount": DEFAULT_RAISED_AMOUNT
                   }
                 });
                 if (postRes?.data?.id) {
