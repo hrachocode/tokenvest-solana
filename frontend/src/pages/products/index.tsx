@@ -32,7 +32,7 @@ export async function getStaticProps() {
 const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <Box>
-      {products.length !== 0 ? products?.map((item, index) =>
+      {products.length !== 0 ? products.map((item, index) =>
         <Fragment key={index + 1}>
           <TvProduct product={item} />
         </Fragment>
