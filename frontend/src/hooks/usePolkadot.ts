@@ -147,7 +147,13 @@ export const usePolkadot = () => {
     };
   };
 
-  const deploy = async (accountName: string, accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string, imageFile: Blob) => {
+  const deploy = async (
+    accountName: string,
+    accountAddress: string,
+    startupName: string,
+    raiseGoal: string,
+    sharePercentage: string,
+    imageFile: Blob) => {
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);

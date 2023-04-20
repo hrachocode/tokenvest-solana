@@ -1,11 +1,14 @@
 export const styles = {
   productWrapper: {
-    maxWidth: 330,
+    minWidth: 330,
     minHeight: 469,
     borderRadius: "20px",
     backgroundColor: "backgroundSecondary",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    ":hover": {
+      opacity: 0.9
+    }
   },
   productImage: {
     width: "100%",
