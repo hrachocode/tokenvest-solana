@@ -1,4 +1,4 @@
-export const handleRequest = async (url: string, method: string, data: {}, isFormData?: boolean) => {
+export const handleRequest = async (url: string, method: string, data?: {}, isFormData?: boolean) => {
   try {
     const dataRes = await fetch(url, {
       method,
@@ -16,5 +16,6 @@ export const handleRequest = async (url: string, method: string, data: {}, isFor
 
 export const METHODS = Object.freeze({
   POST: "POST",
-  PUT: "PUT"
+  PUT: "PUT",
+  GET: "GET"
 });

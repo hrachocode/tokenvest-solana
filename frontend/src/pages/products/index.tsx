@@ -1,12 +1,14 @@
 import { TvProduct } from "@/components/TvProduct/TvProduct";
 import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { NO_PRODUCTS_TEXT } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
-import { Box } from "@mui/material";
-import { Fragment } from "react";
+import { productsStyles } from "@/styles/Products.styles";
+import { handleRequest, METHODS } from "@/utils/handleRequest";
+import { Box, Typography } from "@mui/material";
+import Link from "next/link";
 
 export async function getStaticProps() {
-  const res = await fetch(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`);
-  const data = await res.json();
+  const data = await handleRequest(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET);
 
   const products: IProduct[] = data?.data?.map((item: ICMSProduct) => {
     return {
@@ -31,12 +33,13 @@ export async function getStaticProps() {
 
 const Products = ({ products }: { products: IProduct[] }) => {
   return (
-    <Box>
+    <Box sx={productsStyles.productsWrapper}>
       {products.length !== 0 ? products.map((item, index) =>
-        <Fragment key={index + 1}>
+        <Link href={"/"} key={index + 1}>
           <TvProduct product={item} />
-        </Fragment>
-      ) : <></>}
+        </Link>
+      ) :
+        <Typography variant="h1">{NO_PRODUCTS_TEXT}</Typography>}
     </Box>
   );
 };
