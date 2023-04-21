@@ -23,20 +23,20 @@ export async function getStaticPaths() {
   return { paths, fallback: false };
 }
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
-  const data = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${params?.id}${POPULATE_ALL}`, METHODS.GET);
+export async function getStaticProps({ params: { id } = {} }: GetStaticPropsContext) {
+  const { data, data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${id}${POPULATE_ALL}`, METHODS.GET);
 
   const product: IProduct = {
-    id: data.data.id,
-    title: data.data.attributes.title,
-    raiseGoal: data.data.attributes.raiseGoal,
-    sharePercentage: data.data.attributes.sharePercentage,
-    address: data.data.attributes.address,
-    ownerAddress: data.data.attributes.ownerAddress,
-    ownerName: data.data.attributes.ownerName,
-    raisedAmount: data.data.attributes.raisedAmount,
-    image: data.data.attributes.image?.data?.attributes?.url || null,
-    createdAt: data.data.attributes.createdAt,
+    id: data.id,
+    title: attributes.title,
+    raiseGoal: attributes.raiseGoal,
+    sharePercentage: attributes.sharePercentage,
+    address: attributes.address,
+    ownerAddress: attributes.ownerAddress,
+    ownerName: attributes.ownerName,
+    raisedAmount: attributes.raisedAmount,
+    image: attributes.image?.data?.attributes?.url || null,
+    createdAt: attributes.createdAt,
   };
 
   return {
