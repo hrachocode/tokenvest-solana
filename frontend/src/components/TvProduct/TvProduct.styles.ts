@@ -43,8 +43,5 @@ export const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "5px"
-  },
-  raiseInfoTitle: {
-    color: "caption"
   }
 };

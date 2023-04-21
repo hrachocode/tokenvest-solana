@@ -8,6 +8,7 @@ export interface ICMSProduct {
         ownerAddress: string;
         ownerName: string;
         raisedAmount: string;
+        createdAt: string;
         image: {
             data: {
                 attributes: {
@@ -27,4 +28,5 @@ export interface IProduct {
     ownerName: string;
     raisedAmount: string;
     image: string | null;
+    createdAt: string
 }
