@@ -9,9 +9,9 @@ import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 
 export async function getStaticProps() {
-  const data = await handleRequest(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET);
+  const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
-  const products: IProduct[] = data?.data?.map((item: ICMSProduct) => {
+  const products: IProduct[] = product.map((item: ICMSProduct) => {
     return {
       id: item.id,
       title: item.attributes.title,

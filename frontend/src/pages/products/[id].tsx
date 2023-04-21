@@ -23,8 +23,8 @@ export async function getStaticPaths() {
   return { paths, fallback: false };
 }
 
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const data = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${context.params?.id}${POPULATE_ALL}`, METHODS.GET);
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  const data = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${params?.id}${POPULATE_ALL}`, METHODS.GET);
 
   const product: IProduct = {
     id: data.data.id,
@@ -46,29 +46,37 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   };
 };
 
-export default function Product({ product }: { product: IProduct }) {
-  const dateText = receiveDate(product.createdAt);
+export default function Product({
+  product: {
+    createdAt,
+    image,
+    title,
+    ownerName,
+    raiseGoal,
+    raisedAmount
+  } }: { product: IProduct }) {
+  const dateText = receiveDate(createdAt);
 
   return (
     <Box sx={unitProductStyles.wrapper}>
-      {product.image &&
+      {image &&
         <Box>
           <Box sx={{
             ...unitProductStyles.productImage,
-            backgroundImage: `url(${CMS_URL}${product.image})`,
+            backgroundImage: `url(${CMS_URL}${image})`,
           }}></Box>
         </Box>}
       <Box sx={unitProductStyles.infoWrapper}>
         <Box sx={unitProductStyles.detailsWrapper}>
           <Box>
-            <Typography variant="h2">{product.title}</Typography>
+            <Typography variant="h2">{title}</Typography>
             <Typography color="caption">{dateText}</Typography>
           </Box>
           <Box>
             <Typography variant="h5" color="caption">{CREATED_BY}</Typography>
             <Box sx={unitProductStyles.userInfo}>
               <Box sx={unitProductStyles.userAvatar}></Box>
-              <Typography variant="h5">{product.ownerName}</Typography>
+              <Typography variant="h5">{ownerName}</Typography>
             </Box>
           </Box>
         </Box>
@@ -76,11 +84,11 @@ export default function Product({ product }: { product: IProduct }) {
           <Box sx={unitProductStyles.raiseInfoWrapper}>
             <Box sx={unitProductStyles.raiseInfo}>
               <Typography color="caption" variant="caption">{RAISE_GOAL}</Typography>
-              <Typography>{product.raiseGoal}</Typography>
+              <Typography>{raiseGoal}</Typography>
             </Box>
             <Box sx={unitProductStyles.raiseInfo}>
               <Typography color="caption" variant="caption">{RAISED}</Typography>
-              <Typography>{product.raisedAmount}</Typography>
+              <Typography>{raisedAmount}</Typography>
             </Box>
           </Box>
           <TvButton customVariant="secondary">{INVEST}</TvButton>
