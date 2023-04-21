@@ -10,12 +10,12 @@ import { GetStaticPropsContext } from "next";
 
 export async function getStaticPaths() {
 
-  const data = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.GET);
+  const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.GET) ?? {};
 
-  const paths = data.data.map((item: ICMSProduct) => {
+  const paths = product.map(({ id }: ICMSProduct) => {
     return {
       params: {
-        id: item.id.toString()
+        id: id.toString()
       }
     };
   });
@@ -52,12 +52,12 @@ export default function Product({ product }: { product: IProduct }) {
   return (
     <Box sx={unitProductStyles.wrapper}>
       {product.image &&
-                <Box>
-                  <Box sx={{
-                    ...unitProductStyles.productImage,
-                    backgroundImage: `url(${CMS_URL}${product.image})`,
-                  }}></Box>
-                </Box>}
+        <Box>
+          <Box sx={{
+            ...unitProductStyles.productImage,
+            backgroundImage: `url(${CMS_URL}${product.image})`,
+          }}></Box>
+        </Box>}
       <Box sx={unitProductStyles.infoWrapper}>
         <Box sx={unitProductStyles.detailsWrapper}>
           <Box>
