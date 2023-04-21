@@ -12,8 +12,8 @@ mod investment_smart_contract {
     #[ink(storage)]
     pub struct InvestmentSmartContract {
         startup_owner: AccountId,
-        startup_name: String,
         investors_balances: Mapping<AccountId, Balance>,
+        investors_percentages: Mapping<AccountId, u128>,
         tokens_collected: Balance,
         investment_goal: u128,
         share_percentage: u128,
@@ -22,12 +22,12 @@ mod investment_smart_contract {
 
     impl InvestmentSmartContract {
         #[ink(constructor)]
-        pub fn new(investment_goal: u128, startup_name: String, share_percentage: u128) -> Self {
+        pub fn new(investment_goal: u128, share_percentage: u128) -> Self {
             let startup_owner = Self::env().caller();
             Self {
                 startup_owner,
-                startup_name,
                 investors_balances: Mapping::default(),
+                investors_percentages: Mapping::default(),
                 tokens_collected: Balance::default(),
                 investment_goal,
                 share_percentage,
@@ -58,7 +58,7 @@ mod investment_smart_contract {
             } else {
                 ink_env::debug_message("NOT ENOUGH FUNDS TO WITHDRAW");
             }
-        }
+        } 
 
        #[ink(message, payable)]
         pub fn withdraw_investor(&mut self) {
@@ -74,7 +74,7 @@ mod investment_smart_contract {
 
         #[ink(message)]
         pub fn show_amount(&mut self) {
-            ink_env::debug_println!("Amount is {}", self.tokens_collected);
+            ink_env::debug_println!("{}", self.tokens_collected);
         }
 
         #[ink(message)]
