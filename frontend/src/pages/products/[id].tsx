@@ -7,6 +7,12 @@ import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { receiveDate } from "@/utils/productUtils";
 import { Box, Typography } from "@mui/material";
 import { GetStaticPropsContext } from "next";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+
+const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
+  ssr: false
+});
 
 export async function getStaticPaths() {
 
@@ -53,12 +59,27 @@ export default function Product({
     title,
     ownerName,
     raiseGoal,
-    raisedAmount
+    raisedAmount,
+    address
   } }: { product: IProduct }) {
+  const [ isPopupOpen, setPopupOpen ] = useState(false);
   const dateText = receiveDate(createdAt);
+
+  const openPopup = () => {
+    setPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
 
   return (
     <Box sx={unitProductStyles.wrapper}>
+      {isPopupOpen &&
+        <Box onMouseDown={closePopup} sx={unitProductStyles.popupWrapper}>
+          <TvInvestBox contractAddress={address} />
+        </Box>
+      }
       {image &&
         <Box>
           <Box sx={{
@@ -91,7 +112,7 @@ export default function Product({
               <Typography>{raisedAmount}</Typography>
             </Box>
           </Box>
-          <TvButton customVariant="secondary">{INVEST}</TvButton>
+          <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>
         </Box>
       </Box>
 
