@@ -3,3 +3,4 @@ export const RAISED:string = "Raised";
 export const NO_PRODUCTS_TEXT:string = "No active products";
 export const CREATED_BY:string = "Created By";
 export const INVEST:string = "Invest";
+export const INVEST_BOX_CAPTION:string = "Please write the amount to invest.";

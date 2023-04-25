@@ -1,4 +1,16 @@
 export const unitProductStyles = {
+  popupWrapper: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "backgroundTransparent",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1
+  },
   wrapper: {
     paddingY: 4,
     display: "flex",
