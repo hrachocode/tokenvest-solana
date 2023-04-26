@@ -8,10 +8,11 @@ import { TvInput } from "../TvInput/TvInput";
 import { styles } from "./TvInvestBox.styles";
 
 interface ITvInvestBox {
-    contractAddress: string;
+  contractAddress: string;
+  productId: string;
 }
 
-const TvInvestBox = ({ contractAddress }: ITvInvestBox): JSX.Element => {
+const TvInvestBox = ({ contractAddress, productId }: ITvInvestBox): JSX.Element => {
 
   const { invest } = usePolkadot();
 
@@ -26,7 +27,7 @@ const TvInvestBox = ({ contractAddress }: ITvInvestBox): JSX.Element => {
   };
 
   const handleClick = () => {
-    invest(SHIBUYA_ADDRESS, investAmount, contractAddress);
+    invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId);
   };
 
   return (

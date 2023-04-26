@@ -41,7 +41,7 @@ export const usePolkadot = () => {
     }
   };
 
-  const invest = async (accountAddress: string, investValue: number, contractAddress: string) => {
+  const invest = async (accountAddress: string, investValue: number, contractAddress: string, productId: string) => {
     const value = BigInt(investValue) * INVEST_VALUE_MULTIPLIER;
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
@@ -59,6 +59,13 @@ export const usePolkadot = () => {
       accountAddress,
       options
     );
+
+    const { debugMessage } = await contract.query.showAmount(
+      accountAddress,
+      options
+    );
+
+    console.log(debugMessage.toHuman(), "RESRSRSERS");
 
     if (result.isOk) {
       try {
