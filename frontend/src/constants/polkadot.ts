@@ -1,5 +1,8 @@
 import { BN, BN_ONE } from "@polkadot/util";
 
+export const POLKADOT_EXTENSION_URL:string = "https://polkadot.js.org/extension/";
+export const POLKADOT_EXTENSIONS_MISSING_MESSAGE:string = "Polkadot{.js} extension is missing";
+
 export const SHIBUYA_NETWORK = process.env.NEXT_PUBLIC_SHIBUYA_NETWORK;
 export const POLKADOT_NETWORK = process.env.NEXT_PUBLIC_POLKADOT_NETWORK;
 export const DAPP_NAME = process.env.NEXT_PUBLIC_DAPP_NAME || "Dapp";
