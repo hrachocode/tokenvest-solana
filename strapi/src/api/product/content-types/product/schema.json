@@ -43,6 +43,9 @@
     },
     "raisedAmount": {
       "type": "decimal"
+    },
+    "description": {
+      "type": "text"
     }
   }
 }
