@@ -9,7 +9,6 @@ import { inputValidator } from "./utils";
 
 const CreateProduct = (): JSX.Element => {
   const [ name, setName ] = useState("");
-  const [ description, setDescription ] = useState("");
   const [ raiseGoal, setRaiseGoal ] = useState("");
   const [ sharePercentage, setSharePercentage ] = useState("");
   const [ files, setFiles ] = useState([]);
@@ -26,7 +25,7 @@ const CreateProduct = (): JSX.Element => {
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
-      await deploy(SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS, name, description, raiseGoal, sharePercentage, files[0]);
+      await deploy(SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS, name, raiseGoal, sharePercentage, files[0]);
     } else {
       alert(message);
     }
@@ -38,10 +37,6 @@ const CreateProduct = (): JSX.Element => {
       <Box>
         <Typography>Name</Typography>
         <TvInput customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setName); }} />
-      </Box>
-      <Box>
-        <Typography>Description</Typography>
-        <TvInput customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setDescription); }} />
       </Box>
       <Box>
         <Typography>Raise Goal</Typography>

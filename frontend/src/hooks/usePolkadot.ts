@@ -151,7 +151,6 @@ export const usePolkadot = () => {
     accountName: string,
     accountAddress: string,
     startupName: string,
-    startupDescription: string,
     raiseGoal: string,
     sharePercentage: string,
     imageFile: Blob) => {
@@ -168,7 +167,7 @@ export const usePolkadot = () => {
     };
 
     try {
-      const tx = code.tx.new(options, raiseGoal, sharePercentage);
+      const tx = code.tx.new(options, raiseGoal, startupName, sharePercentage);
       const unsub = await tx.signAndSend(
         accountAddress,
         { signer: injector.signer },
@@ -181,7 +180,6 @@ export const usePolkadot = () => {
                 const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
                   "data": {
                     "title": startupName,
-                    "description": startupDescription,
                     "raiseGoal": raiseGoal,
                     "sharePercentage": sharePercentage,
                     "address": contract.address.toString(),
