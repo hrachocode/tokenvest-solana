@@ -44,6 +44,8 @@ mod investment_smart_contract {
             } else {
                 let investor = Self::env().caller();
                 self.investors_balances.insert(investor, &investment_amount);
+                // share_percentage is unused
+                let share_percentage = investment_amount as u128 * 1000000 / self.investment_goal as u128;
                 self.investors.push(investor);
                 self.tokens_collected += investment_amount;
             }
@@ -74,7 +76,7 @@ mod investment_smart_contract {
 
         #[ink(message)]
         pub fn show_amount(&mut self) {
-            ink_env::debug_println!("{}", self.tokens_collected);
+           ink_env::debug_println!("{}", self.tokens_collected);
         }
 
         #[ink(message)]
