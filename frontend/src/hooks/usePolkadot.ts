@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
+import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, POLKADOT_EXTENSIONS_MISSING_MESSAGE, POLKADOT_EXTENSION_URL, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
 import abi from "../../contract/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, DEFAULT_RAISED_AMOUNT, IMAGE_FIELD } from "@/constants/cms";
+import { OPEN_OPTION_BLANK } from "@/constants/general";
 
 export const usePolkadot = () => {
   const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
+  const [ isExtensionActive, setExtensionActive ] = useState(false);
   const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
   const getAccounts = async () => {
@@ -21,13 +23,27 @@ export const usePolkadot = () => {
     };
     const accounts = await web3Accounts();
     setAllAccount(accounts);
+    setExtensionActive(true);
   };
 
   useEffect(() => {
     getAccounts();
   }, []);
 
+  const checkExtensionStatus = () => {
+    if (!isExtensionActive) {
+      alert(POLKADOT_EXTENSIONS_MISSING_MESSAGE);
+      window.open(POLKADOT_EXTENSION_URL, OPEN_OPTION_BLANK);
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const sendTransaction = async (senderAddress: string, receiverAddress: string) => {
+    if (!checkExtensionStatus()) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(senderAddress);
 
@@ -42,6 +58,9 @@ export const usePolkadot = () => {
   };
 
   const invest = async (accountAddress: string, investValue: number, contractAddress: string) => {
+    if (!checkExtensionStatus()) {
+      return;
+    };
     const value = BigInt(investValue) * INVEST_VALUE_MULTIPLIER;
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
@@ -78,6 +97,9 @@ export const usePolkadot = () => {
   };
 
   const withdrawInvestor = async (accountAddress: string, contractAddress: string) => {
+    if (!checkExtensionStatus()) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
@@ -113,6 +135,9 @@ export const usePolkadot = () => {
   };
 
   const withdrawPo = async (accountAddress: string, contractAddress: string) => {
+    if (!checkExtensionStatus()) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
@@ -155,6 +180,9 @@ export const usePolkadot = () => {
     raiseGoal: string,
     sharePercentage: string,
     imageFile: Blob) => {
+    if (!checkExtensionStatus()) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);
