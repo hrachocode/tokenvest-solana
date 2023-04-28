@@ -6,6 +6,7 @@ mod investment_smart_contract {
     use ink::storage::Mapping;
     use ink_env;
     use ink_prelude::string::String;
+    use ink_prelude::string::ToString;
     use ink_prelude::vec::Vec;
     use ink_prelude::format;
 
@@ -43,10 +44,10 @@ mod investment_smart_contract {
                 ink_env::debug_message("NO FUNDS ATTACHED")
             } else {
                 let investor = Self::env().caller();
-                self.investors_balances.insert(investor, &investment_amount);
-                // share_percentage is unused
-                let share_percentage = investment_amount as u128 * 1000000 / self.investment_goal as u128;
                 self.investors.push(investor);
+                // share_percentage is unused
+                let investor_share = (investment_amount as u128 * 1000000 / self.investment_goal as u128);
+                self.investors_balances.insert(investor, &investment_amount);
                 self.tokens_collected += investment_amount;
             }
         }
