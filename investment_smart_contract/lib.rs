@@ -46,7 +46,7 @@ mod investment_smart_contract {
                 let investor = Self::env().caller();
                 self.investors.push(investor);
                 // share_percentage is unused
-                let investor_share = (investment_amount as u128 * 1000000 / self.investment_goal as u128);
+              //  let investor_share = (investment_amount as u128 * 1000000 / self.investment_goal as u128);
                 self.investors_balances.insert(investor, &investment_amount);
                 self.tokens_collected += investment_amount;
             }
@@ -63,7 +63,7 @@ mod investment_smart_contract {
             }
         } 
 
-       #[ink(message, payable)]
+       #[ink(message, payable)]  
         pub fn withdraw_investor(&mut self) {
             let caller = self.env().caller();
             if self.tokens_collected >= self.investment_goal {
@@ -93,5 +93,20 @@ mod investment_smart_contract {
             ink_env::debug_println!("{:#?} , {:?}", result, self.investors_balances.get(investor).unwrap());
         }
     }
+
+   #[ink(message)]
+   pub fn finish_startup(&mut self) {
+     if self.tokens_collected < self.investment_goal {
+        ink_env::debug_println!("CAMPAIGN FAILED");
+        for x in self.investors.iter() {
+            let investor_refund_amount = self.investors_balances.get(x);
+            self.env().transfer(*x, investor_refund_amount.unwrap()).unwrap();
+        }
+    }
+        else {
+             self.withdraw_owner();
+     }
+   }
 }
 }
+
