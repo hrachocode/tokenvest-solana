@@ -57,7 +57,7 @@ export const usePolkadot = () => {
     }
   };
 
-  const invest = async (accountAddress: string, investValue: number, contractAddress: string) => {
+  const invest = async (accountAddress: string, investValue: number, contractAddress: string, productId: string) => {
     if (!checkExtensionStatus()) {
       return;
     };
@@ -79,14 +79,42 @@ export const usePolkadot = () => {
       options
     );
 
+    const { debugMessage: alreadyInvestedAmount } = await contract.query.showAmount(
+      accountAddress,
+      options
+    );
+
     if (result.isOk) {
       try {
         const tx = contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value });
-        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
+        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, async ({ status }: IUnsubRes) => {
           if (status.isInBlock) {
             console.log("in a block");
           } else if (status.isFinalized) {
             console.log("finalized");
+            const { debugMessage: newInvestedAmount } = await contract.query.showAmount(
+              accountAddress,
+              options
+            );
+
+            if (newInvestedAmount <= alreadyInvestedAmount) {
+              alert("Something went wrong!!!");
+            } else {
+              const amount = BigInt(Number(newInvestedAmount.toHuman())) / INVEST_VALUE_MULTIPLIER;
+              const amountNumber = Number(amount);
+
+              const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
+                "data": {
+                  "raisedAmount": amountNumber,
+                }
+              });
+
+              if (putRes.data) {
+                alert(`Successfully invested ${amountNumber}!!!`);
+              } else {
+                alert("Something went wrong!!!");
+              }
+            }
             unsub();
           };
         });

@@ -54,6 +54,7 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
 
 export default function Product({
   product: {
+    id,
     createdAt,
     image,
     title,
@@ -77,7 +78,7 @@ export default function Product({
     <Box sx={unitProductStyles.wrapper}>
       {isPopupOpen &&
         <Box onMouseDown={closePopup} sx={unitProductStyles.popupWrapper}>
-          <TvInvestBox contractAddress={address} />
+          <TvInvestBox contractAddress={address} productId={id} />
         </Box>
       }
       {image &&
