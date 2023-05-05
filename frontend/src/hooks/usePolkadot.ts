@@ -207,7 +207,8 @@ export const usePolkadot = () => {
     startupDescription: string,
     raiseGoal: string,
     sharePercentage: string,
-    imageFile: Blob) => {
+    imageFile: Blob,
+    days: String) => {
     if (!checkExtensionStatus()) {
       return;
     };
@@ -243,7 +244,9 @@ export const usePolkadot = () => {
                     "address": contract.address.toString(),
                     "ownerAddress": accountAddress,
                     "ownerName": accountName,
-                    "raisedAmount": DEFAULT_RAISED_AMOUNT
+                    "raisedAmount": DEFAULT_RAISED_AMOUNT,
+                    "days": days,
+                    "isComplete": false
                   }
                 });
                 if (postRes?.data?.id) {

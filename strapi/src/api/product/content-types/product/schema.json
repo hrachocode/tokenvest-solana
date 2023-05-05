@@ -46,6 +46,12 @@
     },
     "description": {
       "type": "text"
+    },
+    "days": {
+      "type": "integer"
+    },
+    "isComplete": {
+      "type": "boolean"
     }
   }
 }
