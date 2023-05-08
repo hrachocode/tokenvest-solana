@@ -1,7 +1,19 @@
 export const styles = {
   productWrapper: {
     minWidth: 330,
-    minHeight: 469,
+    height: 469,
+    borderRadius: "20px",
+    backgroundColor: "backgroundSecondary",
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
+    ":hover": {
+      opacity: 0.9
+    },
+  },
+  productWrapperWide: {
+    minWidth: 510,
+    height: 469,
     borderRadius: "20px",
     backgroundColor: "backgroundSecondary",
     display: "flex",

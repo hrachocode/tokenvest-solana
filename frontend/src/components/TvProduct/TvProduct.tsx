@@ -5,7 +5,8 @@ import { Box, Typography } from "@mui/material";
 import { styles } from "./TvProduct.styles";
 
 interface ITvProduct {
-  product: IProduct
+  product: IProduct;
+  wide?: boolean;
 }
 
 export const TvProduct = ({
@@ -16,13 +17,17 @@ export const TvProduct = ({
     raiseGoal,
     raisedAmount,
     isComplete
-  }
+  },
+  wide
 }: ITvProduct): JSX.Element => {
   return (
-    <Box sx={isComplete ? styles.productWrapperComplete : styles.productWrapper}>
-      {isComplete ? <Box sx={styles.productComplete}>
+    <Box sx={
+      isComplete ? styles.productWrapperComplete :
+        wide ? styles.productWrapperWide : styles.productWrapper
+    }>
+      {isComplete ? <Box sx={styles.productComplete} >
         <Typography>{COMPLETE}</Typography>
-      </Box> : <></>}
+      </Box > : <></>}
       <Box sx={{
         ...styles.productImage,
         backgroundImage: `url(${CMS_URL}${image})`,
@@ -44,6 +49,6 @@ export const TvProduct = ({
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
