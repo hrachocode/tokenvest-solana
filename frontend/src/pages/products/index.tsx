@@ -22,7 +22,10 @@ export async function getStaticProps() {
       ownerName: item.attributes.ownerName,
       raisedAmount: item.attributes.raisedAmount,
       createdAt: item.attributes.createdAt,
-      image: item.attributes.image?.data?.attributes?.url || null
+      image: item.attributes.image?.data?.attributes?.url || null,
+      description: item.attributes.description,
+      days: item.attributes.days,
+      isComplete: item.attributes.isComplete
     };
   }) || [];
 

@@ -35,7 +35,14 @@ const CreateProduct = (): JSX.Element => {
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
-      await deploy(SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS, name, description, raiseGoal, sharePercentage, files[0], days);
+      await deploy(
+        SHIBUYA_ACCOUNT_NAME,
+        SHIBUYA_ADDRESS, name,
+        description,
+        raiseGoal,
+        sharePercentage,
+        files[0],
+        days);
     } else {
       alert(message);
     }

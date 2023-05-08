@@ -1,6 +1,6 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { CMS_API, CMS_PRODUCTS, CMS_URL, POPULATE_ALL } from "@/constants/cms";
-import { CREATED_BY, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
+import { COMPLETE, CREATED_BY, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { unitProductStyles } from "@/styles/UnitProduct.styles";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
@@ -43,6 +43,9 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     raisedAmount: attributes.raisedAmount,
     image: attributes.image?.data?.attributes?.url || null,
     createdAt: attributes.createdAt,
+    description: attributes.description,
+    days: attributes.days,
+    isComplete: attributes.isComplete
   };
 
   return {
@@ -61,7 +64,8 @@ export default function Product({
     ownerName,
     raiseGoal,
     raisedAmount,
-    address
+    address,
+    isComplete
   } }: { product: IProduct }) {
   const [ isPopupOpen, setPopupOpen ] = useState(false);
   const dateText = receiveDate(createdAt);
@@ -113,7 +117,9 @@ export default function Product({
               <Typography>{raisedAmount}</Typography>
             </Box>
           </Box>
-          <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>
+          {isComplete ?
+            <TvButton customVariant="secondary">{COMPLETE}</TvButton> :
+            <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>}
         </Box>
       </Box>
 

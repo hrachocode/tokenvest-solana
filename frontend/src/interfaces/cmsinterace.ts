@@ -9,6 +9,9 @@ export interface ICMSProduct {
         ownerName: string;
         raisedAmount: string;
         createdAt: string;
+        description: string;
+        days: string;
+        isComplete: boolean;
         image: {
             data: {
                 attributes: {
@@ -28,5 +31,8 @@ export interface IProduct {
     ownerName: string;
     raisedAmount: string;
     image: string | null;
-    createdAt: string
+    createdAt: string;
+    description: string;
+    days: string;
+    isComplete: boolean;
 }
