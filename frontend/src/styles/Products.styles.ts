@@ -1,6 +1,7 @@
 export const productsStyles = {
   productsWrapper: {
     display: "flex",
-    gap: 3
+    gap: 3,
+    flexWrap: "wrap"
   }
 };

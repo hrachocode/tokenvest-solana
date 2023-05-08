@@ -6,9 +6,33 @@ export const styles = {
     backgroundColor: "backgroundSecondary",
     display: "flex",
     flexDirection: "column",
+    position: "relative",
     ":hover": {
       opacity: 0.9
-    }
+    },
+  },
+  productWrapperComplete: {
+    minWidth: 330,
+    minHeight: 469,
+    borderRadius: "20px",
+    backgroundColor: "backgroundSecondary",
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
+    opacity: 0.5,
+  },
+  productComplete: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    width: "150px",
+    height: "150px",
+    backgroundColor: "backgroundPrimary",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "24px",
+    transform: "translate(-50%,-100%)"
   },
   productImage: {
     width: "100%",
