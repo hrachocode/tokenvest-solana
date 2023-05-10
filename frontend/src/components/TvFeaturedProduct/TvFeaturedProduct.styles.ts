@@ -4,7 +4,7 @@ export const styles = {
     paddingY: 8,
     display: "flex",
     justifyContent: "space-between",
-    gap:3
+    gap: 3
   },
   featuredProductInfo: {
     display: "flex",
