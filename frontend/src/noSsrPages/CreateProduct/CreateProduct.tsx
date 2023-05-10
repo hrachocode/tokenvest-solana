@@ -1,22 +1,36 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
 import { TvSelect } from "@/components/TvSelect/TvSelect";
-import { LABEL_DAYS } from "@/constants/general";
+import { LABEL_CATEGORY, LABEL_DAYS } from "@/constants/general";
 import { SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { selectOptions } from "@/constants/selectOptions";
 import { usePolkadot } from "@/hooks/usePolkadot";
+import { ICategory } from "@/interfaces/cmsinterace";
 import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import { useState } from "react";
 import { styles } from "./CreateProduct.styles";
 import { inputValidator } from "./utils";
 
-const CreateProduct = (): JSX.Element => {
+interface ICreateProduct {
+  categories: ICategory[];
+}
+
+const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
+
+  const selectCategories = categories.map((item: ICategory) => {
+    return {
+      name: item.title,
+      value: Number(item.id)
+    };
+  });
+
   const [ name, setName ] = useState("");
   const [ description, setDescription ] = useState("");
   const [ raiseGoal, setRaiseGoal ] = useState("");
   const [ sharePercentage, setSharePercentage ] = useState("");
   const [ files, setFiles ] = useState([]);
   const [ days, setDays ] = useState("");
+  const [ category, setCategory ] = useState("");
 
   const { deploy } = usePolkadot();
 
@@ -32,6 +46,10 @@ const CreateProduct = (): JSX.Element => {
     setDays(event.target.value as string);
   };
 
+  const handleChangeCategory = (event: SelectChangeEvent) => {
+    setCategory(event.target.value as string);
+  };
+
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
@@ -42,13 +60,13 @@ const CreateProduct = (): JSX.Element => {
         raiseGoal,
         sharePercentage,
         files[0],
-        days);
+        days,
+        category);
     } else {
       alert(message);
     }
 
   };
-
   return (
     <Box sx={styles.createProductWrapper}>
       <Box>
@@ -71,6 +89,12 @@ const CreateProduct = (): JSX.Element => {
         <Typography>Days</Typography>
         <Box sx={styles.selectWrapper}>
           <TvSelect label={LABEL_DAYS} value={days} handleChange={handleChangeDays} selectOptions={selectOptions} />
+        </Box>
+      </Box>
+      <Box>
+        <Typography>Category</Typography>
+        <Box sx={styles.selectWrapper}>
+          <TvSelect label={LABEL_CATEGORY} value={category} handleChange={handleChangeCategory} selectOptions={selectCategories} />
         </Box>
       </Box>
       <Box>

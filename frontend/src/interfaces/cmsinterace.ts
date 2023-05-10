@@ -29,6 +29,26 @@ export interface ICMSProduct {
         }
     }
 }
+
+export interface ICMSCategory{
+    id:string;
+    attributes:{
+        title:string;
+        image: {
+            data: {
+                attributes: {
+                    url: string
+                }
+            }
+        };
+    }
+}
+
+export interface ICategory {
+    id: string;
+    title: string;
+    image: string | null;
+}
 export interface IProduct {
     id: string;
     title: string;
