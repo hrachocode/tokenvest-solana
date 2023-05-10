@@ -19,7 +19,35 @@ export interface ICMSProduct {
                 }
             }
         };
+        category: {
+            data: {
+                attributes: {
+                    title: string;
+                    url: string;
+                }
+            }
+        }
     }
+}
+
+export interface ICMSCategory{
+    id:string;
+    attributes:{
+        title:string;
+        image: {
+            data: {
+                attributes: {
+                    url: string
+                }
+            }
+        };
+    }
+}
+
+export interface ICategory {
+    id: string;
+    title: string;
+    image: string | null;
 }
 export interface IProduct {
     id: string;
@@ -35,4 +63,5 @@ export interface IProduct {
     description: string;
     days: string;
     isComplete: boolean;
+    category: string;
 }

@@ -208,7 +208,8 @@ export const usePolkadot = () => {
     raiseGoal: string,
     sharePercentage: string,
     imageFile: Blob,
-    days: String) => {
+    days: string,
+    category: string) => {
     if (!checkExtensionStatus()) {
       return;
     };
@@ -246,7 +247,8 @@ export const usePolkadot = () => {
                     "ownerName": accountName,
                     "raisedAmount": DEFAULT_RAISED_AMOUNT,
                     "days": days,
-                    "isComplete": false
+                    "isComplete": false,
+                    "category": category
                   }
                 });
                 if (postRes?.data?.id) {

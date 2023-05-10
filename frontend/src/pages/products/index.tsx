@@ -25,7 +25,8 @@ export async function getStaticProps() {
       image: item.attributes.image?.data?.attributes?.url || null,
       description: item.attributes.description,
       days: item.attributes.days,
-      isComplete: item.attributes.isComplete
+      isComplete: item.attributes.isComplete,
+      category: item.attributes.category.data.attributes.title
     };
   }) || [];
 
