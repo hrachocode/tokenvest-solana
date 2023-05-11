@@ -6,7 +6,7 @@ import { TvCategory } from "../TvCategory/TvCategory";
 import { styles } from "./CategoriesBrowser.styles";
 
 interface ICategoriesBrowser {
-    categories: ICategory[];
+  categories: ICategory[];
 }
 
 export const CategoriesBrowser = ({ categories }: ICategoriesBrowser): JSX.Element => {
@@ -14,13 +14,12 @@ export const CategoriesBrowser = ({ categories }: ICategoriesBrowser): JSX.Eleme
     <Box sx={styles.browserWrapper}>
       <Typography variant="h3">{CATEGORIES_BROWSER_TITLE}</Typography>
       <Box sx={styles.categoriesWrapper}>
-        {categories.map((item: ICategory, index) => {
-          return (
-            <Fragment key={index + 1}>
-              <TvCategory category={item} />
-            </Fragment>
-          );
-        })}
+        {categories.map((item: ICategory, index) =>
+          <Fragment key={index + 1}>
+            <TvCategory category={item} />
+          </Fragment>
+        )
+        })
       </Box>
     </Box>
   );
