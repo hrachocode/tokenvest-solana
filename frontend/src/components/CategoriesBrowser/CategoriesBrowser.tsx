@@ -19,7 +19,7 @@ export const CategoriesBrowser = ({ categories }: ICategoriesBrowser): JSX.Eleme
             <TvCategory category={item} />
           </Fragment>
         )
-        })
+        }
       </Box>
     </Box>
   );
