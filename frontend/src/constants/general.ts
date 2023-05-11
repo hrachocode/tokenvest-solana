@@ -10,3 +10,4 @@ export const LABEL_CATEGORY: string = "Category";
 export const COMPLETE: string = "Complete";
 export const GO_TO_PRODUCT: string = "Go to product";
 export const FEATURED_PRODUCT_TITLE: string = "Discover products & Invest";
+export const CATEGORIES_BROWSER_TITLE: string = "Browse Categories";

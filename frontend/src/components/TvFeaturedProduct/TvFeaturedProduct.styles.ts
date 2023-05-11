@@ -3,7 +3,8 @@ export const styles = {
     width: "100%",
     paddingY: 8,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    gap: 3
   },
   featuredProductInfo: {
     display: "flex",

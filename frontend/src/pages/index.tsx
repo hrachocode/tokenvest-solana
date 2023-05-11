@@ -1,6 +1,7 @@
+import { CategoriesBrowser } from "@/components/CategoriesBrowser/CategoriesBrowser";
 import { TvFeaturedProduct } from "@/components/TvFeaturedProduct/TvFeaturedProduct";
-import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
-import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
+import { CMS_API, CMS_CATEGORIES, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { ICategory, ICMSCategory, ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { Box } from "@mui/material";
 
@@ -26,10 +27,21 @@ export async function getStaticProps() {
     };
   }) || [];
 
+  const { data: category = [] } = await handleRequest(`${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
+
+  const categories: ICategory[] = category.map((item: ICMSCategory) => {
+    return {
+      id: item.id,
+      title: item.attributes.title,
+      image: item.attributes.image?.data?.attributes?.url || null,
+    };
+  }) || [];
+
   return {
     props: {
       products,
-      featuredProduct: products?.[0] || {}
+      featuredProduct: products?.[0] || {},
+      categories
     }
   };
 }
@@ -37,12 +49,14 @@ export async function getStaticProps() {
 interface IHomeProps {
   products: IProduct[],
   featuredProduct: IProduct;
+  categories: ICategory[];
 }
 
-export default function Home({ products, featuredProduct }: IHomeProps) {
+export default function Home({ products, featuredProduct, categories }: IHomeProps) {
   return (
     <Box>
       <TvFeaturedProduct product={featuredProduct} />
+      <CategoriesBrowser categories={categories} />
     </Box>
   );
 }
