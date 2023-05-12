@@ -14,6 +14,8 @@ mod investment_smart_contract {
         startup_owner: AccountId,
         investors_balances: Mapping<AccountId, Balance>,
         investors_percentages: Mapping<AccountId, u128>,
+        start_time: Timestamp,
+        end_time: Timestamp,
         tokens_collected: Balance,
         investment_goal: u128,
         share_percentage: u128,
@@ -22,12 +24,14 @@ mod investment_smart_contract {
 
     impl InvestmentSmartContract {
         #[ink(constructor)]
-        pub fn new(investment_goal: u128, share_percentage: u128) -> Self {
+        pub fn new(investment_goal: u128, share_percentage: u128, end_time: Timestamp) -> Self {
             let startup_owner = Self::env().caller();
             Self {
                 startup_owner,
                 investors_balances: Mapping::default(),
                 investors_percentages: Mapping::default(),
+                start_time: Self::env().block_timestamp(),
+                end_time,
                 tokens_collected: Balance::default(),
                 investment_goal,
                 share_percentage,
@@ -75,6 +79,11 @@ mod investment_smart_contract {
         #[ink(message)]
         pub fn show_amount(&mut self) {
            ink_env::debug_println!("{}", self.tokens_collected);
+        }
+
+        #[ink(message)]
+        pub fn show_time(&mut self) {
+            ink_env::debug_println!("{}", self.start_time);
         }
 
         #[ink(message)]
