@@ -1,5 +1,6 @@
 import { CategoriesBrowser } from "@/components/CategoriesBrowser/CategoriesBrowser";
 import { ProductsBrowser } from "@/components/ProductsBrowser/ProductsBrowser";
+import { JoinUs } from "@/components/JoinUs/JoinUs";
 import { TvFeaturedProduct } from "@/components/TvFeaturedProduct/TvFeaturedProduct";
 import { CMS_API, CMS_CATEGORIES, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { ICategory, ICMSCategory, ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
@@ -28,6 +29,9 @@ export async function getStaticProps() {
     };
   }) || [];
 
+  const featuredProducts: IProduct[] = products.filter((item: IProduct) =>
+    item.image !== null && item.isComplete === false) || [];
+
   const { data: category = [] } = await handleRequest(`${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
   const categories: ICategory[] = category.map((item: ICMSCategory) => {
@@ -41,7 +45,7 @@ export async function getStaticProps() {
   return {
     props: {
       products,
-      featuredProduct: products?.[0] || {},
+      featuredProduct: featuredProducts?.[0] || {},
       categories
     }
   };
@@ -59,6 +63,7 @@ export default function Home({ products, featuredProduct, categories }: IHomePro
       <TvFeaturedProduct product={featuredProduct} />
       <CategoriesBrowser categories={categories} />
       <ProductsBrowser products={products} />
-    </Box>
+      <JoinUs product={featuredProduct} />
+    </Box >
   );
 }
