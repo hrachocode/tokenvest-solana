@@ -11,3 +11,7 @@ export const COMPLETE: string = "Complete";
 export const GO_TO_PRODUCT: string = "Go to product";
 export const FEATURED_PRODUCT_TITLE: string = "Discover products & Invest";
 export const CATEGORIES_BROWSER_TITLE: string = "Browse Categories";
+export const JOIN_US_TEXT_MAIN: string = "Join our weekly digest";
+export const JOIN_US_TEXT_SECONDARY: string = "Get exclusive promotions & updates straight to your inbox.";
+export const EMAIL_PLACEHOLDER: string = "Enter your email here";
+export const SUBSCRIBE: string = "Subscribe";
