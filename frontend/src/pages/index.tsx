@@ -1,4 +1,5 @@
 import { CategoriesBrowser } from "@/components/CategoriesBrowser/CategoriesBrowser";
+import { ProductsBrowser } from "@/components/ProductsBrowser/ProductsBrowser";
 import { TvFeaturedProduct } from "@/components/TvFeaturedProduct/TvFeaturedProduct";
 import { CMS_API, CMS_CATEGORIES, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { ICategory, ICMSCategory, ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
@@ -57,6 +58,7 @@ export default function Home({ products, featuredProduct, categories }: IHomePro
     <Box>
       <TvFeaturedProduct product={featuredProduct} />
       <CategoriesBrowser categories={categories} />
+      <ProductsBrowser products={products} />
     </Box>
   );
 }
