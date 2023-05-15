@@ -16,3 +16,5 @@ export const JOIN_US_TEXT_MAIN: string = "Join our weekly digest";
 export const JOIN_US_TEXT_SECONDARY: string = "Get exclusive promotions & updates straight to your inbox.";
 export const EMAIL_PLACEHOLDER: string = "Enter your email here";
 export const SUBSCRIBE: string = "Subscribe";
+export const SEE_ALL: string = "See All";
+export const MAX_PRODUCTS_HOME: number = 3;

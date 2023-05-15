@@ -6,6 +6,7 @@ import { CMS_API, CMS_CATEGORIES, CMS_PRODUCTS, POPULATE_ALL } from "@/constants
 import { ICategory, ICMSCategory, ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { Box } from "@mui/material";
+import { MAX_PRODUCTS_HOME } from "@/constants/general";
 
 export async function getStaticProps() {
   const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
@@ -44,7 +45,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      products,
+      products: featuredProducts.slice(0, MAX_PRODUCTS_HOME),
       featuredProduct: featuredProducts?.[0] || {},
       categories
     }
