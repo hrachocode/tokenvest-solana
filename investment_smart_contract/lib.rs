@@ -102,7 +102,7 @@ mod investment_smart_contract {
 
    #[ink(message)]
    pub fn finish_startup(&mut self) {
-     if self.tokens_collected < self.investment_goal {
+     if self.tokens_collected < self.investment_goal   {
         ink_env::debug_println!("CAMPAIGN FAILED");
         for investorAccountId in self.investors.iter() {
             let investor_refund_amount = self.investors_balances.get(investorAccountId);
@@ -110,7 +110,12 @@ mod investment_smart_contract {
         }
     }
         else {
+            if self.end_time > Self::env().block_timestamp() {
+                ink_env::debug_println!("CAMPAIGN SILL RUNNING");
+            }
+            else {
              self.withdraw_owner();
+            }
      }
    }
 }
