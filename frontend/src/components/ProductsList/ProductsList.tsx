@@ -5,13 +5,13 @@ import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 import { TvButton } from "../TvButton/TvButton";
 import { TvProduct } from "../TvProduct/TvProduct";
-import { styles } from "./productsBrowser.styles";
+import { styles } from "./productsList.styles";
 
-interface IProductsBrowser {
-    products: IProduct[];
+interface IProductsList {
+  products: IProduct[];
 }
 
-export const ProductsBrowser = ({ products }: IProductsBrowser): JSX.Element => {
+export const ProductsList = ({ products }: IProductsList): JSX.Element => {
   if (products.length) {
     return (
       <Box sx={styles.browserWrapper}>

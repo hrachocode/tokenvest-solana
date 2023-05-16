@@ -1,5 +1,4 @@
 import { CategoriesBrowser } from "@/components/CategoriesBrowser/CategoriesBrowser";
-import { ProductsBrowser } from "@/components/ProductsBrowser/ProductsBrowser";
 import { JoinUs } from "@/components/JoinUs/JoinUs";
 import { TvFeaturedProduct } from "@/components/TvFeaturedProduct/TvFeaturedProduct";
 import { CMS_API, CMS_CATEGORIES, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
@@ -7,6 +6,7 @@ import { ICategory, ICMSCategory, ICMSProduct, IProduct } from "@/interfaces/cms
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { Box } from "@mui/material";
 import { MAX_PRODUCTS_HOME } from "@/constants/general";
+import { ProductsList } from "@/components/ProductsList/ProductsList";
 
 export async function getStaticProps() {
   const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
@@ -63,7 +63,7 @@ export default function Home({ products, featuredProduct, categories }: IHomePro
     <Box>
       <TvFeaturedProduct product={featuredProduct} />
       <CategoriesBrowser categories={categories} />
-      <ProductsBrowser products={products} />
+      <ProductsList products={products} />
       <JoinUs product={featuredProduct} />
     </Box >
   );
