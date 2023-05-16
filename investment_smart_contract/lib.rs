@@ -14,6 +14,8 @@ mod investment_smart_contract {
         startup_owner: AccountId,
         investors_balances: Mapping<AccountId, Balance>,
         investors_percentages: Mapping<AccountId, u128>,
+        start_time: Timestamp,
+        end_time: Timestamp,
         tokens_collected: Balance,
         investment_goal: u128,
         share_percentage: u128,
@@ -22,12 +24,14 @@ mod investment_smart_contract {
 
     impl InvestmentSmartContract {
         #[ink(constructor)]
-        pub fn new(investment_goal: u128, share_percentage: u128) -> Self {
+        pub fn new(investment_goal: u128, share_percentage: u128, end_time: Timestamp) -> Self {
             let startup_owner = Self::env().caller();
             Self {
                 startup_owner,
                 investors_balances: Mapping::default(),
                 investors_percentages: Mapping::default(),
+                start_time: Self::env().block_timestamp(),
+                end_time,
                 tokens_collected: Balance::default(),
                 investment_goal,
                 share_percentage,
@@ -78,6 +82,11 @@ mod investment_smart_contract {
         }
 
         #[ink(message)]
+        pub fn show_time(&mut self) {
+            ink_env::debug_println!("{}", self.start_time);
+        }
+
+        #[ink(message)]
         pub fn show_investors(&mut self) {
             for investor in self.investors.iter() {
             let investor_vec = <ink::primitives::AccountId as AsRef<[u8; 32]>>::as_ref(investor);
@@ -93,7 +102,7 @@ mod investment_smart_contract {
 
    #[ink(message)]
    pub fn finish_startup(&mut self) {
-     if self.tokens_collected < self.investment_goal {
+     if self.tokens_collected < self.investment_goal   {
         ink_env::debug_println!("CAMPAIGN FAILED");
         for investorAccountId in self.investors.iter() {
             let investor_refund_amount = self.investors_balances.get(investorAccountId);
@@ -101,7 +110,12 @@ mod investment_smart_contract {
         }
     }
         else {
+            if self.end_time > Self::env().block_timestamp() {
+                ink_env::debug_println!("CAMPAIGN SILL RUNNING");
+            }
+            else {
              self.withdraw_owner();
+            }
      }
    }
 }
