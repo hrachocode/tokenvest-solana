@@ -40,8 +40,8 @@ export async function getStaticProps() {
 const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <Box sx={productsStyles.productsWrapper}>
-      {products.length !== 0 ? products.map((item, index) =>
-        <Link href={`${PRODUCTS}/${item.id}`} key={index + 1}>
+      {products.length !== 0 ? products.map((item) =>
+        <Link href={`${PRODUCTS}/${item.id}`} key={item.id}>
           <TvProduct product={item} />
         </Link>
       ) :

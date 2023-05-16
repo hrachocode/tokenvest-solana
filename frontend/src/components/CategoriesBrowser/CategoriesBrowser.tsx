@@ -14,8 +14,8 @@ export const CategoriesBrowser = ({ categories }: ICategoriesBrowser): JSX.Eleme
     <Box sx={styles.browserWrapper}>
       <Typography variant="h3">{CATEGORIES_BROWSER_TITLE}</Typography>
       <Box sx={styles.categoriesWrapper}>
-        {categories.map((item: ICategory, index) =>
-          <Fragment key={index + 1}>
+        {categories.map((item: ICategory) =>
+          <Fragment key={item.id}>
             <TvCategory category={item} />
           </Fragment>
         )
