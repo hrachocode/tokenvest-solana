@@ -25,8 +25,8 @@ export const ProductsList = ({ products }: IProductsList): JSX.Element => {
           ? styles.productsWrapper
           : styles.productsWrapperSecondary
         }>
-          {products.map((item: IProduct, index) =>
-            <Link href={`${PRODUCTS}/${item.id}`} key={index + 1}>
+          {products.map((item: IProduct) =>
+            <Link href={`${PRODUCTS}/${item.id}`} key={item.id}>
               <TvProduct product={item} />
             </Link>
           )}
