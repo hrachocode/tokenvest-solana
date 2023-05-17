@@ -225,8 +225,11 @@ export const usePolkadot = () => {
       }) as WeightV2,
     };
 
+    const now = new Date();
+    const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + Number(days)).getTime();
+
     try {
-      const tx = code.tx.new(options, raiseGoal, sharePercentage);
+      const tx = code.tx.new(options, raiseGoal, sharePercentage, endDate);
       const unsub = await tx.signAndSend(
         accountAddress,
         { signer: injector.signer },
