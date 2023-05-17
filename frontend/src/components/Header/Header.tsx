@@ -16,7 +16,7 @@ const Header = (): JSX.Element => {
 
   const { allAccounts } = usePolkadot();
   const isConnected = allAccounts?.length !== 0;
-  const [notifications, setNotifications] = useState([]);
+  const [ notifications, setNotifications ] = useState([]);
 
   useEffect(() => {
     (async () => {
