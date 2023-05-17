@@ -8,7 +8,7 @@ import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, DEFAULT_RAISED_AMOUNT, IMAGE_FIELD } from "@/constants/cms";
+import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, DEFAULT_RAISED_AMOUNT, IMAGE_FIELD } from "@/constants/cms";
 import { OPEN_OPTION_BLANK } from "@/constants/general";
 
 export const usePolkadot = () => {
@@ -57,7 +57,13 @@ export const usePolkadot = () => {
     }
   };
 
-  const invest = async (accountAddress: string, investValue: number, contractAddress: string, productId: string) => {
+  const invest = async (
+    accountAddress: string,
+    investValue: number,
+    contractAddress: string,
+    productId: string,
+    ownerAddress: string,
+    raiseGoal: string) => {
     if (!checkExtensionStatus()) {
       return;
     };
@@ -110,6 +116,16 @@ export const usePolkadot = () => {
               });
 
               if (putRes.data) {
+                if (Number(amountNumber) >= Number(raiseGoal)) {
+                  await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}`, METHODS.POST, {
+                    "data": {
+                      "message": `Seat goal reached for product N: ${productId.toString()}`,
+                      "address": ownerAddress,
+                      "isOpened": false,
+                      "productId": productId.toString()
+                    }
+                  });
+                };
                 alert(`Successfully invested ${amountNumber}!!!`);
               } else {
                 alert("Something went wrong!!!");

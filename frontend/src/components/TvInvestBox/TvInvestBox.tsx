@@ -10,9 +10,11 @@ import { styles } from "./TvInvestBox.styles";
 interface ITvInvestBox {
   contractAddress: string;
   productId: string;
+  ownerAddress: string;
+  raiseGoal: string;
 }
 
-const TvInvestBox = ({ contractAddress, productId }: ITvInvestBox): JSX.Element => {
+const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal }: ITvInvestBox): JSX.Element => {
 
   const { invest } = usePolkadot();
 
@@ -27,7 +29,7 @@ const TvInvestBox = ({ contractAddress, productId }: ITvInvestBox): JSX.Element 
   };
 
   const handleClick = () => {
-    invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId);
+    invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId, ownerAddress, raiseGoal);
   };
 
   return (
