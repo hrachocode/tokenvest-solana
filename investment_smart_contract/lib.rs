@@ -1,6 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 #[ink::contract]
+
 mod investment_smart_contract {
     use ink;
     use ink::storage::Mapping;
@@ -11,6 +12,7 @@ mod investment_smart_contract {
 
     #[ink(storage)]
     pub struct InvestmentSmartContract {
+        contract_owner: AccountId,
         startup_owner: AccountId,
         investors_balances: Mapping<AccountId, Balance>,
         investors_percentages: Mapping<AccountId, u128>,
@@ -25,8 +27,24 @@ mod investment_smart_contract {
     impl InvestmentSmartContract {
         #[ink(constructor)]
         pub fn new(investment_goal: u128, share_percentage: u128, end_time: Timestamp) -> Self {
-            let startup_owner = Self::env().caller();
+        let startup_owner = Self::env().caller();
+        let hex_string = "0xe8ae424fac4f51e8011913ada8f2429a12ac20e2013288413335ee3ae3313649"; // Replace with your hex string
+        let mut array = [0u8; 32];
+        let hex_chars = hex_string.chars().skip(2); // Skip the leading "0x"
+        let mut i = 0;
+        let mut chunk = String::new();
+    for hex_char in hex_chars {
+        chunk.push(hex_char);
+        if chunk.len() == 2 {
+            let byte = u8::from_str_radix(&chunk, 16).unwrap_or(0);
+            array[i] = byte;
+            i += 1;
+            chunk.clear();
+        }
+    }
+    let contract_owner = AccountId::from(array);
             Self {
+                contract_owner,
                 startup_owner,
                 investors_balances: Mapping::default(),
                 investors_percentages: Mapping::default(),
@@ -54,11 +72,10 @@ mod investment_smart_contract {
         }
 
         #[ink(message, payable)]
-        pub fn withdraw_owner(&mut self) {
+        pub fn withdraw_owner(&mut self, final_amount: u128) {
             let caller = self.env().caller();
             if self.tokens_collected >= self.investment_goal && self.startup_owner == caller {
-                let amount = self.tokens_collected;
-                self.env().transfer(caller, amount).unwrap();
+                self.env().transfer(caller, final_amount).unwrap();
             } else {
                 ink_env::debug_message("NOT ENOUGH FUNDS TO WITHDRAW");
             }
@@ -68,13 +85,18 @@ mod investment_smart_contract {
         pub fn withdraw_investor(&mut self) {
             let caller = self.env().caller();
             if self.tokens_collected >= self.investment_goal {
-                let amount = self.investors_balances.get(caller).unwrap();     
+                let amount = self.investors_balances.get(caller).unwrap();
                 self.env().transfer(caller, amount).unwrap();  
             }
             else {
                 ink_env::debug_message("NOT ENOUGH FUNDS TO WITHDRAW");
             }
         } 
+
+        #[ink(message, payable)]
+        pub fn withdraw_tokenvest(&mut self, commission: u128) {
+            self.env().transfer(self.contract_owner, commission).unwrap();  
+        }
 
         #[ink(message)]
         pub fn show_amount(&mut self) {
@@ -97,27 +119,25 @@ mod investment_smart_contract {
             }
             let result = format!("0x{investor_hex}");
             ink_env::debug_println!("{:#?} , {:?}", result, self.investors_balances.get(investor).unwrap());
+            ink_env::debug_println!("{:#?}", self.investors);
         }
     }
 
-   #[ink(message)]
-   pub fn finish_startup(&mut self) {
-     if self.tokens_collected < self.investment_goal   {
-        ink_env::debug_println!("CAMPAIGN FAILED");
-        for investorAccountId in self.investors.iter() {
-            let investor_refund_amount = self.investors_balances.get(investorAccountId);
-            self.env().transfer(*investorAccountId, investor_refund_amount.unwrap()).unwrap();
+pub fn finish_startup(&mut self, commission: u128, final_amount: u128) {
+    if self.end_time > Self::env().block_timestamp() {
+        ink_env::debug_println!("CAMPAIGN SILL RUNNING");
+    } else {
+        if self.tokens_collected < self.investment_goal {
+            ink_env::debug_println!("CAMPAIGN FAILED");
+            for investor_account_id in self.investors.iter() {
+                let investor_refund_amount = self.investors_balances.get(investor_account_id);
+                self.env().transfer(*investor_account_id, investor_refund_amount.unwrap()).unwrap();
+            }
+        } else {
+            self.withdraw_owner(final_amount);
+            self.withdraw_tokenvest(commission);
         }
     }
-        else {
-            if self.end_time > Self::env().block_timestamp() {
-                ink_env::debug_println!("CAMPAIGN SILL RUNNING");
-            }
-            else {
-             self.withdraw_owner();
-            }
-     }
-   }
 }
+    }
 }
-
