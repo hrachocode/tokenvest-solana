@@ -66,6 +66,7 @@ export default function Product({
     raiseGoal,
     raisedAmount,
     address,
+    ownerAddress,
     isComplete
   } }: { product: IProduct }) {
   const [ isPopupOpen, setPopupOpen ] = useState(false);
@@ -83,7 +84,12 @@ export default function Product({
     <Box sx={unitProductStyles.wrapper}>
       {isPopupOpen &&
         <Box onMouseDown={closePopup} sx={unitProductStyles.popupWrapper}>
-          <TvInvestBox contractAddress={address} productId={id} />
+          <TvInvestBox
+            contractAddress={address}
+            productId={id}
+            ownerAddress={ownerAddress}
+            raiseGoal={raiseGoal}
+          />
         </Box>
       }
       {image &&
