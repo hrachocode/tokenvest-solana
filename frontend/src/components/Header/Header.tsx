@@ -9,19 +9,21 @@ import Image from "next/image";
 import { TOKENVEST } from "@/constants/general";
 import { useEffect, useState } from "react";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 
 const Header = (): JSX.Element => {
 
   const { allAccounts } = usePolkadot();
   const isConnected = allAccounts?.length !== 0;
-  const [ notifications, setNotifications ] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const { data } =
-        await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&filters[address][$eq]=${SHIBUYA_ADDRESS}`, METHODS.GET);
+      const { data = [] } =
+        await handleRequest(
+          `${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${SHIBUYA_ADDRESS}`,
+          METHODS.GET) ?? {};
       if (data.length > 0) {
         setNotifications(data);
       };
