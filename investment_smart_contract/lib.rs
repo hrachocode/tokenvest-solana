@@ -27,18 +27,26 @@ mod investment_smart_contract {
     impl InvestmentSmartContract {
         #[ink(constructor)]
         pub fn new(investment_goal: u128, share_percentage: u128, end_time: Timestamp) -> Self {
-        let startup_owner = Self::env().caller();
-        let hex_string = "0xe8ae424fac4f51e8011913ada8f2429a12ac20e2013288413335ee3ae3313649"; // Replace with your hex string
-        let mut array = [0u8; 32];
-        let hex_chars = hex_string.chars().skip(2); // Skip the leading "0x"
-        let mut i = 0;
+        // gets the AccountId for the owner of the startup campaign
+        let startup_owner = Self::env().caller(); 
+        let hex_string = "0xe8ae424fac4f51e8011913ada8f2429a12ac20e2013288413335ee3ae3313649"; // our constant public key
+        // creates an array to store the accountId array from our public key
+        let mut array = [0u8; 32]; 
+        let hex_chars = hex_string.chars().skip(2); // skips the leading "0x"
+        let mut i = 0; // Array index
         let mut chunk = String::new();
     for hex_char in hex_chars {
-        chunk.push(hex_char);
+        // Adds the byte chunks to the array
+        chunk.push(hex_char); 
+        // checks if chunk's length is equal to 2
         if chunk.len() == 2 {
-            let byte = u8::from_str_radix(&chunk, 16).unwrap_or(0);
+            //Parses the chunk string as a hexadecimal number and convert it to a byte
+            let byte = u8::from_str_radix(&chunk, 16).unwrap_or(0); 
+            // Assigns the byte to the index in array
             array[i] = byte;
+            // moves the index to the next one 
             i += 1;
+            // Clears the chunk string to parse it for the next two characters
             chunk.clear();
         }
     }
