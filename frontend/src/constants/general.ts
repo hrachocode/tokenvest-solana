@@ -18,3 +18,4 @@ export const EMAIL_PLACEHOLDER: string = "Enter your email here";
 export const SUBSCRIBE: string = "Subscribe";
 export const SEE_ALL: string = "See All";
 export const MAX_PRODUCTS_HOME: number = 3;
+export const TOKENVEST: string = "Tokenvest";
