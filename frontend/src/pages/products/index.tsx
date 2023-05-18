@@ -26,6 +26,7 @@ export async function getStaticProps() {
       description: item.attributes.description,
       days: item.attributes.days,
       isComplete: item.attributes.isComplete,
+      isExpired: item.attributes.isExpired,
       category: item.attributes.category.data.attributes.title
     };
   }) || [];

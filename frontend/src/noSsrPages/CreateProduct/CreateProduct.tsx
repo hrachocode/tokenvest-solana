@@ -94,7 +94,11 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
       <Box>
         <Typography>Category</Typography>
         <Box sx={styles.selectWrapper}>
-          <TvSelect label={LABEL_CATEGORY} value={category} handleChange={handleChangeCategory} selectOptions={selectCategories} />
+          <TvSelect 
+            label={LABEL_CATEGORY} 
+            value={category} 
+            handleChange={handleChangeCategory} 
+            selectOptions={selectCategories} />
         </Box>
       </Box>
       <Box>

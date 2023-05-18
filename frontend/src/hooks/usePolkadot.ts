@@ -267,6 +267,7 @@ export const usePolkadot = () => {
                     "raisedAmount": DEFAULT_RAISED_AMOUNT,
                     "days": days,
                     "isComplete": false,
+                    "isExpired": false,
                     "category": category
                   }
                 });
