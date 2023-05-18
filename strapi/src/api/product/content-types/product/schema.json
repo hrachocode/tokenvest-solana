@@ -57,6 +57,9 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::category.category"
+    },
+    "isExpired": {
+      "type": "boolean"
     }
   }
 }

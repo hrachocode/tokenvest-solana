@@ -26,12 +26,13 @@ export async function getStaticProps() {
       description: item.attributes.description,
       days: item.attributes.days,
       isComplete: item.attributes.isComplete,
+      isExpired: item.attributes.isExpired,
       category: item.attributes.category.data.attributes.title
     };
   }) || [];
 
   const featuredProducts: IProduct[] = products.filter((item: IProduct) =>
-    item.image !== null && item.isComplete === false) || [];
+    item.image !== null && item.isComplete === false && item.isExpired === false) || [];
 
   const { data: category = [] } = await handleRequest(`${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
