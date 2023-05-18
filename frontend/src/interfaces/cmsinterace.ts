@@ -30,10 +30,10 @@ export interface ICMSProduct {
     }
 }
 
-export interface ICMSCategory{
-    id:string;
-    attributes:{
-        title:string;
+export interface ICMSCategory {
+    id: string;
+    attributes: {
+        title: string;
         image: {
             data: {
                 attributes: {
@@ -64,4 +64,10 @@ export interface IProduct {
     days: string;
     isComplete: boolean;
     category: string;
+}
+
+export interface IProductDate {
+    id: string,
+    ownerAddress: string,
+    endDate: number
 }
