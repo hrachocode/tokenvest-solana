@@ -73,3 +73,19 @@ export interface IProductDate {
     ownerAddress: string,
     endDate: number
 }
+
+export interface ICMSNotification {
+    id: number,
+    attributes: {
+        message: String;
+        isOpened: boolean;
+        productId: String;
+    }
+}
+
+export interface INotification {
+    id: number;
+    productId: string,
+    message: String;
+    openedStatus: boolean;
+}
