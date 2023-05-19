@@ -38,7 +38,7 @@ export const styles = {
     width: "500px",
     position: "absolute",
     zIndex: 1,
-    padding: "30px",
+    padding: 3,
     backgroundColor: "backgroundSecondary",
     borderRadius: "10px",
     display: "flex",
