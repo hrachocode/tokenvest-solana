@@ -51,12 +51,12 @@ const Header = (): JSX.Element => {
   };
 
   const handleOpenNotification = async (id: number, productId: string) => {
-    const openedNotif = await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
+    const { date: openNotifData = {} } = await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
       "data": {
         "isOpened": true,
       }
-    });
-    if (openedNotif.data) {
+    }) ?? {};
+    if (openNotifData) {
       router.push(`${PRODUCTS}/${productId}`);
     };
   };
