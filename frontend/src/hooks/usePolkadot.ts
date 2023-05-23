@@ -8,7 +8,7 @@ import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, DEFAULT_RAISED_AMOUNT, IMAGE_FIELD } from "@/constants/cms";
+import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS } from "@/constants/cms";
 import { OPEN_OPTION_BLANK } from "@/constants/general";
 
 export const usePolkadot = () => {
@@ -110,19 +110,19 @@ export const usePolkadot = () => {
               const amountNumber = Number(amount);
 
               const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
-                "data": {
-                  "raisedAmount": amountNumber,
+                data: {
+                  raisedAmount: amountNumber,
                 }
               });
 
               if (putRes.data) {
                 if (Number(amountNumber) >= Number(raiseGoal)) {
                   await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}`, METHODS.POST, {
-                    "data": {
-                      "message": `Seat goal reached for product N: ${productId.toString()}`,
-                      "address": ownerAddress,
-                      "isOpened": false,
-                      "productId": productId.toString()
+                    data: {
+                      message: `Seat goal reached for product N: ${productId.toString()}`,
+                      address: ownerAddress,
+                      isOpened: false,
+                      productId: productId.toString()
                     }
                   });
                 };
@@ -251,9 +251,9 @@ export const usePolkadot = () => {
           } else if (status.isFinalized) {
             if (contract) {
               const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
-                "data": {
-                  "address": contract.address.toString(),
-                  "isDraft": false
+                data: {
+                  address: contract.address.toString(),
+                  isDraft: false
                 }
               });
               if (putRes.data) {

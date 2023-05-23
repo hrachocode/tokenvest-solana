@@ -14,21 +14,21 @@ export const createProductCMS = async (
 ) => {
   try {
     const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
-      "data": {
-        "title": startupName,
-        "description": startupDescription,
-        "raiseGoal": raiseGoal,
-        "sharePercentage": sharePercentage,
-        "address": "",
-        "ownerAddress": accountAddress,
-        "ownerName": accountName,
-        "raisedAmount": DEFAULT_RAISED_AMOUNT,
-        "days": days,
-        "isComplete": false,
-        "isExpired": false,
-        "isDraft": true,
-        "isReady": false,
-        "category": category
+      data: {
+        title: startupName,
+        description: startupDescription,
+        raiseGoal: raiseGoal,
+        sharePercentage: sharePercentage,
+        address: "",
+        ownerAddress: accountAddress,
+        ownerName: accountName,
+        raisedAmount: DEFAULT_RAISED_AMOUNT,
+        days: days,
+        isComplete: false,
+        isExpired: false,
+        isDraft: true,
+        isReady: false,
+        category: category
       }
     });
     if (postRes?.data?.id) {
