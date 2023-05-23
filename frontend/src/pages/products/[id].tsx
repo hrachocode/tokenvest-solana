@@ -47,6 +47,8 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     days: attributes.days,
     isComplete: attributes.isComplete,
     isExpired: attributes.isExpired,
+    isDraft: attributes.isDraft,
+    isReady: attributes.isReady,
     category: attributes.category.data.attributes.title
   };
 

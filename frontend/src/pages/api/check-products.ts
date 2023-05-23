@@ -22,7 +22,9 @@ export default async function handler({ body: { } = {} }: NextApiRequest, res: N
       days: item.attributes.days,
       isComplete: item.attributes.isComplete,
       category: item.attributes.category.data.attributes.title,
-      isExpired: item.attributes.isExpired
+      isExpired: item.attributes.isExpired,
+      isDraft: item.attributes.isDraft,
+      isReady: item.attributes.isReady,
     };
   }) || [];
 
@@ -32,8 +34,8 @@ export default async function handler({ body: { } = {} }: NextApiRequest, res: N
   const dates: IProductDate[] = activeProducts.map((item: IProduct) => {
     const startDate = new Date(Date.parse(item.createdAt));
     const endDate = new Date(
-      startDate.getFullYear(), 
-      startDate.getMonth(), 
+      startDate.getFullYear(),
+      startDate.getMonth(),
       startDate.getDate() + Number(item.days)
     ).getTime();
     return {

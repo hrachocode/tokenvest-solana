@@ -13,6 +13,8 @@ export interface ICMSProduct {
         days: string;
         isComplete: boolean;
         isExpired: boolean;
+        isDraft: boolean;
+        isReady: boolean;
         image: {
             data: {
                 attributes: {
@@ -65,6 +67,8 @@ export interface IProduct {
     days: string;
     isComplete: boolean;
     isExpired: boolean;
+    isDraft: boolean;
+    isReady: boolean;
     category: string;
 }
 
