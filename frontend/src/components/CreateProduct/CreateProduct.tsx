@@ -4,7 +4,6 @@ import { TvSelect } from "@/components/TvSelect/TvSelect";
 import { LABEL_CATEGORY, LABEL_DAYS } from "@/constants/general";
 import { SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { selectOptions } from "@/constants/selectOptions";
-import { usePolkadot } from "@/hooks/usePolkadot";
 import { ICategory } from "@/interfaces/cmsinterace";
 import { createProductCMS } from "@/utils/cmsUtils";
 import { Box, SelectChangeEvent, Typography } from "@mui/material";
@@ -33,8 +32,6 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
   const [ days, setDays ] = useState("");
   const [ category, setCategory ] = useState("");
 
-  const { deploy } = usePolkadot();
-
   const handleChange = (value: string, cb: Function) => {
     cb(value);
   };
@@ -54,15 +51,6 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
-      // await deploy(
-      //   SHIBUYA_ACCOUNT_NAME,
-      //   SHIBUYA_ADDRESS, name,
-      //   description,
-      //   raiseGoal,
-      //   sharePercentage,
-      //   files[0],
-      //   days,
-      //   category);
       await createProductCMS(
         SHIBUYA_ACCOUNT_NAME,
         SHIBUYA_ADDRESS, name,

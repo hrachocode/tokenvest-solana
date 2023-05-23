@@ -15,6 +15,10 @@ const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestB
   ssr: false
 });
 
+const TvDeployButton = dynamic(() => import("../../components/TvDeployButton/TvDeployButton"), {
+  ssr: false
+});
+
 export async function getStaticPaths() {
 
   const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.GET) ?? {};
@@ -68,14 +72,16 @@ export default function Product({
     title,
     ownerName,
     raiseGoal,
+    sharePercentage,
     raisedAmount,
     address,
     ownerAddress,
+    days,
     isComplete,
     isDraft,
     isReady
   } }: { product: IProduct }) {
-  const [ isPopupOpen, setPopupOpen ] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const dateText = receiveDate(createdAt);
 
   const openPopup = () => {
@@ -133,7 +139,7 @@ export default function Product({
           {
             isDraft ?
               isReady ?
-                <TvButton customVariant="secondary">{DEPLOY}</TvButton> :
+                <TvDeployButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} /> :
                 <TvButton disabled customVariant="secondary">{DRAFT}</TvButton> :
               isComplete ?
                 <TvButton disabled customVariant="secondary">{COMPLETE}</TvButton> :
