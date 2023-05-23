@@ -12,8 +12,8 @@ import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD,
 import { OPEN_OPTION_BLANK } from "@/constants/general";
 
 export const usePolkadot = () => {
-  const [allAccounts, setAllAccount] = useState<InjectedAccountWithMeta[]>([]);
-  const [isExtensionActive, setExtensionActive] = useState(false);
+  const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
+  const [ isExtensionActive, setExtensionActive ] = useState(false);
   const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
   const getAccounts = async () => {

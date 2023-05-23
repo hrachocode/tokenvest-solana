@@ -11,19 +11,19 @@ interface ITvDeployButton {
 }
 
 const TvDeployButton = ({ raiseGoal, sharePercentage, days, productId }: ITvDeployButton): JSX.Element => {
-    const { deploy } = usePolkadot();
+  const { deploy } = usePolkadot();
 
-    const handleClick = () => {
-        deploy(
-            SHIBUYA_ADDRESS,
-            raiseGoal,
-            sharePercentage,
-            days,
-            productId
-        )
-    }
+  const handleClick = () => {
+    deploy(
+      SHIBUYA_ADDRESS,
+      raiseGoal,
+      sharePercentage,
+      days,
+      productId
+    );
+  };
 
-    return <TvButton onClick={handleClick} customVariant="secondary">{DEPLOY}</TvButton>
+  return <TvButton onClick={handleClick} customVariant="secondary">{DEPLOY}</TvButton>;
 };
 
 export default TvDeployButton;

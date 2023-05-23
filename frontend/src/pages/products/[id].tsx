@@ -81,7 +81,7 @@ export default function Product({
     isDraft,
     isReady
   } }: { product: IProduct }) {
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [ isPopupOpen, setPopupOpen ] = useState(false);
   const dateText = receiveDate(createdAt);
 
   const openPopup = () => {

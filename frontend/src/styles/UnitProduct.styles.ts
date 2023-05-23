@@ -24,7 +24,7 @@ export const unitProductStyles = {
   detailsWrapper: {
     display: "flex",
     flexDirection: "column",
-    ">div:not(:first-child)": {
+    ">div:not(:first-of-type)": {
       mt: 3
     }
   },
