@@ -92,6 +92,20 @@ export default function Product({
     setPopupOpen(false);
   };
 
+  const renderButton = () => {
+    if (isDraft) {
+      if (isReady) {
+        return <TvDeployButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} />;
+      } else {
+        return <TvButton disabled customVariant="secondary">{DRAFT}</TvButton>;
+      }
+    }
+    if (isComplete) {
+      return <TvButton disabled customVariant="secondary">{COMPLETE}</TvButton>;
+    }
+    return <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>;
+  };
+
   return (
     <Box sx={unitProductStyles.wrapper}>
       {isPopupOpen &&
@@ -136,15 +150,7 @@ export default function Product({
               <Typography>{raisedAmount}</Typography>
             </Box>
           </Box>
-          {
-            isDraft ?
-              isReady ?
-                <TvDeployButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} /> :
-                <TvButton disabled customVariant="secondary">{DRAFT}</TvButton> :
-              isComplete ?
-                <TvButton disabled customVariant="secondary">{COMPLETE}</TvButton> :
-                <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>
-          }
+          {renderButton()}
         </Box>
       </Box>
 
