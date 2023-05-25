@@ -19,3 +19,5 @@ export const SUBSCRIBE: string = "Subscribe";
 export const SEE_ALL: string = "See All";
 export const MAX_PRODUCTS_HOME: number = 3;
 export const TOKENVEST: string = "Tokenvest";
+export const DEPLOY: string = "DEPLOY";
+export const DRAFT: string = "DRAFT";

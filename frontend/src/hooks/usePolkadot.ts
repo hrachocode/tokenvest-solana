@@ -8,7 +8,7 @@ import { CodePromise, ContractPromise } from "@polkadot/api-contract";
 import { WeightV2 } from "@polkadot/types/interfaces";
 import { IUnsubRes } from "@/interfaces/polkadotInterface";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, DEFAULT_RAISED_AMOUNT, IMAGE_FIELD } from "@/constants/cms";
+import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS } from "@/constants/cms";
 import { OPEN_OPTION_BLANK } from "@/constants/general";
 
 export const usePolkadot = () => {
@@ -110,19 +110,19 @@ export const usePolkadot = () => {
               const amountNumber = Number(amount);
 
               const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
-                "data": {
-                  "raisedAmount": amountNumber,
+                data: {
+                  raisedAmount: amountNumber,
                 }
               });
 
               if (putRes.data) {
                 if (Number(amountNumber) >= Number(raiseGoal)) {
                   await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}`, METHODS.POST, {
-                    "data": {
-                      "message": `Seat goal reached for product N: ${productId.toString()}`,
-                      "address": ownerAddress,
-                      "isOpened": false,
-                      "productId": productId.toString()
+                    data: {
+                      message: `Seat goal reached for product N: ${productId.toString()}`,
+                      address: ownerAddress,
+                      isOpened: false,
+                      productId: productId.toString()
                     }
                   });
                 };
@@ -217,15 +217,11 @@ export const usePolkadot = () => {
   };
 
   const deploy = async (
-    accountName: string,
     accountAddress: string,
-    startupName: string,
-    startupDescription: string,
     raiseGoal: string,
     sharePercentage: string,
-    imageFile: Blob,
     days: string,
-    category: string) => {
+    productId: string) => {
     if (!checkExtensionStatus()) {
       return;
     };
@@ -254,43 +250,16 @@ export const usePolkadot = () => {
             console.log("in a block");
           } else if (status.isFinalized) {
             if (contract) {
-              try {
-                const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
-                  "data": {
-                    "title": startupName,
-                    "description": startupDescription,
-                    "raiseGoal": raiseGoal,
-                    "sharePercentage": sharePercentage,
-                    "address": contract.address.toString(),
-                    "ownerAddress": accountAddress,
-                    "ownerName": accountName,
-                    "raisedAmount": DEFAULT_RAISED_AMOUNT,
-                    "days": days,
-                    "isComplete": false,
-                    "isExpired": false,
-                    "category": category
-                  }
-                });
-                if (postRes?.data?.id) {
-                  const id = postRes.data.id;
-                  if (imageFile) {
-                    const formData = new FormData();
-                    formData.append("ref", CMS_PRODUCTS_REF);
-                    formData.append("refId", id);
-                    formData.append("field", IMAGE_FIELD);
-                    formData.append("files", imageFile);
-                    const postRes = await handleRequest(`${CMS_API}${CMS_UPLOAD}`, METHODS.POST, formData, true);
-                    if (postRes.length !== 0) {
-                      alert("Product successfully created!!!");
-                    } else {
-                      alert("There was a problem with image");
-                    }
-                  } else {
-                    alert("Product successfully created!!!");
-                  }
+              const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
+                data: {
+                  address: contract.address.toString(),
+                  isDraft: false
                 }
-              } catch (error) {
-                alert((error as { message: string }).message);
+              });
+              if (putRes.data) {
+                alert("Successfully deployed the product!!!");
+              } else {
+                alert("Something went wrong!!!");
               }
             };
             console.log("finalized");

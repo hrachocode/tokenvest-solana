@@ -27,12 +27,16 @@ export async function getStaticProps() {
       days: item.attributes.days,
       isComplete: item.attributes.isComplete,
       isExpired: item.attributes.isExpired,
+      isDraft: item.attributes.isDraft,
+      isReady: item.attributes.isReady,
       category: item.attributes.category.data.attributes.title
     };
   }) || [];
 
   const featuredProducts: IProduct[] = products.filter((item: IProduct) =>
-    item.image !== null && item.isComplete === false && item.isExpired === false) || [];
+    item.image !== null && 
+    item.isComplete === false && 
+    item.isExpired === false) || [];
 
   const { data: category = [] } = await handleRequest(`${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
 

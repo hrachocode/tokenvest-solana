@@ -1,6 +1,7 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { CMS_API, CMS_PRODUCTS, CMS_URL, POPULATE_ALL } from "@/constants/cms";
-import { COMPLETE, CREATED_BY, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
+import { COMPLETE, CREATED_BY, DEPLOY, DRAFT, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
+import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { unitProductStyles } from "@/styles/UnitProduct.styles";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
@@ -11,6 +12,10 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
+  ssr: false
+});
+
+const TvDeployButton = dynamic(() => import("../../components/TvDeployButton/TvDeployButton"), {
   ssr: false
 });
 
@@ -47,6 +52,8 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     days: attributes.days,
     isComplete: attributes.isComplete,
     isExpired: attributes.isExpired,
+    isDraft: attributes.isDraft,
+    isReady: attributes.isReady,
     category: attributes.category.data.attributes.title
   };
 
@@ -65,10 +72,14 @@ export default function Product({
     title,
     ownerName,
     raiseGoal,
+    sharePercentage,
     raisedAmount,
     address,
     ownerAddress,
-    isComplete
+    days,
+    isComplete,
+    isDraft,
+    isReady
   } }: { product: IProduct }) {
   const [ isPopupOpen, setPopupOpen ] = useState(false);
   const dateText = receiveDate(createdAt);
@@ -79,6 +90,20 @@ export default function Product({
 
   const closePopup = () => {
     setPopupOpen(false);
+  };
+
+  const renderButton = () => {
+    if (isDraft) {
+      if (isReady) {
+        return <TvDeployButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} />;
+      } else {
+        return <TvButton disabled customVariant="secondary">{DRAFT}</TvButton>;
+      }
+    }
+    if (isComplete) {
+      return <TvButton disabled customVariant="secondary">{COMPLETE}</TvButton>;
+    }
+    return <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>;
   };
 
   return (
@@ -125,9 +150,7 @@ export default function Product({
               <Typography>{raisedAmount}</Typography>
             </Box>
           </Box>
-          {isComplete ?
-            <TvButton customVariant="secondary">{COMPLETE}</TvButton> :
-            <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>}
+          {renderButton()}
         </Box>
       </Box>
 
