@@ -72,3 +72,24 @@ export const getLocalChanges = () => {
     editId
   };
 };
+
+export const createNewEdit = async () => {
+  try {
+    const { data: { id } } = await handleRequest(`${CMS_API}${CMS_LAST_CHANGES}`, METHODS.POST, {
+      data: {
+        title: "",
+        description: "",
+        raiseGoal: 0,
+        sharePercentage: 0,
+        ownerAddress: SHIBUYA_ADDRESS,
+        ownerName: "",
+        raisedAmount: 0,
+        days: 0,
+        category: 1
+      }
+    });
+    return id;
+  } catch {
+    return undefined;
+  }
+};

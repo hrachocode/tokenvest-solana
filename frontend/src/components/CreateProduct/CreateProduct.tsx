@@ -9,7 +9,7 @@ import { createProductCMS } from "@/utils/cmsUtils";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { styles } from "./CreateProduct.styles";
-import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect, getLastChanges, getLocalChanges } from "./utils";
+import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect, getLastChanges, getLocalChanges, createNewEdit } from "./utils";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -45,6 +45,12 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
           setCategory(lastChanges.attributes.category.data.id);
           localStorage.setItem(EDIT_ID_KEY, lastChanges.id);
           setEditId(lastChanges.id);
+        } else {
+          const id = await createNewEdit();
+          if (id) {
+            localStorage.setItem(EDIT_ID_KEY, id);
+            setEditId(id);
+          }
         }
       }
     })();
