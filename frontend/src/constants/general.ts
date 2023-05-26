@@ -36,3 +36,4 @@ export const RAISE_GOAL_KEY: string = "raiseGoal";
 export const SHARE_PERCENTAGE_KEY: string = "sharePercentage";
 export const DAYS_KEY: string = "days";
 export const CATEGORY_KEY: string = "category";
+export const EDIT_ID_KEY: string = "editId";
