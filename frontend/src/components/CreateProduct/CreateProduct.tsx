@@ -1,60 +1,22 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
 import { TvSelect } from "@/components/TvSelect/TvSelect";
-import { CATEGORY, CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, EDIT_ID_KEY, IMAGE, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
+import { CATEGORY, CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, IMAGE, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
 import { SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { selectOptions } from "@/constants/selectOptions";
+import { useSmartInputs } from "@/hooks/useSmartInputs";
 import { ICategory } from "@/interfaces/cmsinterace";
 import { createProductCMS } from "@/utils/cmsUtils";
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { styles } from "./CreateProduct.styles";
-import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect, getLastChanges, getLocalChanges, createNewEdit } from "./utils";
+import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect } from "./utils";
 
 interface ICreateProduct {
   categories: ICategory[];
 }
 
 const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
-
-  useEffect(() => {
-    (async () => {
-      const localChanges = getLocalChanges();
-      if (localChanges.title) {
-        setName(localChanges.title);
-        setDescription(localChanges.description);
-        setRaiseGoal(localChanges.raiseGoal);
-        setSharePercentage(localChanges.sharePercentage);
-        setDays(localChanges.days);
-        setCategory(localChanges.category);
-        setEditId(localChanges.editId);
-      } else {
-        const lastChanges = await getLastChanges();
-        if (lastChanges) {
-          localStorage.setItem(TITLE_KEY, lastChanges.attributes.title);
-          setName(lastChanges.attributes.title);
-          localStorage.setItem(DESCRIPTION_KEY, lastChanges.attributes.description);
-          setDescription(lastChanges.attributes.description);
-          localStorage.setItem(RAISE_GOAL_KEY, lastChanges.attributes.raiseGoal);
-          setRaiseGoal(lastChanges.attributes.raiseGoal);
-          localStorage.setItem(SHARE_PERCENTAGE_KEY, lastChanges.attributes.sharePercentage);
-          setSharePercentage(lastChanges.attributes.sharePercentage);
-          localStorage.setItem(DAYS_KEY, lastChanges.attributes.days);
-          setDays(lastChanges.attributes.days);
-          localStorage.setItem(CATEGORY_KEY, lastChanges.attributes.category.data.id);
-          setCategory(lastChanges.attributes.category.data.id);
-          localStorage.setItem(EDIT_ID_KEY, lastChanges.id);
-          setEditId(lastChanges.id);
-        } else {
-          const id = await createNewEdit();
-          if (id) {
-            localStorage.setItem(EDIT_ID_KEY, id);
-            setEditId(id);
-          }
-        }
-      }
-    })();
-  }, []);
 
   const selectCategories = categories.map((item: ICategory) => {
     return {
@@ -63,14 +25,16 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     };
   });
 
-  const [ name, setName ] = useState("");
-  const [ description, setDescription ] = useState("");
-  const [ raiseGoal, setRaiseGoal ] = useState("");
-  const [ sharePercentage, setSharePercentage ] = useState("");
+  const {
+    name, setName,
+    description, setDescription,
+    raiseGoal, setRaiseGoal,
+    sharePercentage, setSharePercentage,
+    days, setDays,
+    category, setCategory,
+    editId
+  } = useSmartInputs();
   const [ files, setFiles ] = useState([]);
-  const [ days, setDays ] = useState("");
-  const [ category, setCategory ] = useState("");
-  const [ editId, setEditId ] = useState(0);
 
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
