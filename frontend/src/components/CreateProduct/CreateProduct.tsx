@@ -1,15 +1,16 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
 import { TvSelect } from "@/components/TvSelect/TvSelect";
-import { LABEL_CATEGORY, LABEL_DAYS } from "@/constants/general";
+import { CATEGORY, CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, IMAGE, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
 import { SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { selectOptions } from "@/constants/selectOptions";
+import { useSmartInputs } from "@/hooks/useSmartInputs";
 import { ICategory } from "@/interfaces/cmsinterace";
 import { createProductCMS } from "@/utils/cmsUtils";
-import { Box, SelectChangeEvent, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { styles } from "./CreateProduct.styles";
-import { inputValidator } from "./utils";
+import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect } from "./utils";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -24,29 +25,16 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     };
   });
 
-  const [ name, setName ] = useState("");
-  const [ description, setDescription ] = useState("");
-  const [ raiseGoal, setRaiseGoal ] = useState("");
-  const [ sharePercentage, setSharePercentage ] = useState("");
+  const {
+    name, setName,
+    description, setDescription,
+    raiseGoal, setRaiseGoal,
+    sharePercentage, setSharePercentage,
+    days, setDays,
+    category, setCategory,
+    editId
+  } = useSmartInputs();
   const [ files, setFiles ] = useState([]);
-  const [ days, setDays ] = useState("");
-  const [ category, setCategory ] = useState("");
-
-  const handleChange = (value: string, cb: Function) => {
-    cb(value);
-  };
-
-  const handleFileChange = ({ target: { files = [] } = {} }: any) => {
-    setFiles(files);
-  };
-
-  const handleChangeDays = (event: SelectChangeEvent) => {
-    setDays(event.target.value as string);
-  };
-
-  const handleChangeCategory = (event: SelectChangeEvent) => {
-    setCategory(event.target.value as string);
-  };
 
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
@@ -62,49 +50,75 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
         category);
     } else {
       alert(message);
-    }
+    };
 
   };
   return (
     <Box sx={styles.createProductWrapper}>
       <Box>
-        <Typography>Name</Typography>
-        <TvInput customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setName); }} />
+        <Typography>{NAME}</Typography>
+        <TvInput
+          value={name}
+          customVariant="tertiary"
+          onChange={({ target: { value = "" } = {} }) => { handleChange(value, setName); }}
+          onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, TITLE_KEY, editId); }}
+        />
       </Box>
       <Box>
-        <Typography>Description</Typography>
-        <TvInput customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setDescription); }} />
+        <Typography>{DESCRIPTION}</Typography>
+        <TvInput
+          value={description}
+          customVariant="tertiary"
+          onChange={({ target: { value = "" } = {} }) => { handleChange(value, setDescription); }}
+          onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, DESCRIPTION_KEY, editId); }}
+        />
       </Box>
       <Box>
-        <Typography>Raise Goal</Typography>
-        <TvInput type="number" customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setRaiseGoal); }} />
+        <Typography>{RAISE_GOAL}</Typography>
+        <TvInput
+          value={raiseGoal}
+          type="number"
+          customVariant="tertiary"
+          onChange={({ target: { value = "" } = {} }) => { handleChange(value, setRaiseGoal); }}
+          onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, RAISE_GOAL_KEY, editId); }}
+        />
       </Box>
       <Box>
-        <Typography>Share percentage</Typography>
-        <TvInput type="number" customVariant="tertiary" onChange={({ target: { value = "" } = {} }) => { handleChange(value, setSharePercentage); }} />
+        <Typography>{SHARE_PERCENTAGE}</Typography>
+        <TvInput
+          value={sharePercentage}
+          type="number"
+          customVariant="tertiary"
+          onChange={({ target: { value = "" } = {} }) => { handleChange(value, setSharePercentage); }}
+          onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, SHARE_PERCENTAGE_KEY, editId); }}
+        />
       </Box>
       <Box>
-        <Typography>Days</Typography>
+        <Typography>{DAYS}</Typography>
         <Box sx={styles.selectWrapper}>
-          <TvSelect label={LABEL_DAYS} value={days} handleChange={handleChangeDays} selectOptions={selectOptions} />
+          <TvSelect
+            label={LABEL_DAYS}
+            value={days}
+            handleChange={(e) => { handleChangeSelect(e, setDays, DAYS_KEY, editId); }}
+            selectOptions={selectOptions} />
         </Box>
       </Box>
       <Box>
-        <Typography>Category</Typography>
+        <Typography>{CATEGORY}</Typography>
         <Box sx={styles.selectWrapper}>
           <TvSelect
             label={LABEL_CATEGORY}
             value={category}
-            handleChange={handleChangeCategory}
+            handleChange={(e) => { handleChangeSelect(e, setCategory, CATEGORY_KEY, editId); }}
             selectOptions={selectCategories} />
         </Box>
       </Box>
       <Box>
-        <Typography>Image</Typography>
-        <TvInput type="file" customVariant="tertiary" onChange={handleFileChange} />
+        <Typography>{IMAGE}</Typography>
+        <TvInput type="file" customVariant="tertiary" onChange={(e) => handleFileChange(e, setFiles)} />
       </Box>
       <Box>
-        <TvButton onClick={handleClick}>Create Product</TvButton>
+        <TvButton onClick={handleClick}>{CREATE_PRODUCT_TEXT}</TvButton>
       </Box>
     </Box>
   );

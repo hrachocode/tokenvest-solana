@@ -1,7 +1,6 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { CMS_API, CMS_PRODUCTS, CMS_URL, POPULATE_ALL } from "@/constants/cms";
-import { COMPLETE, CREATED_BY, DEPLOY, DRAFT, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
-import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
+import { COMPLETE, CREATED_BY, DRAFT, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { unitProductStyles } from "@/styles/UnitProduct.styles";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
