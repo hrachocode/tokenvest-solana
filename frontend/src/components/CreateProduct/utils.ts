@@ -21,12 +21,12 @@ export const inputValidator = (sharePercentage: string) => {
 
 export const handleBlur = async (value: string, fieldKey: string, editId: number) => {
   try {
-    const putRes = await handleRequest(`${CMS_API}${CMS_LAST_CHANGES}/${editId}`, METHODS.PUT, {
+    const { data } = await handleRequest(`${CMS_API}${CMS_LAST_CHANGES}/${editId}`, METHODS.PUT, {
       data: {
         [fieldKey]: value,
       }
     });
-    if (putRes.data) {
+    if (data) {
       localStorage.setItem(fieldKey, value);
     }
   } catch (error) {
@@ -73,7 +73,7 @@ export const getLocalChanges = () => {
   };
 };
 
-export const createNewEdit = async () => {
+export const createNewChange = async () => {
   try {
     const { data: { id } } = await handleRequest(`${CMS_API}${CMS_LAST_CHANGES}`, METHODS.POST, {
       data: {

@@ -1,4 +1,4 @@
-import { createNewEdit, getLastChanges, getLocalChanges } from "@/components/CreateProduct/utils";
+import { createNewChange, getLastChanges, getLocalChanges } from "@/components/CreateProduct/utils";
 import { CATEGORY_KEY, DAYS_KEY, DESCRIPTION_KEY, EDIT_ID_KEY, RAISE_GOAL_KEY, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
 import { useEffect, useState } from "react";
 
@@ -41,7 +41,7 @@ export const useSmartInputs = () => {
           localStorage.setItem(EDIT_ID_KEY, lastChanges.id);
           setEditId(lastChanges.id);
         } else {
-          const id = await createNewEdit();
+          const id = await createNewChange();
           if (id) {
             localStorage.setItem(EDIT_ID_KEY, id);
             setEditId(id);
