@@ -5,13 +5,13 @@
 mod investment_smart_contract {
     use ink;
     use ink::storage::Mapping;
-    use ink_env;
     use ink_prelude::format;
     use ink_prelude::string::String;
     use ink_prelude::vec::Vec;
 
     #[ink(storage)]
     pub struct InvestmentSmartContract {
+        nft_minter: AccountId,
         contract_owner: AccountId,
         startup_owner: AccountId,
         investors_balances: Mapping<AccountId, Balance>,
@@ -52,10 +52,12 @@ mod investment_smart_contract {
         pub fn new(investment_goal: u128, share_percentage: u128, end_time: Timestamp) -> Self {
             // gets the AccountId for the owner of the startup campaign
             let startup_owner = Self::env().caller();
-            let public_key = "0xe8ae424fac4f51e8011913ada8f2429a12ac20e2013288413335ee3ae3313649"; // our constant public key
+            let owner_pubkey = "0xe8ae424fac4f51e8011913ada8f2429a12ac20e2013288413335ee3ae3313649"; // our constant public key
+            let nft_minter_pubkey = ""; // nft minter public key
             let account_id_array = pubkey_to_array(public_key);
             let contract_owner = AccountId::from(account_id_array);
             Self {
+                nft_minter,
                 contract_owner,
                 startup_owner,
                 investors_balances: Mapping::default(),
@@ -140,6 +142,7 @@ mod investment_smart_contract {
             }
         }
 
+        #[ink(message)]
         pub fn finish_startup(&mut self, commission: u128, final_amount: u128) {
             if self.end_time > Self::env().block_timestamp() {
                 ink_env::debug_println!("CAMPAIGN SILL RUNNING");
@@ -158,6 +161,11 @@ mod investment_smart_contract {
                     self.withdraw_tokenvest(commission);
                 }
             }
+        }
+
+        #[ink(message)]
+        pub fn mint_and_transfer_nft(&mut self) {
+            let call = ink::env::call::FromAccountId::from_account_id(flipper);
         }
     }
 }
