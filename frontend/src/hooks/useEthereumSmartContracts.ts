@@ -3,8 +3,8 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 
 export const useEthereumSmartContracts = () => {
-  const [account, setAccount] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [ account, setAccount ] = useState("");
+  const [ errorMessage, setErrorMessage ] = useState("");
   const windowEthereum = (window as any).ethereum;
 
   const connectWallet = async () => {
