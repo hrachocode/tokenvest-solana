@@ -7,8 +7,7 @@ contract InvestmentSmartContract {
         uint256 percentage;
     }
 
-    mapping(address => Investor) private investors;
-    address private contractOwner;
+    address immutable contractOwner = 0x5E4B7C08D32810282E1cB539e8b15173Fb5E38c4;
     address private startupOwner;
     mapping(address => uint256) private investorsBalances;
     mapping(address => uint256) private investorsPercentages;
@@ -21,7 +20,6 @@ contract InvestmentSmartContract {
 
     constructor(uint256 _investmentGoal, uint256 _sharePercentage, uint256 _endTime) {
         startupOwner = msg.sender;
-        contractOwner = address(uint160(uint256(0xe8ae424fac4f51e8011913ada8f2429a12ac20e2013288413335ee3ae3313649)));
         investmentGoal = _investmentGoal;
         sharePercentage = _sharePercentage;
         startTime = block.timestamp;
@@ -40,13 +38,17 @@ contract InvestmentSmartContract {
         }
     }
 
-    function withdrawOwner(uint256 finalAmount) internal {
+    function withdrawStartupper(uint256 finalAmount) internal {
         address caller = msg.sender;
         if (tokensCollected >= investmentGoal && startupOwner == caller) {
             payable(caller).transfer(finalAmount);
         } else {
             revert("NOT ENOUGH FUNDS TO WITHDRAW");
         }
+    }
+
+    function withdrawTest() external {
+        payable(msg.sender).transfer(tokensCollected);
     }
 
     function withdrawInvestor() external {
@@ -72,14 +74,18 @@ contract InvestmentSmartContract {
         return block.timestamp;
     }
 
-    function finishStartup(uint256 commission) external {
+    function finishStartup(uint256 commission, uint256 finalAmount) external {
         if (endTime > block.timestamp) {
             revert("CAMPAIGN STILL RUNNING");
         } else {
             if (tokensCollected < investmentGoal) {
-                revert("CAMPAIGN FAILED");
+                for (uint256 investorIndex = 0; investorIndex < investorsList.length; investorIndex++) {
+                    uint256 refundAmount = investorsBalances[investorsList[investorIndex]];
+                    payable(investorsList[investorIndex]).transfer(refundAmount);
+                }   
+                revert("CAMPAIGN FAILED");    
             } else {
-                withdrawOwner(tokensCollected);
+                withdrawStartupper(finalAmount);
                 withdrawTokenvest(commission);
             }
         }
