@@ -1,6 +1,7 @@
 import { META_MASK_MISSING_ERROR } from "@/constants/ethereum";
-import { ethers } from "ethers";
+import { ContractFactory, ethers } from "ethers";
 import { useEffect, useState } from "react";
+import abi from "../../contract/investment_smart_contract_ethereum.json";
 
 export const useEthereumSmartContracts = () => {
   const [ account, setAccount ] = useState("");
@@ -10,9 +11,8 @@ export const useEthereumSmartContracts = () => {
   const connectWallet = async () => {
     if (windowEthereum) {
       const provider = new ethers.providers.Web3Provider(windowEthereum);
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      setAccount(address);
+      const account = await provider.send("eth_requestAccounts", []);
+      setAccount(account[0]);
     } else {
       setErrorMessage(META_MASK_MISSING_ERROR);
     }
@@ -22,6 +22,21 @@ export const useEthereumSmartContracts = () => {
     connectWallet();
   }, []);
 
-  return { account, errorMessage };
+  const deploy = async (
+    investmentGoal: string,
+    sharePercentage: string,
+    endTime: string
+  ) => {
+    try {
+      const provider = new ethers.providers.Web3Provider(windowEthereum);
+      const signer = provider.getSigner();
+      const factory = new ContractFactory(abi.abi, abi.bytecode, signer);
+      const contract = await factory.deploy(investmentGoal, sharePercentage, endTime);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  return { account, errorMessage, deploy };
 };
 
