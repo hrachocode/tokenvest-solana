@@ -25,14 +25,47 @@
       "type": "string"
     },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "ownerAddress": {
+      "type": "string"
+    },
+    "ownerName": {
+      "type": "string"
+    },
+    "raisedAmount": {
+      "type": "decimal"
+    },
+    "description": {
+      "type": "text"
+    },
+    "days": {
+      "type": "integer"
+    },
+    "isComplete": {
+      "type": "boolean"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "isExpired": {
+      "type": "boolean"
+    },
+    "isDraft": {
+      "type": "boolean"
+    },
+    "isReady": {
+      "type": "boolean"
     }
   }
 }

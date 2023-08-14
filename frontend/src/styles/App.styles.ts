@@ -1,5 +1,6 @@
 export const appStyles = {
   component: {
-    paddingX: 10
+    paddingX: 11,
+    paddingBottom: 4
   }
 };

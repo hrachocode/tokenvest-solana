@@ -8,7 +8,8 @@ const baseInputStyles = {
   minHeight: 46,
   borderRadius: "20px",
   paddingX: 2,
-  backgroundColor: "common.white"
+  backgroundColor: "common.white",
+  width: "100%"
 };
 
 const primaryInputStyles = {

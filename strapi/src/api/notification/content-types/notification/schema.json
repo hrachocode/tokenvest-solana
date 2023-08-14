@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "notifications",
+  "info": {
+    "singularName": "notification",
+    "pluralName": "notifications",
+    "displayName": "notification"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "message": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "isOpened": {
+      "type": "boolean"
+    },
+    "productId": {
+      "type": "string"
+    }
+  }
+}

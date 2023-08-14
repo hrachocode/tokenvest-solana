@@ -1,94 +1,73 @@
 import { useEffect, useState } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { web3Accounts, web3Enable, web3FromAddress } from "@polkadot/extension-dapp";
-import { DAPP_NAME, DEPLOY_PROOF_SIZE, DEPLOY_REF_TIME, INVEST_VALUE_MULTIPLIER, MAX_CALL_WEIGHT, PROOFSIZE, SHIBUYA_NETWORK, storageDepositLimit, WEIGHT_V2 } from "@/constants/polkadot";
+import { web3FromAddress } from "@polkadot/extension-dapp";
+import { INVEST_VALUE_MULTIPLIER, SHIBUYA_NETWORK } from "@/constants/polkadot";
 import abi from "../../contract/investment_smart_contract.json";
 import { CodePromise, ContractPromise } from "@polkadot/api-contract";
-import { WeightV2 } from "@polkadot/types/interfaces";
-import { IUnsubRes } from "@/interfaces/polkadotInterface";
-import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, IMAGE_FIELD } from "@/constants/cms";
+import { checkExtensionStatus, dryRunOptions, getAccounts, polkadotDeploy, polkadotInvest, polkadotWithdrawInvestor, polkadotWithdrawPo } from "@/utils/polkadotHookUtils";
 
 export const usePolkadot = () => {
   const [ allAccounts, setAllAccount ] = useState<InjectedAccountWithMeta[]>([]);
+  const [ isExtensionActive, setExtensionActive ] = useState(false);
   const wsProvider = new WsProvider(SHIBUYA_NETWORK);
 
-  const getAccounts = async () => {
-    const extensions = await web3Enable(DAPP_NAME);
-    if (extensions.length === 0) {
-      return;
-    };
-    const accounts = await web3Accounts();
-    setAllAccount(accounts);
-  };
-
   useEffect(() => {
-    getAccounts();
+    getAccounts(setAllAccount, setExtensionActive);
   }, []);
 
-  const sendTransaction = async (senderAddress: string, receiverAddress: string) => {
-    const api = await ApiPromise.create({ provider: wsProvider });
-    const injector = await web3FromAddress(senderAddress);
-
-    try {
-      const txHash = await api.tx.balances
-        .transfer(receiverAddress, 1)
-        .signAndSend(senderAddress, { signer: injector.signer });
-      alert(`Submitted with hash ${txHash}`);
-    } catch (error) {
-      alert((error as { message: string }).message);
-    }
-  };
-
-  const invest = async (accountAddress: string, investValue: number, contractAddress: string) => {
+  const invest = async (
+    accountAddress: string,
+    investValue: number,
+    contractAddress: string,
+    productId: string,
+    ownerAddress: string,
+    raiseGoal: string) => {
+    if (!checkExtensionStatus(isExtensionActive)) {
+      return;
+    };
     const value = BigInt(investValue) * INVEST_VALUE_MULTIPLIER;
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
-    const options = {
-      storageDepositLimit,
-      gasLimit: api.registry.createType(WEIGHT_V2, {
-        refTime: MAX_CALL_WEIGHT,
-        proofSize: PROOFSIZE,
-      }) as WeightV2,
-    };
+    const options = dryRunOptions(api);
 
     const { gasRequired, result } = await contract.query.invest(
       accountAddress,
       options
     );
 
+    const { debugMessage: alreadyInvestedAmount } = await contract.query.showAmount(
+      accountAddress,
+      options
+    );
+
     if (result.isOk) {
-      try {
-        const tx = contract.tx.invest({ storageDepositLimit, gasLimit: gasRequired, value });
-        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
-          if (status.isInBlock) {
-            console.log("in a block");
-          } else if (status.isFinalized) {
-            console.log("finalized");
-            unsub();
-          };
-        });
-      } catch (error) {
-        alert((error as { message: string }).message);
-      }
+      await polkadotInvest(
+        contract,
+        gasRequired,
+        value,
+        accountAddress,
+        injector,
+        options,
+        alreadyInvestedAmount,
+        productId,
+        raiseGoal,
+        ownerAddress
+      );
     };
   };
 
   const withdrawInvestor = async (accountAddress: string, contractAddress: string) => {
+    if (!checkExtensionStatus(isExtensionActive)) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
-    const options = {
-      storageDepositLimit: null,
-      gasLimit: api.registry.createType(WEIGHT_V2, {
-        refTime: MAX_CALL_WEIGHT,
-        proofSize: PROOFSIZE,
-      }) as WeightV2,
-    };
+    const options = dryRunOptions(api);
 
     const { gasRequired, result } = await contract.query.invest(
       accountAddress,
@@ -96,34 +75,24 @@ export const usePolkadot = () => {
     );
 
     if (result.isOk) {
-      try {
-        const tx = contract.tx.withdrawInvestor({ storageDepositLimit, gasLimit: gasRequired });
-        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
-          if (status.isInBlock) {
-            console.log("in a block");
-          } else if (status.isFinalized) {
-            console.log("finalized");
-            unsub();
-          };
-        });
-      } catch (error) {
-        alert((error as { message: string }).message);
-      }
+      await polkadotWithdrawInvestor(
+        contract,
+        gasRequired,
+        accountAddress,
+        injector
+      );
     };
   };
 
   const withdrawPo = async (accountAddress: string, contractAddress: string) => {
+    if (!checkExtensionStatus(isExtensionActive)) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const contract = new ContractPromise(api, abi, contractAddress);
     const injector = await web3FromAddress(accountAddress);
 
-    const options = {
-      storageDepositLimit: null,
-      gasLimit: api.registry.createType(WEIGHT_V2, {
-        refTime: MAX_CALL_WEIGHT,
-        proofSize: PROOFSIZE,
-      }) as WeightV2,
-    };
+    const options = dryRunOptions(api);
 
     const { gasRequired, result } = await contract.query.invest(
       accountAddress,
@@ -131,87 +100,41 @@ export const usePolkadot = () => {
     );
 
     if (result.isOk) {
-      try {
-        const tx = contract.tx.withdrawPo({ storageDepositLimit, gasLimit: gasRequired });
-        const unsub = await tx.signAndSend(accountAddress, { signer: injector.signer }, ({ status }: IUnsubRes) => {
-          if (status.isInBlock) {
-            console.log("in a block");
-          } else if (status.isFinalized) {
-            console.log("finalized");
-            unsub();
-          };
-        });
-      } catch (error) {
-        alert((error as { message: string }).message);
-      }
+      await polkadotWithdrawPo(
+        contract,
+        gasRequired,
+        accountAddress,
+        injector
+      );
     };
   };
 
-  const deploy = async (accountAddress: string, startupName: string, raiseGoal: string, sharePercentage: string, imageFile: Blob) => {
+  const deploy = async (
+    accountAddress: string,
+    raiseGoal: string,
+    sharePercentage: string,
+    days: string,
+    productId: string) => {
+    if (!checkExtensionStatus(isExtensionActive)) {
+      return;
+    };
     const api = await ApiPromise.create({ provider: wsProvider });
     const injector = await web3FromAddress(accountAddress);
     const code = new CodePromise(api, abi, abi.source.wasm);
 
-    const options = {
-      storageDepositLimit,
-      gasLimit: api.registry.createType(WEIGHT_V2, {
-        refTime: DEPLOY_REF_TIME,
-        proofSize: DEPLOY_PROOF_SIZE
-      }) as WeightV2,
-    };
+    const options = dryRunOptions(api);
 
-    try {
-      const tx = code.tx.new(options, raiseGoal, startupName, sharePercentage);
-      const unsub = await tx.signAndSend(
-        accountAddress,
-        { signer: injector.signer },
-        async ({ status, contract }: IUnsubRes) => {
-          if (status.isInBlock) {
-            console.log("in a block");
-          } else if (status.isFinalized) {
-            if (contract) {
-              try {
-                const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
-                  "data": {
-                    "title": startupName,
-                    "raiseGoal": raiseGoal,
-                    "sharePercentage": sharePercentage,
-                    "address": contract.address.toString()
-                  }
-                });
-                if (postRes?.data?.id) {
-                  const id = postRes.data.id;
-                  if (imageFile) {
-                    const formData = new FormData();
-                    formData.append("ref", CMS_PRODUCTS_REF);
-                    formData.append("refId", id);
-                    formData.append("field", IMAGE_FIELD);
-                    formData.append("files", imageFile);
-                    const postRes = await fetch(`${CMS_API}${CMS_UPLOAD}`, {
-                      method: METHODS.POST,
-                      body: formData
-                    });
-                    if (postRes.ok) {
-                      alert("Product successfully created!!!");
-                    } else {
-                      alert("There was a problem with image");
-                    }
-                  } else {
-                    alert("Product successfully created!!!");
-                  }
-                }
-              } catch (error) {
-                alert((error as { message: string }).message);
-              }
-            };
-            console.log("finalized");
-            unsub();
-          };
-        });
-    } catch (error) {
-      alert((error as { message: string }).message);
-    }
+    await polkadotDeploy(
+      code,
+      options,
+      raiseGoal,
+      sharePercentage,
+      days,
+      accountAddress,
+      injector,
+      productId
+    );
   };
 
-  return { allAccounts, sendTransaction, invest, withdrawInvestor, withdrawPo, deploy };
+  return { allAccounts, invest, withdrawInvestor, withdrawPo, deploy };
 };
