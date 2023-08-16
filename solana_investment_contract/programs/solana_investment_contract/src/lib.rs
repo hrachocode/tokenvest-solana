@@ -56,7 +56,7 @@ pub struct Initialize<'info> {
     // First 8 bytes are default account discriminator,
     // next 8 bytes come from NewAccount.data being type u64.
     // (u64 = 64 bits unsigned integer = 8 bytes)
-    #[account(init, payer = startup_owner, space = 8 + 8)]
+    #[account(init, seeds=[startup_owner.key().as_ref()], bump, payer = startup_owner, space = 8 + 8)]
     pub investment_contract: Account<'info, InvestmentContract>,
     #[account(mut)]
     pub startup_owner: Signer<'info>,
