@@ -13,14 +13,16 @@ import { CMS_API, CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPU
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { useRouter } from "next/router";
 import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useSolana } from "@/hooks/useSolana";
 
 const Header = (): JSX.Element => {
 
   const { allAccounts } = usePolkadot();
   const router = useRouter();
   const isConnected = allAccounts?.length !== 0;
-  const [ notifications, setNotifications ] = useState([]);
-  const [ openNotification, setOpenNotification ] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [openNotification, setOpenNotification] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -60,6 +62,7 @@ const Header = (): JSX.Element => {
       router.push(`${PRODUCTS}/${productId}`);
     };
   };
+  const { getExtension } = useSolana();
 
   return (
     <Box sx={styles.header}>
@@ -96,7 +99,8 @@ const Header = (): JSX.Element => {
             <Typography variant="h5">{item.title}</Typography>
           </Link>
         )}
-        <TvButton customVariant="secondary">{isConnected ? "Connected" : "Not Connected"}</TvButton>
+        {/* <TvButton customVariant="secondary">{isConnected ? "Connected" : "Not Connected"}</TvButton> */}
+        <WalletMultiButton onClick={getExtension} style={{ background: "#A259FF" }} />
       </Box>
     </Box>
   );

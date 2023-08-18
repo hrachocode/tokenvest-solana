@@ -6,6 +6,7 @@ import { MouseEvent, useState } from "react";
 import { TvButton } from "../TvButton/TvButton";
 import { TvInput } from "../TvInput/TvInput";
 import { styles } from "./TvInvestBox.styles";
+import { useSolana } from "@/hooks/useSolana";
 
 interface ITvInvestBox {
   contractAddress: string;
@@ -16,9 +17,10 @@ interface ITvInvestBox {
 
 const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal }: ITvInvestBox): JSX.Element => {
 
-  const { invest } = usePolkadot();
+  // const { invest } = usePolkadot();
+  const { invest } = useSolana()
 
-  const [ investAmount, setInvestAmount ] = useState(0);
+  const [investAmount, setInvestAmount] = useState(0);
 
   const handleChange = (value: string, cb: Function) => {
     cb(value);
@@ -29,7 +31,8 @@ const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal }: IT
   };
 
   const handleClick = () => {
-    invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId, ownerAddress, raiseGoal);
+    // invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId, ownerAddress, raiseGoal);
+    invest(investAmount)
   };
 
   return (

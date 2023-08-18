@@ -11,6 +11,8 @@ import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { styles } from "./CreateProduct.styles";
 import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect } from "./utils";
+import { useSolana } from "@/hooks/useSolana";
+import { useRouter } from "next/router";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -34,7 +36,8 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     category, setCategory,
     editId
   } = useSmartInputs();
-  const [ files, setFiles ] = useState([]);
+  const [files, setFiles] = useState([]);
+  const { initialize } = useSolana();
 
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
@@ -48,6 +51,7 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
         files[0],
         days,
         category);
+      await initialize(raiseGoal, sharePercentage, days)
     } else {
       alert(message);
     };
