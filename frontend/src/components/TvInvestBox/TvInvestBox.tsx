@@ -13,9 +13,10 @@ interface ITvInvestBox {
   productId: string;
   ownerAddress: string;
   raiseGoal: string;
+  closePopup: Function;
 }
 
-const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal }: ITvInvestBox): JSX.Element => {
+const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, closePopup }: ITvInvestBox): JSX.Element => {
 
   // const { invest } = usePolkadot();
   const { invest } = useSolana()
@@ -33,6 +34,7 @@ const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal }: IT
   const handleClick = () => {
     // invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId, ownerAddress, raiseGoal);
     invest(investAmount)
+    closePopup()
   };
 
   return (

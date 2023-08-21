@@ -44,7 +44,7 @@ export const useSolana = () => {
     days: string
   ) => {
     const provider = await getProvider();
-    const program = new Program(idl as any, programID, provider);
+    const program = new Program(idl as anchor.Idl, programID, provider);
     try {
       await program.methods
         .initialize(
@@ -59,7 +59,7 @@ export const useSolana = () => {
         })
         .signers([InvestmentContract])
         .rpc();
-      const account: any = await program.account.investmentContract.fetch(
+      const account = await program.account.investmentContract.fetch(
         InvestmentContract.publicKey
       );
       console.log(InvestmentContract.publicKey.toString(), "initialize");
@@ -70,7 +70,7 @@ export const useSolana = () => {
 
   const invest = async (investAmount: number) => {
     const provider = await getProvider();
-    const program = new Program(idl as any, programID, provider);
+    const program = new Program(idl as anchor.Idl, programID, provider);
     try {
       await program.methods
         .invest(new anchor.BN(investAmount * LAMPORTS_PER_SOL))
@@ -80,7 +80,7 @@ export const useSolana = () => {
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-      const account: any = await program.account.investmentContract.fetch(
+      const account = await program.account.investmentContract.fetch(
         InvestmentContract.publicKey
       );
     } catch (err) {

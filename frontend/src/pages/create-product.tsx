@@ -1,10 +1,7 @@
 import { CMS_API, CMS_CATEGORIES, POPULATE_ALL } from "@/constants/cms";
 import { ICategory, ICMSCategory } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import dynamic from "next/dynamic";
-const CreateProductPage = dynamic(() => import("../components/CreateProduct/CreateProduct"), {
-  ssr: false
-});
+import CreateProductPage from "../components/CreateProduct/CreateProduct";
 
 export async function getStaticProps() {
   const { data: category = [] } = await handleRequest(`${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
