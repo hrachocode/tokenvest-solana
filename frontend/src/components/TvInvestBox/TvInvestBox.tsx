@@ -18,7 +18,6 @@ interface ITvInvestBox {
 
 const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, closePopup }: ITvInvestBox): JSX.Element => {
 
-  // const { invest } = usePolkadot();
   const { invest } = useSolana()
 
   const [investAmount, setInvestAmount] = useState(0);
@@ -32,7 +31,6 @@ const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, clos
   };
 
   const handleClick = () => {
-    // invest(SHIBUYA_ADDRESS, investAmount, contractAddress, productId, ownerAddress, raiseGoal);
     invest(investAmount)
     closePopup()
   };

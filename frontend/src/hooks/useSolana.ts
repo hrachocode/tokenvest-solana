@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Program, web3, AnchorProvider } from "@project-serum/anchor";
 import idl from "../../../solana_investment_contract/target/idl/investment_contract.json";
 import * as anchor from "@project-serum/anchor";
+import { Cluster } from "@solana/web3.js";
 
 export const useSolana = () => {
   const [isExtensionExist, setIsExtensionExist] = useState<string | undefined>(
@@ -26,7 +27,7 @@ export const useSolana = () => {
 
   const getProvider = async () => {
     let connection = new web3.Connection(
-      web3.clusterApiUrl("devnet"),
+      web3.clusterApiUrl(process.env.NEXT_PUBLIC_SOLANA as Cluster),
       "confirmed"
     );
 

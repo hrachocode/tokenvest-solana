@@ -2,7 +2,6 @@ import { PRODUCTS, ROUTES } from "@/constants/routes";
 import { usePolkadot } from "@/hooks/usePolkadot";
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
-import { TvButton } from "../TvButton/TvButton";
 import { styles } from "./Header.styles";
 import notification from "../../../public/notification.png";
 import Image from "next/image";
@@ -99,7 +98,6 @@ const Header = (): JSX.Element => {
             <Typography variant="h5">{item.title}</Typography>
           </Link>
         )}
-        {/* <TvButton customVariant="secondary">{isConnected ? "Connected" : "Not Connected"}</TvButton> */}
         <WalletMultiButton onClick={getExtension} style={{ background: "#A259FF" }} />
       </Box>
     </Box>
