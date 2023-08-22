@@ -21,6 +21,7 @@ mod investment_contract {
         contract_storage.share_percentage = share_percentage;
         contract_storage.start_time = ctx.accounts.clock.unix_timestamp;
         contract_storage.end_time = end_time;
+        contract_storage.bump = *ctx.bumps.get("investment_contract").unwrap();
         msg!("start time is: {}!", contract_storage.start_time); // Message will show up in the tx logs
         Ok(())
     }
@@ -49,28 +50,25 @@ mod investment_contract {
 
         Ok(())
     }
-
     pub fn withdraw(ctx: Context<Withdraw>) -> Result<()> {
         let investment_contract = &mut ctx.accounts.investment_contract;
         let withdraw_amount = investment_contract.tokens_collected;
-        let startup_owner = investment_contract.startup_owner;
         let caller = &ctx.accounts.caller;
+        let startup_owner = investment_contract.startup_owner;
         if caller.key == &startup_owner {
-            use anchor_lang::system_program::{transfer, Transfer};
-
-            let cpi_context = CpiContext::new_with_signer(
-                ctx.accounts.system_program.to_account_info(),
-                Transfer {
-                    from: investment_contract.to_account_info(),
-                    to: caller.clone().to_account_info(),
-                },
-            );
-
-            transfer(cpi_context, withdraw_amount)?;
-
+            **ctx
+                .accounts
+                .investment_contract
+                .to_account_info()
+                .try_borrow_mut_lamports()? -= withdraw_amount;
+            **ctx
+                .accounts
+                .caller
+                .to_account_info()
+                .try_borrow_mut_lamports()? += withdraw_amount;
             Ok(())
         } else {
-            msg!("wrong signer");
+            msg!("Unknown Caller: Cannot Withdraw Funds");
             Ok(())
         }
     }
@@ -78,7 +76,15 @@ mod investment_contract {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = startup_owner, space = 8 + InvestmentContract::MAX_SIZE)]
+    // We must specify the space in order to initialize an account.
+    // First 8 bytes are default account discriminator,
+    // next 8 bytes come from NewAccount.data being type u64.
+    // (u64 = 64 bits unsigned integer = 8 bytes)
+    #[account(
+        init,
+        payer = startup_owner,
+        space = 8 + InvestmentContract::MAX_SIZE, seeds = [b"investment-contract", startup_owner.key().as_ref()], bump
+    )]
     pub investment_contract: Account<'info, InvestmentContract>,
     #[account(mut)]
     pub startup_owner: Signer<'info>,
@@ -113,6 +119,7 @@ pub struct InvestmentContract {
     pub investment_goal: u64,
     pub share_percentage: u64,
     pub investors: Vec<Pubkey>,
+    pub bump: u8,
 }
 
 impl InvestmentContract {
