@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "frontend",
   "version": "0.1.0",
@@ -35,3 +36,48 @@
     "pinst": "^3.0.0"
   }
 }
+=======
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint --dir . --fix",
+    "postinstall": "husky install"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.14",
+    "@polkadot/api": "^10.2.1",
+    "@polkadot/api-contract": "^10.2.1",
+    "@polkadot/extension-dapp": "^0.45.4",
+    "@polkadot/types": "^10.2.1",
+    "@polkadot/util": "^11.1.2",
+    "@polkadot/util-crypto": "^11.1.2",
+    "@project-serum/anchor": "^0.26.0",
+    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/wallet-adapter-react": "^0.15.34",
+    "@solana/wallet-adapter-react-ui": "^0.9.33",
+    "@solana/wallet-adapter-wallets": "^0.19.20",
+    "@solana/web3.js": "^1.78.4",
+    "@types/node": "18.15.10",
+    "@types/react": "18.0.30",
+    "@types/react-dom": "18.0.11",
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.4",
+    "ethers": "5.7.2",
+    "husky": "^8.0.3",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "pinst": "^3.0.0"
+  }
+}
+>>>>>>> 9e81d3ff248d1b2a44fec3b5512d86f572bae358

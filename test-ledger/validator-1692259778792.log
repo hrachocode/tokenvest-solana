@@ -1,0 +1,45 @@
+[0m[38;5;8m[[0m2023-08-17T08:09:38.799391230Z [0m[32mINFO [0m solana_test_validator[0m[38;5;8m][0m solana-validator 1.16.4 (src:4ce8fe76; feat:2891131721, client:SolanaLabs)
+[0m[38;5;8m[[0m2023-08-17T08:09:38.800232582Z [0m[32mINFO [0m solana_test_validator[0m[38;5;8m][0m Starting validator with: ArgsOs {
+        inner: [
+            "solana-test-validator",
+        ],
+    }
+[0m[38;5;8m[[0m2023-08-17T08:09:38.800862843Z [0m[33mWARN [0m solana_perf[0m[38;5;8m][0m CUDA is disabled
+[0m[38;5;8m[[0m2023-08-17T08:09:38.801566373Z [0m[32mINFO [0m solana_perf[0m[38;5;8m][0m AVX detected
+[0m[38;5;8m[[0m2023-08-17T08:09:38.802552316Z [0m[32mINFO [0m solana_perf[0m[38;5;8m][0m AVX2 detected
+[0m[38;5;8m[[0m2023-08-17T08:09:38.930800393Z [0m[32mINFO [0m solana_faucet::faucet[0m[38;5;8m][0m Faucet started. Listening on: 0.0.0.0:9900
+[0m[38;5;8m[[0m2023-08-17T08:09:38.931260474Z [0m[32mINFO [0m solana_faucet::faucet[0m[38;5;8m][0m Faucet account address: 5BGtwoCBagAxdtToxuv1S36LxLjPWHG83BxFam92pKU3
+[0m[38;5;8m[[0m2023-08-17T08:09:38.933598320Z [0m[33mWARN [0m solana_validator::admin_rpc_service[0m[38;5;8m][0m Unable to start admin rpc service: Os { code: 95, kind: Uncategorized, message: "Operation not supported" }
+[0m[38;5;8m[[0m2023-08-17T08:09:39.014361575Z [0m[32mINFO [0m solana_ledger::blockstore[0m[38;5;8m][0m Maximum open file descriptors: 1000000
+[0m[38;5;8m[[0m2023-08-17T08:09:39.015133185Z [0m[32mINFO [0m solana_ledger::blockstore[0m[38;5;8m][0m Opening database at "test-ledger/rocksdb"
+[0m[38;5;8m[[0m2023-08-17T08:09:40.460868645Z [0m[32mINFO [0m solana_ledger::blockstore[0m[38;5;8m][0m "test-ledger/rocksdb" open took 1.4s
+[0m[38;5;8m[[0m2023-08-17T08:09:40.466734770Z [0m[32mINFO [0m solana_metrics::metrics[0m[38;5;8m][0m metrics disabled: SOLANA_METRICS_CONFIG: environment variable not found
+[0m[38;5;8m[[0m2023-08-17T08:09:40.467572855Z [0m[32mINFO [0m solana_metrics::metrics[0m[38;5;8m][0m datapoint: shred_insert_is_full total_time_ms=0i slot=0i last_index=3i num_repaired=0i num_recovered=0i
+[0m[38;5;8m[[0m2023-08-17T08:09:40.659937792Z [0m[32mINFO [0m solana_runtime::hardened_unpack[0m[38;5;8m][0m Extracting "test-ledger/genesis.tar.bz2"...
+[0m[38;5;8m[[0m2023-08-17T08:09:40.783474871Z [0m[32mINFO [0m solana_runtime::hardened_unpack[0m[38;5;8m][0m unpacked 1 entries total
+[0m[38;5;8m[[0m2023-08-17T08:09:40.784199456Z [0m[32mINFO [0m solana_runtime::hardened_unpack[0m[38;5;8m][0m Extracted "test-ledger/genesis.tar.bz2" in 123.610239ms
+[0m[38;5;8m[[0m2023-08-17T08:09:41.075839808Z [0m[33mWARN [0m solana_runtime::snapshot_utils[0m[38;5;8m][0m Failed to read the sub paths of test-ledger/accounts
+[0m[38;5;8m[[0m2023-08-17T08:09:41.086624147Z [0m[33mWARN [0m solana_core::validator[0m[38;5;8m][0m identity: BRMfhDDjxn4mtgjQmA8YaGW85QJZpc1x7zypaCgcmrZg
+[0m[38;5;8m[[0m2023-08-17T08:09:41.087095386Z [0m[33mWARN [0m solana_core::validator[0m[38;5;8m][0m vote account: E757vYEww9xk2tv9RsVALcZngEHnjHZXn2c5v4WyuFHe
+[0m[38;5;8m[[0m2023-08-17T08:09:41.087696725Z [0m[33mWARN [0m solana_core::validator[0m[38;5;8m][0m authorized voter: E757vYEww9xk2tv9RsVALcZngEHnjHZXn2c5v4WyuFHe
+[0m[38;5;8m[[0m2023-08-17T08:09:41.089820841Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m Initializing sigverify...
+[0m[38;5;8m[[0m2023-08-17T08:09:41.090410839Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m Done.
+[0m[38;5;8m[[0m2023-08-17T08:09:41.091503602Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m Cleaning accounts paths..
+[0m[38;5;8m[[0m2023-08-17T08:09:41.107428891Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m done. clean_accounts_paths took 15ms
+[0m[38;5;8m[[0m2023-08-17T08:09:41.109194382Z [0m[32mINFO [0m solana_runtime::snapshot_utils[0m[38;5;8m][0m Unable to read bank snapshots directory test-ledger/snapshot: No such file or directory (os error 2)
+[0m[38;5;8m[[0m2023-08-17T08:09:41.110543482Z [0m[32mINFO [0m solana_runtime::snapshot_utils[0m[38;5;8m][0m Unable to read bank snapshots directory test-ledger/snapshot: No such file or directory (os error 2)
+[0m[38;5;8m[[0m2023-08-17T08:09:41.111962380Z [0m[32mINFO [0m solana_runtime::snapshot_utils[0m[38;5;8m][0m Unable to read bank snapshots directory test-ledger/snapshot: No such file or directory (os error 2)
+[0m[38;5;8m[[0m2023-08-17T08:09:41.112786135Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m Cleaning orphaned account snapshot directories..
+[0m[38;5;8m[[0m2023-08-17T08:09:41.113741514Z [0m[32mINFO [0m solana_runtime::snapshot_utils[0m[38;5;8m][0m Unable to read bank snapshots directory test-ledger/snapshot: No such file or directory (os error 2)
+[0m[38;5;8m[[0m2023-08-17T08:09:41.114554228Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m Geyser plugin: accounts_update_notifier: false, transaction_notifier: false, entry_notifier: false
+[0m[38;5;8m[[0m2023-08-17T08:09:41.115008004Z [0m[32mINFO [0m solana_core::system_monitor_service[0m[38;5;8m][0m Starting SystemMonitorService
+[0m[38;5;8m[[0m2023-08-17T08:09:41.115848092Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m loading ledger from "test-ledger"...
+[0m[38;5;8m[[0m2023-08-17T08:09:41.152560059Z [0m[32mINFO [0m solana_core::validator[0m[38;5;8m][0m genesis hash: 3M556UWKxpuReMnPkNysy8hPCfiGHvmDYYafpUncMrfC
+[0m[38;5;8m[[0m2023-08-17T08:09:41.153371399Z [0m[32mINFO [0m solana_ledger::blockstore[0m[38;5;8m][0m Maximum open file descriptors: 1000000
+[0m[38;5;8m[[0m2023-08-17T08:09:41.153837462Z [0m[32mINFO [0m solana_ledger::blockstore[0m[38;5;8m][0m Opening database at "test-ledger/rocksdb"
+[0m[38;5;8m[[0m2023-08-17T08:09:41.545625143Z [0m[32mINFO [0m solana_ledger::blockstore[0m[38;5;8m][0m "test-ledger/rocksdb" open took 391ms
+[0m[38;5;8m[[0m2023-08-17T08:09:41.548609183Z [0m[32mINFO [0m solana_ledger::bank_forks_utils[0m[38;5;8m][0m Initializing bank snapshot path: test-ledger/snapshot
+[0m[38;5;8m[[0m2023-08-17T08:09:41.559568191Z [0m[33mWARN [0m solana_ledger::bank_forks_utils[0m[38;5;8m][0m No snapshot package found in directory: "test-ledger"; will load from genesis
+[0m[38;5;8m[[0m2023-08-17T08:09:41.560385387Z [0m[32mINFO [0m solana_ledger::bank_forks_utils[0m[38;5;8m][0m Processing ledger from genesis
+thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: Custom { kind: ReadOnlyFilesystem, error: PathError { path: "/tmp/.tmp5GDXxW", err: Os { code: 30, kind: ReadOnlyFilesystem, message: "Read-only file system" } } }', /var/lib/buildkite-agent/builds/kong-1/solana-labs/solana-secondary/bucket_map/src/bucket_map.rs:81:44
+stack backtrace:
