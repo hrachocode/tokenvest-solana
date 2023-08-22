@@ -12,13 +12,15 @@ export const FEATURED_PRODUCT_TITLE: string = "Discover products & Invest";
 export const CATEGORIES_BROWSER_TITLE: string = "Browse Categories";
 export const PRODUCTS_BROWSER_TITLE: string = "Discover More Products";
 export const JOIN_US_TEXT_MAIN: string = "Join our weekly digest";
-export const JOIN_US_TEXT_SECONDARY: string = "Get exclusive promotions & updates straight to your inbox.";
+export const JOIN_US_TEXT_SECONDARY: string =
+  "Get exclusive promotions & updates straight to your inbox.";
 export const EMAIL_PLACEHOLDER: string = "Enter your email here";
 export const SUBSCRIBE: string = "Subscribe";
 export const SEE_ALL: string = "See All";
 export const MAX_PRODUCTS_HOME: number = 3;
 export const TOKENVEST: string = "Tokenvest";
 export const DEPLOY: string = "DEPLOY";
+export const INITIALIZE: string = "INITIALIZE";
 export const DRAFT: string = "DRAFT";
 
 export const NAME: string = "Name";

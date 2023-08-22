@@ -14,9 +14,9 @@ const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestB
   ssr: false
 });
 
-const TvDeployButton = dynamic(() => import("../../components/TvDeployButton/TvDeployButton"), {
+const TvInitializeButton = dynamic(() => import("../../components/TvInitializeButton/TvInitializeButton"), {
   ssr: false
-});
+})
 
 export async function getStaticPaths() {
 
@@ -80,7 +80,7 @@ export default function Product({
     isDraft,
     isReady
   } }: { product: IProduct }) {
-  const [ isPopupOpen, setPopupOpen ] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const dateText = receiveDate(createdAt);
 
   const openPopup = () => {
@@ -94,7 +94,7 @@ export default function Product({
   const renderButton = () => {
     if (isDraft) {
       if (isReady) {
-        return <TvDeployButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} />;
+        return <TvInitializeButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} />
       } else {
         return <TvButton disabled customVariant="secondary">{DRAFT}</TvButton>;
       }
@@ -114,6 +114,7 @@ export default function Product({
             productId={id}
             ownerAddress={ownerAddress}
             raiseGoal={raiseGoal}
+            closePopup={closePopup}
           />
         </Box>
       }

@@ -34,7 +34,7 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     category, setCategory,
     editId
   } = useSmartInputs();
-  const [ files, setFiles ] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const handleClick = async () => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};

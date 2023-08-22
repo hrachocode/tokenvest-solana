@@ -2,14 +2,14 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-solana_investment_contract = "EWzksjtUD8Ew1BQZg9LCYK4TEucLLFrrzBreqf681zBb"
+solana_investment_contract = "5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
-wallet = "/home/brgndy25/.config/solana/id.json"
+cluster = "devnet"
+wallet = "/home/davo/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
