@@ -68,7 +68,7 @@ mod investment_contract {
                 .try_borrow_mut_lamports()? += withdraw_amount;
             Ok(())
         } else {
-            msg!("Unknown Caller: Cannot Withdraw");
+            msg!("Unknown Caller: Cannot Withdraw Funds");
             Ok(())
         }
     }
