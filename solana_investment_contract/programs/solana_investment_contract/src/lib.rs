@@ -82,8 +82,9 @@ pub struct Initialize<'info> {
     // (u64 = 64 bits unsigned integer = 8 bytes)
     #[account(
         init,
+        seeds = [startup_owner.key().as_ref()], bump,
         payer = startup_owner,
-        space = 8 + InvestmentContract::MAX_SIZE, seeds = [b"investment-contract", startup_owner.key().as_ref()], bump
+        space = 8 + InvestmentContract::MAX_SIZE
     )]
     pub investment_contract: Account<'info, InvestmentContract>,
     #[account(mut)]
