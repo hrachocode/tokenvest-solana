@@ -26,8 +26,8 @@ export const useSolana = () => {
       wallet as unknown as AnchorWallet,
       opts
     );
-    const [pda] = await web3.PublicKey.findProgramAddress(
-      [provider.wallet.publicKey.toBuffer()],
+    const [ pda ] = await web3.PublicKey.findProgramAddress(
+      [ provider.wallet.publicKey.toBuffer() ],
       programID
     );
     return {
@@ -47,6 +47,7 @@ export const useSolana = () => {
       programID,
       provider.provider
     );
+    const { wallet } = provider.provider;
     try {
       await program.methods
         .initialize(
@@ -56,7 +57,7 @@ export const useSolana = () => {
         )
         .accounts({
           investmentContract: provider.pda,
-          user: provider.provider.wallet.publicKey,
+          user: wallet.publicKey,
           systemProgram: SystemProgram.programId,
         })
         .rpc();
@@ -76,11 +77,12 @@ export const useSolana = () => {
       programID,
       provider.provider
     );
+    const { wallet } = provider.provider;
     try {
       await program.methods
         .invest(new anchor.BN(investAmount * LAMPORTS_PER_SOL))
         .accounts({
-          user: provider.provider.wallet.publicKey,
+          user: wallet.publicKey,
           investmentContract: provider.pda,
           systemProgram: SystemProgram.programId,
         })
@@ -102,11 +104,12 @@ export const useSolana = () => {
       programID,
       provider.provider
     );
+    const { wallet } = provider.provider;
     try {
       await program.methods
         .withdraw()
         .accounts({
-          user: provider.provider.wallet.publicKey,
+          user: wallet.publicKey,
           investmentContract: provider.pda,
           systemProgram: SystemProgram.programId,
         })

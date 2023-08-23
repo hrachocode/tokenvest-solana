@@ -14,23 +14,27 @@ interface ITvInitializeButton {
 }
 
 const TvInitializeButton = ({ raiseGoal, sharePercentage, days, productId, setIsDraftButton }: ITvInitializeButton): JSX.Element => {
-    const { initialize } = useSolana();
+  const { initialize } = useSolana();
 
-    const handleClick = async () => {
-        await initialize(
-            raiseGoal, sharePercentage, days
-        );
-        const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
-            data: {
-                isDraft: false,
-            }
-        });
-        if (putRes) {
-            setIsDraftButton(false)
+  const handleClick = async () => {
+    try {
+      await initialize(
+        raiseGoal, sharePercentage, days
+      );
+      const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
+        data: {
+          isDraft: false,
         }
+      });
+      if (putRes) {
+        setIsDraftButton(false);
+      }
+    } catch (err) {
+      alert(err);
+    }
 
-    };
-    return <TvButton onClick={handleClick} customVariant="secondary">{INITIALIZE}</TvButton>
+  };
+  return <TvButton onClick={handleClick} customVariant="secondary">{INITIALIZE}</TvButton>;
 };
 
 export default TvInitializeButton;

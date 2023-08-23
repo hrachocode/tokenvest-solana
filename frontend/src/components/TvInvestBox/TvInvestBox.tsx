@@ -18,9 +18,9 @@ interface ITvInvestBox {
 
 const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, closePopup }: ITvInvestBox): JSX.Element => {
 
-  const { invest } = useSolana()
+  const { invest } = useSolana();
 
-  const [investAmount, setInvestAmount] = useState(0);
+  const [ investAmount, setInvestAmount ] = useState(0);
 
   const handleChange = (value: string, cb: Function) => {
     cb(value);
@@ -31,8 +31,8 @@ const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, clos
   };
 
   const handleClick = () => {
-    invest(investAmount)
-    closePopup()
+    invest(investAmount);
+    closePopup();
   };
 
   return (

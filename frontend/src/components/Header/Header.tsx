@@ -19,8 +19,8 @@ const Header = (): JSX.Element => {
   const { allAccounts } = usePolkadot();
   const router = useRouter();
   const isConnected = allAccounts?.length !== 0;
-  const [notifications, setNotifications] = useState([]);
-  const [openNotification, setOpenNotification] = useState(false);
+  const [ notifications, setNotifications ] = useState([]);
+  const [ openNotification, setOpenNotification ] = useState(false);
 
   useEffect(() => {
     (async () => {
