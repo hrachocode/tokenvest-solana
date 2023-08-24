@@ -13,7 +13,7 @@ const Header = dynamic(() => import("../components/Header/Header"), {
 
 const WalletConnectionProvider = dynamic<{ children: ReactNode }>(
   () =>
-    import('../components/SolanaWallet/SolanaWallet').then(
+    import("../components/SolanaWallet/SolanaWallet").then(
       ({ SolanaWallet }) => SolanaWallet
     ),
   {

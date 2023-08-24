@@ -5,10 +5,11 @@ const baseButtonStyles = {
   borderRadius: "20px",
   color: "textPrimary",
   paddingX: 5,
+  margin: "8px",
   border: (theme: ICustomTheme) => `2px solid ${theme.palette.callToAction}`,
   ":hover": {
-    backgroundColor: "backgroundPrimary"
-  }
+    backgroundColor: "backgroundPrimary",
+  },
 };
 
 const primaryButtonStyles = {
