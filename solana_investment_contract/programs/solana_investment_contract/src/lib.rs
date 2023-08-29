@@ -1,8 +1,7 @@
-use anchor_lang::prelude::*;
-//use anchor_lang::solana_program::*;
+use std::collections::HashMap;
 
-// This is your program's public key and it will update
-// automatically when you build the project.
+use anchor_lang::{accounts::account, prelude::*};
+
 declare_id!("5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ");
 
 #[program]
@@ -45,6 +44,9 @@ mod investment_contract {
         )?;
 
         investment_contract.investors.push(from_account.key());
+        investment_contract
+            .investors_list
+            .insert(from_account.key(), investment_amount);
         investment_contract.tokens_collected =
             investment_contract.tokens_collected + investment_amount;
 
@@ -72,18 +74,79 @@ mod investment_contract {
             Ok(())
         }
     }
+
+    pub fn finish_startup(ctx: Context<FinishStartup>) -> Result<()> {
+        let investment_contract = &ctx.accounts.investment_contract;
+        let startup_owner = investment_contract.startup_owner;
+        let caller = &ctx.accounts.caller;
+        if investment_contract.end_time > ctx.accounts.clock.unix_timestamp {
+            msg!("CAMPAIGN STILL RUNNING");
+            Ok(())
+        } else {
+            if investment_contract.tokens_collected < investment_contract.investment_goal {
+                msg!("CAMPAIGN FAILED");
+                Ok(())
+            } else {
+                if caller.key == &startup_owner {
+                    **ctx
+                        .accounts
+                        .investment_contract
+                        .to_account_info()
+                        .try_borrow_mut_lamports()? -= investment_contract.tokens_collected;
+                    **ctx
+                        .accounts
+                        .caller
+                        .to_account_info()
+                        .try_borrow_mut_lamports()? += investment_contract.tokens_collected;
+                    Ok(())
+                } else {
+                    msg!("Unknown Caller: Cannot Withdraw Funds");
+                    Ok(())
+                }
+            }
+        }
+    }
+
+    pub fn refund_startup(ctx: Context<RefundStartup>) -> Result<()> {
+        let investment_contract = &ctx.accounts.investment_contract;
+        let caller = &ctx.accounts.caller;
+        if investment_contract.end_time > ctx.accounts.clock.unix_timestamp {
+            msg!("CAMPAIGN STILL RUNNING");
+            Ok(())
+        } else {
+            if investment_contract.tokens_collected > investment_contract.investment_goal {
+                msg!("CAMPAING FINISHED SUCCESFULLY");
+                Ok(())
+            } else {
+                if investment_contract.investors.contains(&caller.key) {
+                    **ctx
+                        .accounts
+                        .investment_contract
+                        .to_account_info()
+                        .try_borrow_mut_lamports()? -= investment_contract.investors_list.get(&caller.key()).unwrap();
+                    **ctx
+                        .accounts
+                        .caller
+                        .to_account_info()
+                        .try_borrow_mut_lamports()? += investment_contract.investors_list.get(&caller.key()).unwrap();
+                    Ok(())
+                } else {
+                    msg!("Unknown Caller: Cannot Withdraw Funds");
+                    Ok(())
+                }
+            }
+
+        }
+    }
 }
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    // We must specify the space in order to initialize an account.
-    // First 8 bytes are default account discriminator,
-    // next 8 bytes come from NewAccount.data being type u64.
-    // (u64 = 64 bits unsigned integer = 8 bytes)
     #[account(
         init,
+        seeds = [startup_owner.key().as_ref()], bump,
         payer = startup_owner,
-        space = 8 + InvestmentContract::MAX_SIZE, seeds = [b"investment-contract", startup_owner.key().as_ref()], bump
+        space = 8 + InvestmentContract::MAX_SIZE
     )]
     pub investment_contract: Account<'info, InvestmentContract>,
     #[account(mut)]
@@ -110,6 +173,26 @@ pub struct Withdraw<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct FinishStartup<'info> {
+    #[account(mut)]
+    pub investment_contract: Account<'info, InvestmentContract>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+    pub system_program: Program<'info, System>,
+    pub clock: Sysvar<'info, Clock>,
+}
+
+#[derive(Accounts)]
+pub struct RefundStartup<'info> {
+    #[account(mut)]
+    pub investment_contract: Account<'info, InvestmentContract>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+    pub system_program: Program<'info, System>,
+    pub clock: Sysvar<'info, Clock>,
+}
+
 #[account]
 pub struct InvestmentContract {
     pub startup_owner: Pubkey,
@@ -120,6 +203,7 @@ pub struct InvestmentContract {
     pub share_percentage: u64,
     pub investors: Vec<Pubkey>,
     pub bump: u8,
+    pub investors_list: HashMap<Pubkey, u64>,
 }
 
 impl InvestmentContract {
