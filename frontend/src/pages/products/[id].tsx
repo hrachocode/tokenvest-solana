@@ -13,7 +13,6 @@ import { useState } from "react";
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
   ssr: false
 });
-
 const TvInitializeButton = dynamic(() => import("../../components/TvInitializeButton/TvInitializeButton"), {
   ssr: false
 });
@@ -33,7 +32,7 @@ export async function getStaticPaths() {
     };
   });
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params: { id } = {} }: GetStaticPropsContext) {
@@ -83,8 +82,9 @@ export default function Product({
     isDraft,
     isReady
   } }: { product: IProduct }) {
-  const [ isPopupOpen, setPopupOpen ] = useState(false);
-  const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isDraftButton, setIsDraftButton] = useState(isDraft);
+  const [resRaisedAmount, setResRaisedAmount] = useState(raisedAmount)
   const dateText = receiveDate(createdAt);
 
   const openPopup = () => {
@@ -98,7 +98,13 @@ export default function Product({
   const renderButton = () => {
     if (isDraftButton) {
       if (isReady) {
-        return <TvInitializeButton raiseGoal={raiseGoal} sharePercentage={sharePercentage} days={days} productId={id} setIsDraftButton={setIsDraftButton} />;
+        return <TvInitializeButton
+          raiseGoal={raiseGoal}
+          sharePercentage={sharePercentage}
+          days={days}
+          productId={id}
+          setIsDraftButton={setIsDraftButton}
+        />;
       } else {
         return <TvButton disabled customVariant="secondary">{DRAFT}</TvButton>;
       }
@@ -121,6 +127,8 @@ export default function Product({
             productId={id}
             ownerAddress={ownerAddress}
             raiseGoal={raiseGoal}
+            resRaisedAmount={resRaisedAmount}
+            setResRaisedAmount={setResRaisedAmount}
             closePopup={closePopup}
           />
         </Box>
@@ -154,7 +162,7 @@ export default function Product({
             </Box>
             <Box sx={unitProductStyles.raiseInfo}>
               <Typography color="caption" variant="caption">{RAISED}</Typography>
-              <Typography>{raisedAmount}</Typography>
+              <Typography>{resRaisedAmount}</Typography>
             </Box>
           </Box>
           {renderButton()}

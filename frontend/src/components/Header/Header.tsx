@@ -13,20 +13,22 @@ import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { useRouter } from "next/router";
 import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const Header = (): JSX.Element => {
 
   const { allAccounts } = usePolkadot();
   const router = useRouter();
   const isConnected = allAccounts?.length !== 0;
-  const [ notifications, setNotifications ] = useState([]);
-  const [ openNotification, setOpenNotification ] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [openNotification, setOpenNotification] = useState(false);
+  const { publicKey } = useWallet();
 
   useEffect(() => {
     (async () => {
       const { data = [] } =
         await handleRequest(
-          `${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${SHIBUYA_ADDRESS}`,
+          `${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
           METHODS.GET) ?? {};
       if (data.length > 0) {
         const filteredData = data.filter((item: ICMSNotification) => item.attributes.isOpened === false);
