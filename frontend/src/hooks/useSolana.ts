@@ -1,47 +1,24 @@
-import { AnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { Program, web3, AnchorProvider } from "@project-serum/anchor";
+import { Program, web3 } from "@project-serum/anchor";
 import idl from "../../../solana_investment_contract/target/idl/investment_contract.json";
 import * as anchor from "@project-serum/anchor";
-import { Cluster } from "@solana/web3.js";
+import { PublicKeyData } from "@solana/web3.js";
+import { useSolanaGetProvider } from "./useSolanaGetProvider";
+import { solanaInvest } from "@/utils/solanaHookUtils";
+import { Dispatch, SetStateAction } from "react";
 
 export const useSolana = () => {
-  const wallet = useWallet();
   const { SystemProgram, LAMPORTS_PER_SOL } = web3;
-
-  const opts = {
-    preflightCommitment: "processed" as "processed",
-  };
   const programID = new anchor.web3.PublicKey(
-    "5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ"
+    process.env.NEXT_PUBLIC_SOLANA_PROGRAM_ID as PublicKeyData
   );
-
-  const getProvider = async () => {
-    let connection = new web3.Connection(
-      web3.clusterApiUrl(process.env.NEXT_PUBLIC_SOLANA as Cluster),
-      "confirmed"
-    );
-
-    const provider = new AnchorProvider(
-      connection,
-      wallet as unknown as AnchorWallet,
-      opts
-    );
-    const [ pda ] = await web3.PublicKey.findProgramAddress(
-      [ provider.wallet.publicKey.toBuffer() ],
-      programID
-    );
-    return {
-      provider,
-      pda,
-    };
-  };
+  const getProvider = useSolanaGetProvider();
 
   const initialize = async (
     raiseGoal: string,
     sharePercentage: string,
     days: string
   ) => {
-    const provider = await getProvider();
+    const provider = await getProvider;
     const program = new Program(
       idl as anchor.Idl,
       programID,
@@ -70,8 +47,13 @@ export const useSolana = () => {
     }
   };
 
-  const invest = async (investAmount: number) => {
-    const provider = await getProvider();
+  const invest = async (
+    investAmount: number,
+    resRaisedAmount: string,
+    setResRaisedAmount: Dispatch<SetStateAction<string>>,
+    productId: string
+  ) => {
+    const provider = await getProvider;
     const program = new Program(
       idl as anchor.Idl,
       programID,
@@ -90,15 +72,23 @@ export const useSolana = () => {
       const account = await program.account.investmentContract.fetch(
         provider.pda
       );
-
       console.log(account, "acountInvest");
+      const resInvestAmount = Number(investAmount);
+      const ownerAddress = wallet.publicKey.toString();
+      await solanaInvest(
+        productId,
+        resInvestAmount,
+        resRaisedAmount,
+        setResRaisedAmount,
+        ownerAddress
+      );
     } catch (err) {
       console.log("Transaction error: ", err);
     }
   };
 
   const withdraw = async () => {
-    const provider = await getProvider();
+    const provider = await getProvider;
     const program = new Program(
       idl as anchor.Idl,
       programID,

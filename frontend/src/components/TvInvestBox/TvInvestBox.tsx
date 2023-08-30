@@ -1,8 +1,6 @@
 import { INVEST, INVEST_BOX_CAPTION } from "@/constants/general";
-import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
-import { usePolkadot } from "@/hooks/usePolkadot";
 import { Box, Typography } from "@mui/material";
-import { MouseEvent, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
 import { TvButton } from "../TvButton/TvButton";
 import { TvInput } from "../TvInput/TvInput";
 import { styles } from "./TvInvestBox.styles";
@@ -13,14 +11,24 @@ interface ITvInvestBox {
   productId: string;
   ownerAddress: string;
   raiseGoal: string;
+  resRaisedAmount: string;
+  setResRaisedAmount: Dispatch<SetStateAction<string>>;
   closePopup: Function;
 }
 
-const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, closePopup }: ITvInvestBox): JSX.Element => {
+const TvInvestBox = ({
+  contractAddress,
+  productId,
+  ownerAddress,
+  raiseGoal,
+  resRaisedAmount,
+  setResRaisedAmount,
+  closePopup
+}: ITvInvestBox): JSX.Element => {
 
   const { invest } = useSolana();
 
-  const [ investAmount, setInvestAmount ] = useState(0);
+  const [investAmount, setInvestAmount] = useState(0);
 
   const handleChange = (value: string, cb: Function) => {
     cb(value);
@@ -31,7 +39,7 @@ const TvInvestBox = ({ contractAddress, productId, ownerAddress, raiseGoal, clos
   };
 
   const handleClick = () => {
-    invest(investAmount);
+    invest(investAmount, resRaisedAmount, setResRaisedAmount, productId);
     closePopup();
   };
 
