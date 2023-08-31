@@ -23,8 +23,7 @@ const Header = (): JSX.Element => {
   const { publicKey } = useWallet();
   const isConnected = allAccounts?.length !== 0;
   const [ openNotification, setOpenNotification ] = useState(false);
-  const notifications = useContext(NotificationContext).notifaction;
-  const setNotifactions = useContext(NotificationContext).setNotifaction;
+  const { notifications, setNotifactions } = useContext(NotificationContext);
 
   useEffect(() => {
     (async () => {
@@ -60,10 +59,10 @@ const Header = (): JSX.Element => {
       }
     }) ?? {};
     if (notifications.length > 0) {
-      let resNotifactions = notifications.filter((el) => {
-        return el.id !== id;
+      const nextNotifactions = notifications.filter(({ id: notifId }: { id: number }) => {
+        return notifId !== id;
       });
-      setNotifactions([ ...resNotifactions ]);
+      setNotifactions([ ...nextNotifactions ]);
     }
     if (openNotifData) {
       router.push(`${PRODUCTS}/${productId}`);

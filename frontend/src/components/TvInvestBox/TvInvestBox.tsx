@@ -35,7 +35,7 @@ const TvInvestBox = ({
   const { publicKey } = useWallet();
 
   const [ investAmount, setInvestAmount ] = useState(0);
-  const setNotifactions = useContext(NotificationContext).setNotifaction;
+  const { setNotifactions } = useContext(NotificationContext);
 
   const handleChange = (value: string, cb: Function) => {
     cb(value);

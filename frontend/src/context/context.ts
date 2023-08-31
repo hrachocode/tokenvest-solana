@@ -2,7 +2,7 @@ import { createContext, Dispatch, SetStateAction } from "react";
 
 export const initialNotifactionState = [];
 
-export type INotification = {
+export interface INotification {
     id: number;
     productId: string,
     message: string;
@@ -10,8 +10,8 @@ export type INotification = {
 }
 
 export interface INotificationContext {
-    notifaction: INotification[],
-    setNotifaction: Dispatch<SetStateAction<INotification[]>>
+    notifications: INotification[],
+    setNotifactions: Dispatch<SetStateAction<INotification[]>>
 }
 
-export const NotificationContext = createContext({ notifaction: initialNotifactionState, setNotifaction: () => { } } as INotificationContext);
+export const NotificationContext = createContext({ notifications: initialNotifactionState, setNotifactions: () => { } } as INotificationContext);
