@@ -3,10 +3,13 @@ const numberPointLength = (number: number) => {
 };
 
 export const detectFractionalPart = (num1: number, num2: number) => {
-  const maxNumberPointLength =
-    numberPointLength(num1) > numberPointLength(num2)
-      ? numberPointLength(num1)
-      : numberPointLength(num2);
-
-  return (num1 + num2).toFixed(maxNumberPointLength);
+  if (Number.isInteger(num1) || Number.isInteger(num2)) {
+    return num1 + num2;
+  } else {
+    const maxNumberPointLength =
+      numberPointLength(num1) > numberPointLength(num2)
+        ? numberPointLength(num1)
+        : numberPointLength(num2);
+    return (num1 + num2).toFixed(maxNumberPointLength);
+  }
 };

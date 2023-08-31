@@ -82,9 +82,9 @@ export default function Product({
     isDraft,
     isReady
   } }: { product: IProduct }) {
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const [isDraftButton, setIsDraftButton] = useState(isDraft);
-  const [resRaisedAmount, setResRaisedAmount] = useState(raisedAmount)
+  const [ isPopupOpen, setPopupOpen ] = useState(false);
+  const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
+  const [ resRaisedAmount, setResRaisedAmount ] = useState<number>(raisedAmount);
   const dateText = receiveDate(createdAt);
 
   const openPopup = () => {
