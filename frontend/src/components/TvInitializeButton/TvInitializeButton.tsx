@@ -6,14 +6,20 @@ import { METHODS, handleRequest } from "@/utils/handleRequest";
 import { CMS_API, CMS_PRODUCTS } from "@/constants/cms";
 
 interface ITvInitializeButton {
-    raiseGoal: string,
-    sharePercentage: string,
-    days: string,
-    productId: string
-    setIsDraftButton: Dispatch<SetStateAction<boolean>>
+  raiseGoal: string,
+  sharePercentage: string,
+  days: string,
+  productId: string,
+  setIsDraftButton: Dispatch<SetStateAction<boolean>>
 }
 
-const TvInitializeButton = ({ raiseGoal, sharePercentage, days, productId, setIsDraftButton }: ITvInitializeButton): JSX.Element => {
+const TvInitializeButton = ({
+  raiseGoal,
+  sharePercentage,
+  days,
+  productId,
+  setIsDraftButton
+}: ITvInitializeButton): JSX.Element => {
   const { initialize } = useSolana();
 
   const handleClick = async () => {

@@ -6,7 +6,7 @@ import { styles } from "./Header.styles";
 import notification from "../../../public/notification.png";
 import Image from "next/image";
 import { TOKENVEST } from "@/constants/general";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { CMS_API, CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
 import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
@@ -14,15 +14,16 @@ import { useRouter } from "next/router";
 import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { NotificationContext } from "@/context/context";
 
 const Header = (): JSX.Element => {
 
   const { allAccounts } = usePolkadot();
   const router = useRouter();
-  const isConnected = allAccounts?.length !== 0;
-  const [notifications, setNotifications] = useState([]);
-  const [openNotification, setOpenNotification] = useState(false);
   const { publicKey } = useWallet();
+  const isConnected = allAccounts?.length !== 0;
+  const [ openNotification, setOpenNotification ] = useState(false);
+  const { notifications, setNotifactions } = useContext(NotificationContext);
 
   useEffect(() => {
     (async () => {
@@ -40,7 +41,7 @@ const Header = (): JSX.Element => {
             productId: item.attributes.productId
           };
         }) || [];
-        setNotifications(unreadNotifications);
+        setNotifactions([ ...unreadNotifications ]);
       };
     })();
   }, []);
@@ -51,13 +52,18 @@ const Header = (): JSX.Element => {
     };
     setOpenNotification((state) => !state);
   };
-
   const handleOpenNotification = async (id: number, productId: string) => {
     const { date: openNotifData = {} } = await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
       "data": {
         "isOpened": true,
       }
     }) ?? {};
+    if (notifications.length > 0) {
+      const nextNotifactions = notifications.filter(({ id: notifId }: { id: number }) => {
+        return notifId !== id;
+      });
+      setNotifactions([ ...nextNotifactions ]);
+    }
     if (openNotifData) {
       router.push(`${PRODUCTS}/${productId}`);
     };

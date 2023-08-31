@@ -60,7 +60,7 @@ export interface IProduct {
     address: string;
     ownerAddress: string;
     ownerName: string;
-    raisedAmount: string;
+    raisedAmount: number;
     image: string | null;
     createdAt: string;
     description: string;

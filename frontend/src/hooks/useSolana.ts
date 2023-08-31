@@ -49,8 +49,8 @@ export const useSolana = () => {
 
   const invest = async (
     investAmount: number,
-    resRaisedAmount: string,
-    setResRaisedAmount: Dispatch<SetStateAction<string>>,
+    resRaisedAmount: number,
+    setResRaisedAmount: Dispatch<SetStateAction<number>>,
     productId: string
   ) => {
     const provider = await getProvider;
