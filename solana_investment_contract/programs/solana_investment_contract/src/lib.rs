@@ -1,6 +1,4 @@
-use std::collections::HashMap;
-
-use anchor_lang::{accounts::account, prelude::*};
+use anchor_lang::prelude::*;
 
 declare_id!("5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ");
 
@@ -46,7 +44,7 @@ mod investment_contract {
         investment_contract.investors.push(from_account.key());
         investment_contract
             .investors_list
-            .insert(from_account.key(), investment_amount);
+            .push((from_account.key(), investment_amount as u64));
         investment_contract.tokens_collected =
             investment_contract.tokens_collected + investment_amount;
 
@@ -119,16 +117,23 @@ mod investment_contract {
                 Ok(())
             } else {
                 if investment_contract.investors.contains(&caller.key) {
+                    let refund_amount = investment_contract.investors_list.iter().find_map(|&(ref key, value)| {
+                        if &key == &caller.key {
+                            Some(value)
+                        } else {
+                            None
+                        }
+                });
                     **ctx
                         .accounts
                         .investment_contract
                         .to_account_info()
-                        .try_borrow_mut_lamports()? -= investment_contract.investors_list.get(&caller.key()).unwrap();
+                        .try_borrow_mut_lamports()? -= refund_amount.unwrap();
                     **ctx
                         .accounts
                         .caller
                         .to_account_info()
-                        .try_borrow_mut_lamports()? += investment_contract.investors_list.get(&caller.key()).unwrap();
+                        .try_borrow_mut_lamports()? += refund_amount.unwrap();
                     Ok(())
                 } else {
                     msg!("Unknown Caller: Cannot Withdraw Funds");
@@ -203,7 +208,7 @@ pub struct InvestmentContract {
     pub share_percentage: u64,
     pub investors: Vec<Pubkey>,
     pub bump: u8,
-    pub investors_list: HashMap<Pubkey, u64>,
+    pub investors_list: Vec<(Pubkey, u64)>,
 }
 
 impl InvestmentContract {
