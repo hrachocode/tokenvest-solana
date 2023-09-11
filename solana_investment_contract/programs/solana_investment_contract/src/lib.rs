@@ -44,7 +44,10 @@ mod investment_contract {
         investment_contract.investors.push(from_account.key());
         investment_contract
             .investors_list
-            .push((from_account.key(), investment_amount as u64));
+            .push(InvestorInfo {
+                pubkey: from_account.key(),
+                amount: investment_amount,
+            });
         investment_contract.tokens_collected =
             investment_contract.tokens_collected + investment_amount;
 
@@ -117,13 +120,13 @@ mod investment_contract {
                 Ok(())
             } else {
                 if investment_contract.investors.contains(&caller.key) {
-                    let refund_amount = investment_contract.investors_list.iter().find_map(|&(ref key, value)| {
-                        if &key == &caller.key {
-                            Some(value)
-                        } else {
-                            None
+                    let mut refund_amount = None;
+                    for investor_info in investment_contract.investors_list.iter(){
+                        if &investor_info.pubkey == &caller.key(){
+                        refund_amount = Some(investor_info.amount);
+                           break;
                         }
-                });
+                    };
                     **ctx
                         .accounts
                         .investment_contract
@@ -208,9 +211,16 @@ pub struct InvestmentContract {
     pub share_percentage: u64,
     pub investors: Vec<Pubkey>,
     pub bump: u8,
-    pub investors_list: Vec<(Pubkey, u64)>,
+    pub investors_list: Vec<InvestorInfo>,
 }
+
 
 impl InvestmentContract {
     const MAX_SIZE: usize = 1024;
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+pub struct InvestorInfo {
+    pubkey: Pubkey,
+    amount: u64
 }
