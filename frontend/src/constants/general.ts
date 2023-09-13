@@ -22,6 +22,8 @@ export const TOKENVEST: string = "Tokenvest";
 export const DEPLOY: string = "DEPLOY";
 export const INITIALIZE: string = "INITIALIZE";
 export const WITHDRAW: string = "WITHDRAW";
+export const FINISH: string = "FINISH";
+export const REFUND: string = "REFUND";
 export const DRAFT: string = "DRAFT";
 
 export const NAME: string = "Name";

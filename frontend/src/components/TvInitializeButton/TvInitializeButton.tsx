@@ -7,7 +7,6 @@ import { CMS_API, CMS_PRODUCTS } from "@/constants/cms";
 
 interface ITvInitializeButton {
   raiseGoal: string,
-  sharePercentage: string,
   days: string,
   productId: string,
   setIsDraftButton: Dispatch<SetStateAction<boolean>>
@@ -15,7 +14,6 @@ interface ITvInitializeButton {
 
 const TvInitializeButton = ({
   raiseGoal,
-  sharePercentage,
   days,
   productId,
   setIsDraftButton
@@ -25,7 +23,7 @@ const TvInitializeButton = ({
   const handleClick = async () => {
     try {
       await initialize(
-        raiseGoal, sharePercentage, days
+        raiseGoal, days, productId
       );
       const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
         data: {

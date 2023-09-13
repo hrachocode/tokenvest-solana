@@ -20,7 +20,7 @@ export const createProductCMS = async (
         raiseGoal: raiseGoal,
         sharePercentage: sharePercentage,
         address: "",
-        ownerAddress: accountAddress,
+        ownerAddress: "",
         ownerName: accountName,
         raisedAmount: DEFAULT_RAISED_AMOUNT,
         days: days,

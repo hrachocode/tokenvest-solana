@@ -5,7 +5,7 @@ import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { unitProductStyles } from "@/styles/UnitProduct.styles";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { receiveDate } from "@/utils/productUtils";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { GetStaticPropsContext } from "next";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -16,7 +16,10 @@ const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestB
 const TvInitializeButton = dynamic(() => import("../../components/TvInitializeButton/TvInitializeButton"), {
   ssr: false
 });
-const TvWithdrawButton = dynamic(() => import("../../components/TvWithdrawButton/TvWithdrawButton"), {
+const TvFinishStartupButton = dynamic(() => import("../../components/TvFinishStartupButton/TvFinishStartupButton"), {
+  ssr: false
+});
+const TvRefundStartupButton = dynamic(() => import("../../components/TvRefundStartupButton/TvRefundStartupButton"), {
   ssr: false
 });
 
@@ -100,7 +103,6 @@ export default function Product({
       if (isReady) {
         return <TvInitializeButton
           raiseGoal={raiseGoal}
-          sharePercentage={sharePercentage}
           days={days}
           productId={id}
           setIsDraftButton={setIsDraftButton}
@@ -114,7 +116,8 @@ export default function Product({
     }
     return <Box>
       <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>
-      <TvWithdrawButton />
+      <TvFinishStartupButton productId={id} />
+      <TvRefundStartupButton productId={id} />
     </Box>;
   };
 
