@@ -1,5 +1,5 @@
 export const styles = {
-  withdrawBoxWrapper: {
+  finishStartupBoxWrapper: {
     mt: "8px",
   }
 };

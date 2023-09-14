@@ -5,21 +5,18 @@ declare_id!("5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ");
 #[program]
 mod investment_contract {
     use super::*;
-    pub fn initialize(
-        ctx: Context<Initialize>,
-        investment_goal: u64,
-        share_percentage: u64,
-        end_time: i64,
-    ) -> Result<()> {
+    pub fn initialize(ctx: Context<Initialize>, investment_goal: u64, end_time: i64) -> Result<()> {
+        msg!("first goal is: {}!", investment_goal);
         let contract_storage = &mut ctx.accounts.investment_contract;
         let startup_owner = &mut ctx.accounts.startup_owner;
         contract_storage.startup_owner = *startup_owner.key;
         contract_storage.investment_goal = investment_goal;
-        contract_storage.share_percentage = share_percentage;
         contract_storage.start_time = ctx.accounts.clock.unix_timestamp;
         contract_storage.end_time = end_time;
-        contract_storage.bump = *ctx.bumps.get("investment_contract").unwrap();
-        msg!("start time is: {}!", contract_storage.start_time); // Message will show up in the tx logs
+        msg!("start time is: {}!", contract_storage.start_time);
+        msg!("goal is: {}!", contract_storage.investment_goal);
+        msg!("end_time is: {}!", end_time);
+
         Ok(())
     }
 
@@ -42,63 +39,45 @@ mod investment_contract {
         )?;
 
         investment_contract.investors.push(from_account.key());
-        investment_contract
-            .investors_list
-            .push(InvestorInfo {
-                pubkey: from_account.key(),
-                amount: investment_amount,
-            });
-        investment_contract.tokens_collected =
-            investment_contract.tokens_collected + investment_amount;
-
+        investment_contract.investors_list.push(InvestorInfo {
+            pubkey: from_account.key(),
+            amount: investment_amount,
+        });
+        investment_contract.tokens_collected += investment_amount;
+        msg!(
+            "Collected Tokens: {}!",
+            investment_contract.tokens_collected
+        );
         Ok(())
-    }
-    pub fn withdraw(ctx: Context<Withdraw>) -> Result<()> {
-        let investment_contract = &mut ctx.accounts.investment_contract;
-        let withdraw_amount = investment_contract.tokens_collected;
-        let caller = &ctx.accounts.caller;
-        let startup_owner = investment_contract.startup_owner;
-        if caller.key == &startup_owner {
-            **ctx
-                .accounts
-                .investment_contract
-                .to_account_info()
-                .try_borrow_mut_lamports()? -= withdraw_amount;
-            **ctx
-                .accounts
-                .caller
-                .to_account_info()
-                .try_borrow_mut_lamports()? += withdraw_amount;
-            Ok(())
-        } else {
-            msg!("Unknown Caller: Cannot Withdraw Funds");
-            Ok(())
-        }
     }
 
     pub fn finish_startup(ctx: Context<FinishStartup>) -> Result<()> {
-        let investment_contract = &ctx.accounts.investment_contract;
+        let investment_contract = &mut ctx.accounts.investment_contract;
+        let final_amount = investment_contract.tokens_collected.clone();
         let startup_owner = investment_contract.startup_owner;
         let caller = &ctx.accounts.caller;
         if investment_contract.end_time > ctx.accounts.clock.unix_timestamp {
             msg!("CAMPAIGN STILL RUNNING");
             Ok(())
         } else {
+            msg!("goal is: {}!", investment_contract.investment_goal);
+            msg!("coll amount  is: {}!", investment_contract.tokens_collected);
             if investment_contract.tokens_collected < investment_contract.investment_goal {
                 msg!("CAMPAIGN FAILED");
                 Ok(())
             } else {
                 if caller.key == &startup_owner {
+                    investment_contract.tokens_collected = 0;
                     **ctx
                         .accounts
                         .investment_contract
                         .to_account_info()
-                        .try_borrow_mut_lamports()? -= investment_contract.tokens_collected;
+                        .try_borrow_mut_lamports()? -= final_amount;
                     **ctx
                         .accounts
                         .caller
                         .to_account_info()
-                        .try_borrow_mut_lamports()? += investment_contract.tokens_collected;
+                        .try_borrow_mut_lamports()? += final_amount;
                     Ok(())
                 } else {
                     msg!("Unknown Caller: Cannot Withdraw Funds");
@@ -109,7 +88,7 @@ mod investment_contract {
     }
 
     pub fn refund_startup(ctx: Context<RefundStartup>) -> Result<()> {
-        let investment_contract = &ctx.accounts.investment_contract;
+        let investment_contract = &mut ctx.accounts.investment_contract;
         let caller = &ctx.accounts.caller;
         if investment_contract.end_time > ctx.accounts.clock.unix_timestamp {
             msg!("CAMPAIGN STILL RUNNING");
@@ -121,12 +100,13 @@ mod investment_contract {
             } else {
                 if investment_contract.investors.contains(&caller.key) {
                     let mut refund_amount = None;
-                    for investor_info in investment_contract.investors_list.iter(){
-                        if &investor_info.pubkey == &caller.key(){
-                        refund_amount = Some(investor_info.amount);
-                           break;
+                    for investor_info in investment_contract.investors_list.iter() {
+                        if &investor_info.pubkey == &caller.key() {
+                            refund_amount = Some(investor_info.amount);
+                            break;
                         }
-                    };
+                    }
+                    investment_contract.tokens_collected -= refund_amount.unwrap();
                     **ctx
                         .accounts
                         .investment_contract
@@ -137,13 +117,13 @@ mod investment_contract {
                         .caller
                         .to_account_info()
                         .try_borrow_mut_lamports()? += refund_amount.unwrap();
+
                     Ok(())
                 } else {
                     msg!("Unknown Caller: Cannot Withdraw Funds");
                     Ok(())
                 }
             }
-
         }
     }
 }
@@ -152,7 +132,6 @@ mod investment_contract {
 pub struct Initialize<'info> {
     #[account(
         init,
-        seeds = [startup_owner.key().as_ref()], bump,
         payer = startup_owner,
         space = 8 + InvestmentContract::MAX_SIZE
     )]
@@ -169,15 +148,6 @@ pub struct Invest<'info> {
     pub investment_contract: Account<'info, InvestmentContract>,
     #[account(mut)]
     pub from: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct Withdraw<'info> {
-    #[account(mut)]
-    pub investment_contract: Account<'info, InvestmentContract>,
-    #[account(mut)]
-    pub caller: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 
@@ -208,12 +178,9 @@ pub struct InvestmentContract {
     pub end_time: i64,
     pub tokens_collected: u64,
     pub investment_goal: u64,
-    pub share_percentage: u64,
     pub investors: Vec<Pubkey>,
-    pub bump: u8,
     pub investors_list: Vec<InvestorInfo>,
 }
-
 
 impl InvestmentContract {
     const MAX_SIZE: usize = 1024;
@@ -222,5 +189,5 @@ impl InvestmentContract {
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
 pub struct InvestorInfo {
     pubkey: Pubkey,
-    amount: u64
+    amount: u64,
 }
