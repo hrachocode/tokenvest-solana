@@ -1,5 +1,4 @@
 use anchor_lang::prelude::*;
-use std::str::FromStr;
 declare_id!("5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ");
 
 #[program]
@@ -13,7 +12,7 @@ mod investment_contract {
         contract_storage.investment_goal = investment_goal;
         contract_storage.start_time = ctx.accounts.clock.unix_timestamp;
         contract_storage.end_time = end_time;
-        contract_storage.tokenvest_key = Pubkey::from_str("123").unwrap();
+        contract_storage.tokenvest_key = "Fe1jFt8VYMBrU22mjiQuWMPBVds1CnwHpkUZGtv8Eyyy".to_string();
         msg!("start time is: {}!", contract_storage.start_time);
         msg!("goal is: {}!", contract_storage.investment_goal);
         msg!("end_time is: {}!", end_time);
@@ -55,8 +54,11 @@ mod investment_contract {
     pub fn finish_startup(ctx: Context<FinishStartup>) -> Result<()> {
         let investment_contract = &mut ctx.accounts.investment_contract;
         let startup_owner = investment_contract.startup_owner;
-        let tokenvest_key = investment_contract.tokenvest_key;
+        let tokenvest_key = &investment_contract.tokenvest_key;
         let caller = &ctx.accounts.caller;
+        msg!("tokenvest_key is {}", tokenvest_key);
+        msg!("startup_owner is {}", startup_owner.to_string());
+
         if investment_contract.end_time > ctx.accounts.clock.unix_timestamp {
             msg!("CAMPAIGN STILL RUNNING");
             Ok(())
@@ -83,8 +85,7 @@ mod investment_contract {
                         .try_borrow_mut_lamports()? += final_amount;
                     Ok(())
                 } else {
-                    if caller.key == &tokenvest_key {
-                        investment_contract.tokens_collected -= tokenvest_cut;
+                    if &caller.key.to_string() == tokenvest_key {
                         **ctx
                             .accounts
                             .investment_contract
@@ -135,7 +136,6 @@ mod investment_contract {
                         .caller
                         .to_account_info()
                         .try_borrow_mut_lamports()? += refund_amount.unwrap();
-
                     Ok(())
                 } else {
                     msg!("Unknown Caller: Cannot Withdraw Funds");
@@ -198,7 +198,7 @@ pub struct InvestmentContract {
     pub investment_goal: u64,
     pub investors: Vec<Pubkey>,
     pub investors_list: Vec<InvestorInfo>,
-    pub tokenvest_key: Pubkey,
+    pub tokenvest_key: String,
 }
 
 impl InvestmentContract {
