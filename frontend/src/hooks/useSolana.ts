@@ -1,102 +1,158 @@
-import { AnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { useEffect, useState } from "react";
-import { Program, web3, AnchorProvider } from "@project-serum/anchor";
+import { Program, web3 } from "@project-serum/anchor";
 import idl from "../../../solana_investment_contract/target/idl/investment_contract.json";
 import * as anchor from "@project-serum/anchor";
-import { Cluster } from "@solana/web3.js";
+import { PublicKey, PublicKeyData, SYSVAR_CLOCK_PUBKEY } from "@solana/web3.js";
+import { useSolanaGetProvider } from "./useSolanaGetProvider";
+import { solanaInvest } from "@/utils/solanaHookUtils";
+import { Dispatch, SetStateAction } from "react";
+import { METHODS, handleRequest } from "@/utils/handleRequest";
+import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { addDaysToTimestamp } from "../utils/addDaysToTimestamp";
 
 export const useSolana = () => {
-  const [isExtensionExist, setIsExtensionExist] = useState<string | undefined>(
-    undefined
-  );
-  useEffect(() => {
-    isExtensionExist &&
-      window.open("https://phantom.app/", "_blank", "noopener,noreferrer");
-  }, [isExtensionExist]);
-  const wallet = useWallet();
-  const { SystemProgram, LAMPORTS_PER_SOL, Keypair } = web3;
-
-  const InvestmentContract = Keypair.generate();
-  const investmentContract = InvestmentContract.publicKey;
-  const opts = {
-    preflightCommitment: "processed" as "processed",
-  };
+  const { SystemProgram, LAMPORTS_PER_SOL } = web3;
   const programID = new anchor.web3.PublicKey(
-    "5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ"
+    process.env.NEXT_PUBLIC_SOLANA_PROGRAM_ID as PublicKeyData
   );
-
-  const getProvider = async () => {
-    let connection = new web3.Connection(
-      web3.clusterApiUrl(process.env.NEXT_PUBLIC_SOLANA as Cluster),
-      "confirmed"
-    );
-
-    const provider = new AnchorProvider(
-      connection,
-      wallet as unknown as AnchorWallet,
-      opts
-    );
-    return provider;
-  };
+  const getProvider = useSolanaGetProvider();
 
   const initialize = async (
     raiseGoal: string,
-    sharePercentage: string,
-    days: string
+    days: string,
+    productId:string,
   ) => {
-    const provider = await getProvider();
-    const program = new Program(idl as anchor.Idl, programID, provider);
+    const provider = await getProvider;
+    const program = new Program(
+      idl as anchor.Idl,
+      programID,
+      provider.provider
+    );
+    const { wallet } = provider.provider;
+    const { pda, pda: { publicKey } } = provider;
+
     try {
-      await program.methods
-        .initialize(
-          new anchor.BN(sharePercentage),
-          new anchor.BN(days),
-          new anchor.BN(raiseGoal)
-        )
-        .accounts({
-          investmentContract,
-          user: provider.wallet.publicKey,
-          systemProgram: SystemProgram.programId,
-        })
-        .signers([InvestmentContract])
-        .rpc();
+      await program.rpc.initialize(
+        new anchor.BN(+raiseGoal * LAMPORTS_PER_SOL),
+        new anchor.BN(addDaysToTimestamp(days)), {
+          accounts: {
+            investmentContract: publicKey,
+            startupOwner: wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+            clock: SYSVAR_CLOCK_PUBKEY,
+          },
+          signers: [ pda ]
+        });
       const account = await program.account.investmentContract.fetch(
-        InvestmentContract.publicKey
+        publicKey
       );
-      console.log(InvestmentContract.publicKey.toString(), "initialize");
+      console.log(account, "accountInitialize");
+      if (account){
+        await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
+          data: {
+            ownerAddress: publicKey.toString(),
+          }
+        });
+      }
     } catch (err) {
       console.log("Transaction error: ", err);
     }
   };
 
-  const invest = async (investAmount: number) => {
-    const provider = await getProvider();
-    const program = new Program(idl as anchor.Idl, programID, provider);
+  const invest = async (
+    investAmount: number,
+    resRaisedAmount: number,
+    setResRaisedAmount: Dispatch<SetStateAction<number>>,
+    productId: string
+  ) => {
+    const provider = await getProvider;
+    const program = new Program(
+      idl as anchor.Idl,
+      programID,
+      provider.provider
+    );
+    const { wallet } = provider.provider;
+    const { data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`, METHODS.GET);
     try {
       await program.methods
         .invest(new anchor.BN(investAmount * LAMPORTS_PER_SOL))
         .accounts({
-          user: provider.wallet.publicKey,
-          investmentContract: InvestmentContract.publicKey,
+          user: wallet.publicKey,
+          investmentContract: new PublicKey(`${attributes.ownerAddress}`),
           systemProgram: SystemProgram.programId,
         })
         .rpc();
       const account = await program.account.investmentContract.fetch(
-        InvestmentContract.publicKey
+        new PublicKey(`${attributes.ownerAddress}`)
+      );
+      console.log(account, "acountInvest");
+      const resInvestAmount = Number(investAmount);
+      const ownerAddress = wallet.publicKey.toString();
+      await solanaInvest(
+        productId,
+        resInvestAmount,
+        resRaisedAmount,
+        setResRaisedAmount,
+        ownerAddress
       );
     } catch (err) {
       console.log("Transaction error: ", err);
     }
   };
 
-  const getExtension = () => {
-    if ("solana" in window) {
-      const provider = window.solana as any;
-      if (provider.isPhantom) return provider;
-    } else {
-      setIsExtensionExist("Install Phantom");
+  const finishStartup = async (productId:string) => {
+    const provider = await getProvider;
+    const program = new Program(
+      idl as anchor.Idl,
+      programID,
+      provider.provider
+    );
+    const { wallet } = provider.provider;
+    const { data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`, METHODS.GET);
+    try {
+      await program.methods
+        .finishStartup()
+        .accounts({
+          user: wallet.publicKey,
+          investmentContract: new PublicKey(`${attributes.ownerAddress}`),
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      const account = await program.account.investmentContract.fetch(
+        new PublicKey(`${attributes.ownerAddress}`)
+      );
+      console.log(account, "acountFinishStartup");
+    } catch (err) {
+      console.log("Transaction error: ", err);
     }
   };
 
-  return { getExtension, initialize, invest };
+  const refundStartup = async (productId:string) => {
+    const provider = await getProvider;
+    const program = new Program(
+      idl as anchor.Idl,
+      programID,
+      provider.provider
+    );
+    const { wallet } = provider.provider;
+    const { data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`, METHODS.GET);
+    try {
+      await program.methods
+        .refundStartup ()
+        .accounts({
+          user: wallet.publicKey,
+          investmentContract: new PublicKey(`${attributes.ownerAddress}`),
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+      const account = await program.account.investmentContract.fetch(
+        new PublicKey(`${attributes.ownerAddress}`)
+      );
+
+      console.log(account, "acountRefundStartup ");
+    } catch (err) {
+      console.log("Transaction error: ", err);
+    }
+  };
+
+  return { initialize, invest, finishStartup, refundStartup };
 };
