@@ -2,7 +2,6 @@ import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
 import { TvSelect } from "@/components/TvSelect/TvSelect";
 import { CATEGORY, CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, IMAGE, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
-import { SHIBUYA_ACCOUNT_NAME, SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { selectOptions } from "@/constants/selectOptions";
 import { useSmartInputs } from "@/hooks/useSmartInputs";
 import { ICategory } from "@/interfaces/cmsinterace";
@@ -11,6 +10,7 @@ import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { styles } from "./CreateProduct.styles";
 import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect } from "./utils";
+import { SOLANA_ACCOUNT_NAME } from "@/constants/solana";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -40,8 +40,8 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
     if (success) {
       await createProductCMS(
-        SHIBUYA_ACCOUNT_NAME,
-        SHIBUYA_ADDRESS, name,
+        SOLANA_ACCOUNT_NAME,
+        name,
         description,
         raiseGoal,
         sharePercentage,
