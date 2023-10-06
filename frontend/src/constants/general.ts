@@ -1,3 +1,44 @@
+import ellipse from "../../public/images/ellipse.svg";
+import ellipse1 from "../../public/images/ellipse1.svg";
+import ellipse2 from "../../public/images/ellipse2.svg";
+import ellipse3 from "../../public/images/ellipse3.svg";
+import ellipse4 from "../../public/images/ellipse4.svg";
+import ellipse5 from "../../public/images/ellipse5.svg";
+
+export const SolutionsData = [
+  {
+    icon: ellipse,
+    title: "Low Transaction Fees",
+  },
+  {
+    icon: ellipse1,
+    title: "Accessible Worldwide",
+  },
+  {
+    icon: ellipse2,
+    title: "Decentralized Data",
+  },
+  {
+    icon: ellipse3,
+    title: "Transparent",
+  },
+];
+
+export const EmpoweringData = [
+  {
+    icon: ellipse4,
+    title: "Startupers",
+    description:
+      "Share your vision, set your funding goals, and bring your project to life on our platform.",
+  },
+  {
+    icon: ellipse5,
+    title: "Donators",
+    description:
+      "Support innovative ideas, back projects you believe in, and be part of the crowdfunding revolution.",
+  },
+];
+
 export const RAISED: string = "Raised";
 export const NO_PRODUCTS_TEXT: string = "No active products";
 export const CREATED_BY: string = "Created By";

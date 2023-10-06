@@ -1,15 +1,12 @@
-import { Button, ButtonProps } from "@mui/material";
-import { buttonStyles } from "./TvButton.styles";
-
-interface ITvButtonProps extends ButtonProps {
-  customVariant?: "primary" | "secondary" | "tertiary";
-};
-
+interface ITvButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  customVariant?: "primaryButton" | "secondaryButton"
+}
 export const TvButton = (props: ITvButtonProps): JSX.Element => {
-  const { customVariant = "primary", ...rest } = props;
+  const { customVariant = "primaryButton", ...rest } = props;
   return (
-    <Button {...rest} sx={buttonStyles[customVariant as keyof typeof buttonStyles]}>
+    <button {...rest} className={customVariant}>
       {props.children}
-    </Button>
+    </button>
+
   );
 };

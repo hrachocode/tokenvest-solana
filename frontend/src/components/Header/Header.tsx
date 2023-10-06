@@ -1,27 +1,20 @@
 import { PRODUCTS, ROUTES } from "@/constants/routes";
-import { usePolkadot } from "@/hooks/usePolkadot";
-import { Box, Typography } from "@mui/material";
 import Link from "next/link";
-import { styles } from "./Header.styles";
-import notification from "../../../public/notification.png";
+import notification from "../../../public/images/notification.png";
 import Image from "next/image";
-import { TOKENVEST } from "@/constants/general";
 import { useContext, useEffect, useState } from "react";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { CMS_API, CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
-import { SHIBUYA_ADDRESS } from "@/constants/polkadot";
 import { useRouter } from "next/router";
 import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { NotificationContext } from "@/context/context";
+import tokenvest from "../../../public/images/tokenvest.png";
 
 const Header = (): JSX.Element => {
-
-  const { allAccounts } = usePolkadot();
   const router = useRouter();
   const { publicKey } = useWallet();
-  const isConnected = allAccounts?.length !== 0;
   const [ openNotification, setOpenNotification ] = useState(false);
   const { notifications, setNotifactions } = useContext(NotificationContext);
 
@@ -70,43 +63,48 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <Box sx={styles.header}>
-      <Box sx={styles.headerLogo}>
-        <Link href="/">
-          <Typography variant="h5">{TOKENVEST}</Typography>
-        </Link>
-        <Box
-          sx={styles.notificationWrapper}
+    <header className="flex justify-between items-center bg-[url('/images/cell.svg')] px-[80px] py-[24px] border-b-[1px] border-textPrimary border-opacity-[20%]">
+      <div className="flex items-center z-10">
+        <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px]" />
+        <div
+          className="relative cursor-pointer"
           onClick={handleNotificationClick}
         >
           <Image src={notification.src} alt="" width={48} height={48} />
           {notifications.length > 0 ?
-            <Box sx={styles.notificationCircle}>
-              <Typography>{notifications.length}</Typography>
-            </Box> : <></>}
-          {openNotification ? <Box sx={styles.notificationMessages}>
+            <div
+              className=" flex absolute justify-center items-center bottom-[-10px] right-[-17px] rounded-[50%] w-[30px] h-[30px] bg-red-600"
+            >
+              <p>{notifications.length}</p>
+            </div> : <></>}
+          {openNotification ? <div
+            className="flex flex-col gap-1 w-[500px] absolute top-[60px] left-[50px] z-10 p-4 bg-backgroundPrimary rounded-[10px]"
+          >
             {notifications.map((item: INotification) =>
-              <Typography
-                sx={styles.notificationMessageText}
+              <p
+                className="text-textPrimary hover:text-white"
                 onClick={() => handleOpenNotification(item.id, item.productId)}
                 key={item.id}
-              >{item.message}</Typography>
+              >{item.message}</p>
             )}
-          </Box> : <></>}
-        </Box>
-      </Box>
-      <Box sx={styles.headerRoutes}>
-        {ROUTES.map((item, index) =>
-          <Link
-            key={index + 1}
-            href={item.slug}
-          >
-            <Typography variant="h5">{item.title}</Typography>
-          </Link>
-        )}
-        <WalletMultiButton style={{ background: "#A259FF" }} />
-      </Box>
-    </Box>
+          </div> : <></>}
+        </div>
+      </div>
+      <div className="flex justify-center items-center">
+        {
+          ROUTES.map((item, index) =>
+
+            <Link
+              className={item.title === "Add Project" ? "primaryButton text-[20px] " : "text-[20px] p-4"}
+              key={index + 1}
+              href={item.slug}
+            >
+              <p>{item.title}</p>
+            </Link>
+          )}
+        <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "25px", borderRadius: "5px", transform: "skew(-20deg) " }} />
+      </div>
+    </header>
   );
 };
 

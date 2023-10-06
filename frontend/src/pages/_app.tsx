@@ -1,9 +1,8 @@
 import "@/styles/globals.css";
 import dynamic from "next/dynamic";
-import { Box, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import { theme } from "../theme/theme";
-import { appStyles } from "@/styles/App.styles";
 import { Footer } from "@/components/Footer/Footer";
 import { ReactNode, useState } from "react";
 import { INotification, NotificationContext, initialNotifactionState } from "@/context/context";
@@ -29,9 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <WalletConnectionProvider>
           <Header />
-          <Box sx={appStyles.component}>
-            <Component {...pageProps} />
-          </Box>
+          <Component {...pageProps} />
           <Footer />
         </WalletConnectionProvider>
       </ThemeProvider>

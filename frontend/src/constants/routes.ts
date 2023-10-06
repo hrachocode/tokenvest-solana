@@ -5,14 +5,14 @@ export const CREATE_PRODUCT = "/create-product";
 export const ROUTES = [
   {
     title: "Home",
-    slug: HOME
+    slug: HOME,
   },
   {
-    title: "Products",
-    slug: PRODUCTS
+    title: "Projects",
+    slug: PRODUCTS,
   },
   {
-    title: "Create Product",
-    slug: CREATE_PRODUCT
-  }
+    title: "Add Project",
+    slug: CREATE_PRODUCT,
+  },
 ];
