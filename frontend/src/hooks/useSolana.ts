@@ -1,5 +1,5 @@
 import { Program, web3 } from "@project-serum/anchor";
-import idl from "../../../solana_investment_contract/target/idl/investment_contract.json";
+import idl from "../../investment_contract.json";
 import * as anchor from "@project-serum/anchor";
 import { PublicKey, PublicKeyData, SYSVAR_CLOCK_PUBKEY } from "@solana/web3.js";
 import { useSolanaGetProvider } from "./useSolanaGetProvider";
