@@ -1,0 +1,185 @@
+{
+  "version": "0.1.0",
+  "name": "investment_contract",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "investmentContract",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "startupOwner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "investmentGoal",
+          "type": "u64"
+        },
+        {
+          "name": "endTime",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "invest",
+      "accounts": [
+        {
+          "name": "investmentContract",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "investmentAmount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "finishStartup",
+      "accounts": [
+        {
+          "name": "investmentContract",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refundStartup",
+      "accounts": [
+        {
+          "name": "investmentContract",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "clock",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "InvestmentContract",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "startupOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "startTime",
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "type": "i64"
+          },
+          {
+            "name": "tokensCollected",
+            "type": "u64"
+          },
+          {
+            "name": "investmentGoal",
+            "type": "u64"
+          },
+          {
+            "name": "investors",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "investorsList",
+            "type": {
+              "vec": {
+                "defined": "InvestorInfo"
+              }
+            }
+          },
+          {
+            "name": "tokenvestKey",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "InvestorInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

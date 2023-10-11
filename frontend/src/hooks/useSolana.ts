@@ -1,7 +1,7 @@
 import { AnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState } from "react";
 import { Program, web3, AnchorProvider } from "@project-serum/anchor";
-import idl from "../../../solana_investment_contract/target/idl/investment_contract.json";
+import idl from "../../investment_contract.json";
 import * as anchor from "@project-serum/anchor";
 import { Cluster } from "@solana/web3.js";
 
