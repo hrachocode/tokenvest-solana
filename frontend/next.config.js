@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [ "localhost", "tokenvest.net" ],
+    domains: ["localhost", "tokenvest.net", "tokenvest-solana.vercel.app"],
   },
 };
 
