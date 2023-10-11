@@ -5,7 +5,7 @@ import {
 } from "@/constants/contracts";
 import { INVALID_SHARE_PERCENTAGE_MESSAGE } from "@/constants/messages";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { SelectChangeEvent } from "@mui/material";
+import { ChangeEvent } from "react";
 
 export const inputValidator = (sharePercentage: string) => {
   if (
@@ -55,7 +55,7 @@ export const handleFileChange = (
 };
 
 export const handleChangeSelect = (
-  event: SelectChangeEvent,
+  event: ChangeEvent<HTMLSelectElement>,
   cb: Function,
   fieldKey: string,
   editId: number

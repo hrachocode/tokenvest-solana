@@ -38,7 +38,7 @@ const TvInitializeButton = ({
     }
 
   };
-  return <TvButton onClick={handleClick} customVariant="secondary">{INITIALIZE}</TvButton>;
+  return <TvButton onClick={handleClick}>{INITIALIZE}</TvButton>;
 };
 
 export default TvInitializeButton;

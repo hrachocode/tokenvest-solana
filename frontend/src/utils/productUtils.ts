@@ -8,5 +8,5 @@ export const receiveDate = (dateString: string) => {
   const date = dateString.split("T")[0].split("-");
   date[1] = getMonthName(Number(date[1]));
   const [ year, month, day ] = date;
-  return `Created on ${month} ${day}, ${year}`;
+  return `${month} ${day}, ${year}`;
 };

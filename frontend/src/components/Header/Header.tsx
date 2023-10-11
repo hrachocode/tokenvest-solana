@@ -1,4 +1,4 @@
-import { PRODUCTS, ROUTES } from "@/constants/routes";
+import { HOME, PRODUCTS, ROUTES } from "@/constants/routes";
 import Link from "next/link";
 import notification from "../../../public/images/notification.png";
 import Image from "next/image";
@@ -63,9 +63,11 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <header className="flex justify-between items-center bg-[url('/images/cell.svg')] px-[80px] py-[24px] border-b-[1px] border-textPrimary border-opacity-[20%]">
+    <header className="flex justify-between items-center px-[80px] py-[24px] border-b-[1px] border-textPrimary border-opacity-[20%]">
       <div className="flex items-center z-10">
-        <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px]" />
+        <Link href={HOME}>
+          <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px]" />
+        </Link>
         <div
           className="relative cursor-pointer"
           onClick={handleNotificationClick}
@@ -78,7 +80,7 @@ const Header = (): JSX.Element => {
               <p>{notifications.length}</p>
             </div> : <></>}
           {openNotification ? <div
-            className="flex flex-col gap-1 w-[500px] absolute top-[60px] left-[50px] z-10 p-4 bg-backgroundPrimary rounded-[10px]"
+            className="flex flex-col gap-1 w-[500px] absolute top-[60px] left-[50px] z-10 p-4 bg-[#26545B] rounded-[10px]"
           >
             {notifications.map((item: INotification) =>
               <p
@@ -95,14 +97,14 @@ const Header = (): JSX.Element => {
           ROUTES.map((item, index) =>
 
             <Link
-              className={item.title === "Add Project" ? "primaryButton text-[20px] " : "text-[20px] p-4"}
+              className={item.title === "Add Project" ? "secondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[20px] p-4 hover:text-textPrimary"}
               key={index + 1}
               href={item.slug}
             >
               <p>{item.title}</p>
             </Link>
           )}
-        <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "25px", borderRadius: "5px", transform: "skew(-20deg) " }} />
+        <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "25px", borderRadius: "5px", transform: "skew(-15deg) " }} />
       </div>
     </header>
   );

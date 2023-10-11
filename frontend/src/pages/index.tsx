@@ -11,7 +11,7 @@ export default function Home() {
       <CrowdfundingSolutions />
       <FeeStructure />
       <EmpoweringInnovators />
-      <ReadyGetStarted />
+      <ReadyGetStarted title="Ready to Get Started?" />
     </main>
   );
 }

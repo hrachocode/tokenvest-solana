@@ -1,16 +1,15 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
 import { TvSelect } from "@/components/TvSelect/TvSelect";
-import { CATEGORY, CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, IMAGE, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
+import { CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
 import { selectOptions } from "@/constants/selectOptions";
 import { useSmartInputs } from "@/hooks/useSmartInputs";
 import { ICategory } from "@/interfaces/cmsinterace";
 import { createProductCMS } from "@/utils/cmsUtils";
-import { Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { styles } from "./CreateProduct.styles";
-import { inputValidator, handleBlur, handleChange, handleFileChange, handleChangeSelect } from "./utils";
+import { inputValidator, handleBlur, handleChange, handleChangeSelect } from "./utils";
 import { SOLANA_ACCOUNT_NAME } from "@/constants/solana";
+import UploadImage from "../UploadImage/UploadImage";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -54,73 +53,65 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
 
   };
   return (
-    <Box sx={styles.createProductWrapper}>
-      <Box>
-        <Typography>{NAME}</Typography>
+    <div className="flex flex-col justify-center items-center mt-[214px]">
+      <div className="flex flex-col items-center">
+        <h1 className="font-[600]">
+          Start Your <span className="text-textPrimary">Campaign</span>
+        </h1>
+        <div className="max-w-[70%]">
+          <p className="text-center text-textSecondary font-fontSecondary text-[26px] font-[300]">
+            Welcome to the project creation process. We&apos;re excited to help you bring your innovative idea to life.
+            Fill the fields below to add your project to Tokenvest.
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-col max-w-[1100px] w-full p-[32px] rounded-[24px] bg-backgroundTertiary mt-[214px]">
+        <p className="text-[48px] font-[500]">Project Information</p>
         <TvInput
           value={name}
-          customVariant="tertiary"
+          labelName={NAME}
           onChange={({ target: { value = "" } = {} }) => { handleChange(value, setName); }}
           onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, TITLE_KEY, editId); }}
         />
-      </Box>
-      <Box>
-        <Typography>{DESCRIPTION}</Typography>
         <TvInput
           value={description}
-          customVariant="tertiary"
+          labelName={DESCRIPTION}
+          customVariant="secondaryInput"
           onChange={({ target: { value = "" } = {} }) => { handleChange(value, setDescription); }}
           onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, DESCRIPTION_KEY, editId); }}
         />
-      </Box>
-      <Box>
-        <Typography>{RAISE_GOAL}</Typography>
         <TvInput
           value={raiseGoal}
+          labelName={RAISE_GOAL}
           type="number"
-          customVariant="tertiary"
           onChange={({ target: { value = "" } = {} }) => { handleChange(value, setRaiseGoal); }}
           onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, RAISE_GOAL_KEY, editId); }}
         />
-      </Box>
-      <Box>
-        <Typography>{SHARE_PERCENTAGE}</Typography>
         <TvInput
           value={sharePercentage}
+          labelName={SHARE_PERCENTAGE}
           type="number"
-          customVariant="tertiary"
           onChange={({ target: { value = "" } = {} }) => { handleChange(value, setSharePercentage); }}
           onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, SHARE_PERCENTAGE_KEY, editId); }}
         />
-      </Box>
-      <Box>
-        <Typography>{DAYS}</Typography>
-        <Box sx={styles.selectWrapper}>
-          <TvSelect
-            label={LABEL_DAYS}
-            value={days}
-            handleChange={(e) => { handleChangeSelect(e, setDays, DAYS_KEY, editId); }}
-            selectOptions={selectOptions} />
-        </Box>
-      </Box>
-      <Box>
-        <Typography>{CATEGORY}</Typography>
-        <Box sx={styles.selectWrapper}>
-          <TvSelect
-            label={LABEL_CATEGORY}
-            value={category}
-            handleChange={(e) => { handleChangeSelect(e, setCategory, CATEGORY_KEY, editId); }}
-            selectOptions={selectCategories} />
-        </Box>
-      </Box>
-      <Box>
-        <Typography>{IMAGE}</Typography>
-        <TvInput type="file" customVariant="tertiary" onChange={(e) => handleFileChange(e, setFiles)} />
-      </Box>
-      <Box>
-        <TvButton onClick={handleClick}>{CREATE_PRODUCT_TEXT}</TvButton>
-      </Box>
-    </Box>
+        <TvSelect
+          value={days}
+          labelName={LABEL_DAYS}
+          addIcon={true}
+          handleChange={(e) => { handleChangeSelect(e, setDays, DAYS_KEY, editId); }}
+          selectOptions={selectOptions} />
+        <TvSelect
+          labelName={LABEL_CATEGORY}
+          value={category}
+          customVariant="secondarySelect"
+          handleChange={(e) => { handleChangeSelect(e, setCategory, CATEGORY_KEY, editId); }}
+          selectOptions={selectCategories} />
+        <UploadImage setFiles={setFiles} />
+        <div className="text-end my-[32px]">
+          <TvButton onClick={handleClick}>{CREATE_PRODUCT_TEXT}</TvButton>
+        </div>
+      </div>
+    </div >
   );
 };
 
