@@ -1,13 +1,13 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvInput } from "@/components/TvInput/TvInput";
 import { TvSelect } from "@/components/TvSelect/TvSelect";
-import { CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, SHARE_PERCENTAGE, SHARE_PERCENTAGE_KEY, TITLE_KEY } from "@/constants/general";
+import { CATEGORY_KEY, CREATE_PRODUCT_TEXT, DAYS_KEY, DESCRIPTION, DESCRIPTION_KEY, LABEL_CATEGORY, LABEL_DAYS, NAME, RAISE_GOAL, RAISE_GOAL_KEY, TITLE_KEY } from "@/constants/general";
 import { selectOptions } from "@/constants/selectOptions";
 import { useSmartInputs } from "@/hooks/useSmartInputs";
 import { ICategory } from "@/interfaces/cmsinterace";
 import { createProductCMS } from "@/utils/cmsUtils";
 import { useState } from "react";
-import { inputValidator, handleBlur, handleChange, handleChangeSelect } from "./utils";
+import { handleBlur, handleChange, handleChangeSelect } from "./utils";
 import { SOLANA_ACCOUNT_NAME } from "@/constants/solana";
 import UploadImage from "../UploadImage/UploadImage";
 
@@ -28,29 +28,25 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     name, setName,
     description, setDescription,
     raiseGoal, setRaiseGoal,
-    sharePercentage, setSharePercentage,
     days, setDays,
     category, setCategory,
     editId
   } = useSmartInputs();
-  const [files, setFiles] = useState([]);
+  const [ files, setFiles ] = useState([]);
 
   const handleClick = async () => {
-    const { success = false, message = "" } = inputValidator(sharePercentage) ?? {};
-    if (success) {
+    try {
       await createProductCMS(
         SOLANA_ACCOUNT_NAME,
         name,
         description,
         raiseGoal,
-        sharePercentage,
         files[0],
         days,
         category);
-    } else {
-      alert(message);
-    };
-
+    } catch (err) {
+      alert(err);
+    }
   };
   return (
     <div className="flex flex-col justify-center items-center mt-[214px]">
@@ -86,13 +82,6 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
           type="number"
           onChange={({ target: { value = "" } = {} }) => { handleChange(value, setRaiseGoal); }}
           onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, RAISE_GOAL_KEY, editId); }}
-        />
-        <TvInput
-          value={sharePercentage}
-          labelName={SHARE_PERCENTAGE}
-          type="number"
-          onChange={({ target: { value = "" } = {} }) => { handleChange(value, setSharePercentage); }}
-          onBlur={({ target: { value = "" } = {} }) => { handleBlur(value, SHARE_PERCENTAGE_KEY, editId); }}
         />
         <TvSelect
           value={days}

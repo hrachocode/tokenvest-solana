@@ -20,7 +20,7 @@ const WalletConnectionProvider = dynamic<{ children: ReactNode }>(
 );
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [notifications, setNotifactions] = useState<INotification[]>(initialNotifactionState);
+  const [ notifications, setNotifactions ] = useState<INotification[]>(initialNotifactionState);
   return (
     <NotificationContext.Provider value={{ notifications, setNotifactions }}>
       <WalletConnectionProvider>

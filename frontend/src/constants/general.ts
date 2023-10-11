@@ -52,12 +52,10 @@ export const DRAFT: string = "DRAFT";
 export const NAME: string = "Name";
 export const DESCRIPTION: string = "Description";
 export const RAISE_GOAL: string = "Raise Goal";
-export const SHARE_PERCENTAGE: string = "Share percentage";
 export const CREATE_PRODUCT_TEXT: string = "Create Product";
 
 export const TITLE_KEY: string = "title";
 export const DESCRIPTION_KEY: string = "description";
 export const RAISE_GOAL_KEY: string = "raiseGoal";
-export const SHARE_PERCENTAGE_KEY: string = "sharePercentage";
 export const DAYS_KEY: string = "days";
 export const CATEGORY_KEY: string = "category";

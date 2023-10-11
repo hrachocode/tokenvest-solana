@@ -13,7 +13,6 @@ export const createProductCMS = async (
   startupName: string,
   startupDescription: string,
   raiseGoal: string,
-  sharePercentage: string,
   imageFile: Blob,
   days: string,
   category: string
@@ -27,7 +26,6 @@ export const createProductCMS = async (
           title: startupName,
           description: startupDescription,
           raiseGoal: raiseGoal,
-          sharePercentage: sharePercentage,
           address: "",
           ownerAddress: "",
           ownerName: accountName,

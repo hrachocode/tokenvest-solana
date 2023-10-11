@@ -51,7 +51,6 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     id: data.id,
     title: attributes.title,
     raiseGoal: attributes.raiseGoal,
-    sharePercentage: attributes.sharePercentage,
     address: attributes.address,
     ownerAddress: attributes.ownerAddress,
     ownerName: attributes.ownerName,

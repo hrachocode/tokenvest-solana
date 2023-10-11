@@ -10,8 +10,8 @@ export const handleRequest = async (
       headers: isFormData
         ? {}
         : {
-            "Content-Type": "application/json",
-          },
+          "Content-Type": "application/json",
+        },
       body: isFormData ? (data as FormData) : JSON.stringify(data),
     });
     const res = await dataRes.json();

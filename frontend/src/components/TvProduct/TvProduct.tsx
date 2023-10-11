@@ -13,7 +13,7 @@ export const TvProduct = ({
   const { image, title } = product;
 
   return (
-    <div className="bg-backgroundTertiary ">
+    <div className="bg-backgroundTertiary rounded-[10px]">
       <TvProductImage image={image} title={title} />
       <TvProductInfo product={product} />
     </div>
