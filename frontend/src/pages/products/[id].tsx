@@ -1,14 +1,20 @@
 import { TvButton } from "@/components/TvButton/TvButton";
-import { CMS_API, CMS_PRODUCTS, CMS_URL, POPULATE_ALL } from "@/constants/cms";
-import { COMPLETE, CREATED_BY, DRAFT, INVEST, RAISED, RAISE_GOAL } from "@/constants/general";
+import { PRODUCTS } from "@/constants/routes";
+import TvProductImage from "@/components/TvProductImage/TvProductImage";
+import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { COMPLETE, DRAFT, INVEST } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
-import { unitProductStyles } from "@/styles/UnitProduct.styles";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { receiveDate } from "@/utils/productUtils";
-import { Box, Button, Typography } from "@mui/material";
 import { GetStaticPropsContext } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import daysIcon from "../../../public/images/days.svg";
+import leftAngle from "../../../public/images/leftAngle.svg";
 import { useState } from "react";
+import Link from "next/link";
+import { getDaysLeft } from "@/utils/getDaysLeft";
+import { getProgress } from "@/utils/getProgress";
 
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
   ssr: false
@@ -45,7 +51,6 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     id: data.id,
     title: attributes.title,
     raiseGoal: attributes.raiseGoal,
-    sharePercentage: attributes.sharePercentage,
     address: attributes.address,
     ownerAddress: attributes.ownerAddress,
     ownerName: attributes.ownerName,
@@ -74,21 +79,22 @@ export default function Product({
     createdAt,
     image,
     title,
-    ownerName,
     raiseGoal,
-    sharePercentage,
     raisedAmount,
     address,
     ownerAddress,
     days,
     isComplete,
     isDraft,
+    category,
     isReady
   } }: { product: IProduct }) {
   const [ isPopupOpen, setPopupOpen ] = useState(false);
   const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
   const [ resRaisedAmount, setResRaisedAmount ] = useState<number>(raisedAmount);
   const dateText = receiveDate(createdAt);
+  const daysLeft = getDaysLeft(createdAt, days);
+  const raisedAmountProgres = getProgress(resRaisedAmount, raiseGoal);
 
   const openPopup = () => {
     setPopupOpen(true);
@@ -108,23 +114,23 @@ export default function Product({
           setIsDraftButton={setIsDraftButton}
         />;
       } else {
-        return <TvButton disabled customVariant="secondary">{DRAFT}</TvButton>;
+        return <TvButton disabled>{DRAFT}</TvButton>;
       }
     }
     if (isComplete) {
-      return <TvButton disabled customVariant="secondary">{COMPLETE}</TvButton>;
+      return <TvButton disabled>{COMPLETE}</TvButton>;
     }
-    return <Box>
-      <TvButton onClick={openPopup} customVariant="secondary">{INVEST}</TvButton>
+    return <div className="flex justify-center gap-3 mt-[12px]">
+      <TvButton onClick={openPopup}>{INVEST}</TvButton>
       <TvFinishStartupButton productId={id} />
       <TvRefundStartupButton productId={id} />
-    </Box>;
+    </div>;
   };
 
   return (
-    <Box sx={unitProductStyles.wrapper}>
+    <div>
       {isPopupOpen &&
-        <Box onMouseDown={closePopup} sx={unitProductStyles.popupWrapper}>
+        <div onMouseDown={closePopup} className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[50]">
           <TvInvestBox
             contractAddress={address}
             productId={id}
@@ -134,44 +140,59 @@ export default function Product({
             setResRaisedAmount={setResRaisedAmount}
             closePopup={closePopup}
           />
-        </Box>
+        </div>
       }
-      {image &&
-        <Box>
-          <Box sx={{
-            ...unitProductStyles.productImage,
-            backgroundImage: `url(${CMS_URL}${image})`,
-          }}></Box>
-        </Box>}
-      <Box sx={unitProductStyles.infoWrapper}>
-        <Box sx={unitProductStyles.detailsWrapper}>
-          <Box>
-            <Typography variant="h2">{title}</Typography>
-            <Typography color="caption">{dateText}</Typography>
-          </Box>
-          <Box>
-            <Typography variant="h5" color="caption">{CREATED_BY}</Typography>
-            <Box sx={unitProductStyles.userInfo}>
-              <Box sx={unitProductStyles.userAvatar}></Box>
-              <Typography variant="h5">{ownerName}</Typography>
-            </Box>
-          </Box>
-        </Box>
-        <Box sx={unitProductStyles.investmentBox}>
-          <Box sx={unitProductStyles.raiseInfoWrapper}>
-            <Box sx={unitProductStyles.raiseInfo}>
-              <Typography color="caption" variant="caption">{RAISE_GOAL}</Typography>
-              <Typography>{raiseGoal}</Typography>
-            </Box>
-            <Box sx={unitProductStyles.raiseInfo}>
-              <Typography color="caption" variant="caption">{RAISED}</Typography>
-              <Typography>{resRaisedAmount}</Typography>
-            </Box>
-          </Box>
+      <TvProductImage image={image} title={title} wide={true} />
+      <div className="flex justify-center">
+        <div className="p-[6px_12px] mt-[64px] rounded-[20px] border-[2px] border-[#28DBD1]">
+          <p className="text-[16px] font-[400] text-center">{category}</p>
+        </div>
+      </div>
+      <div className="flex w-full justify-center px-[120px] mt-[64px] gap-[32px]">
+        <div className="w-[50%]">
+          <p className="text-[48px] font-[500]">About Project</p>
+          <p className="text-[20px] font-[400] text-textSecondary font-fontSecondary">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+          </p>
+        </div>
+        <div className="w-[50%] bg-backgroundTertiary p-[32px] rounded-[24px]">
+          <div className="flex justify-center w-full gap-[28px]">
+            <div className="flex w-full items-center bg-[#26545B] rounded-[16px]">
+              <Image alt="days" src={daysIcon} className="mx-[20px]" />
+              <div className="py-[16px]">
+                <p className="text-[20px] font-[600]">Create Date</p>
+                <p className="text-[16px] font-[600] text-textPrimary">{dateText}</p>
+              </div>
+            </div>
+            <div className="flex w-full items-center bg-[#26545B] rounded-[16px]">
+              <Image alt="days" src={daysIcon} className="mx-[20px]" />
+              <div className="py-[16px]">
+                <p className="text-[20px] font-[600]">Days Left</p>
+                <p className="text-[16px] font-[600] text-textPrimary">{daysLeft}</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-[32px] font-[600] ">
+            <p className="text-[24px] ">Raised Amount</p>
+            <p className="text-[20px] pb-[8px]">{`${resRaisedAmount} SOL`}</p>
+            <div className="w-full bg-[#030B15] bg-opacity-[60%] rounded-full h-3">
+              <div style={{ width: `${raisedAmountProgres}%` }} className={"bg-backgroundSecondary h-3 rounded-full"}></div>
+            </div>
+            <p className="text-end text-[20px] pt-[5px] text-textPrimary">{`GOAL: ${raiseGoal} SOL`}</p>
+          </div>
           {renderButton()}
-        </Box>
-      </Box>
-
-    </Box>
+        </div>
+      </div>
+      <div className="p-[64px_120px_0_120px]">
+        <Link href={PRODUCTS} >
+          <TvButton customVariant="secondaryButton" icon={leftAngle}>All Projects</TvButton>
+        </Link>
+      </div>
+    </div>
   );
 }

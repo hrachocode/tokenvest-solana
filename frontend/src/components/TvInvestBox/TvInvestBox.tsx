@@ -1,9 +1,7 @@
 import { INVEST, INVEST_BOX_CAPTION } from "@/constants/general";
-import { Box, Typography } from "@mui/material";
 import { Dispatch, MouseEvent, SetStateAction, useContext, useState } from "react";
 import { TvButton } from "../TvButton/TvButton";
 import { TvInput } from "../TvInput/TvInput";
-import { styles } from "./TvInvestBox.styles";
 import { useSolana } from "@/hooks/useSolana";
 import { NotificationContext } from "@/context/context";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
@@ -22,10 +20,7 @@ interface ITvInvestBox {
 }
 
 const TvInvestBox = ({
-  contractAddress,
   productId,
-  ownerAddress,
-  raiseGoal,
   resRaisedAmount,
   setResRaisedAmount,
   closePopup
@@ -67,15 +62,16 @@ const TvInvestBox = ({
   };
 
   return (
-    <Box sx={styles.investBoxWrapper} onMouseDown={handleMouseDown}>
-      <Typography variant="caption" color="caption">{INVEST_BOX_CAPTION}</Typography>
+    <div className="min-w-[295px] flex flex-col p-7 rounded-[20px] gap-2 bg-[#26545B]" onMouseDown={handleMouseDown}>
+      <p>{INVEST_BOX_CAPTION}</p>
       <TvInput
         type="number"
-        customVariant="tertiary"
         onChange={({ target: { value = "" } = {} }) => { handleChange(value, setInvestAmount); }}
       />
-      <TvButton customVariant="secondary" onClick={handleClick}>{INVEST}</TvButton>
-    </Box>
+      <div className="max-w-[100px] w-full flex m-auto mt-[10px]">
+        <TvButton onClick={handleClick}>{INVEST}</TvButton>
+      </div>
+    </div>
   );
 };
 

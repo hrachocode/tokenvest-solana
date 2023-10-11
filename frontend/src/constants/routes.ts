@@ -4,10 +4,6 @@ export const CREATE_PRODUCT = "/create-product";
 
 export const ROUTES = [
   {
-    title: "Home",
-    slug: HOME,
-  },
-  {
     title: "Projects",
     slug: PRODUCTS,
   },

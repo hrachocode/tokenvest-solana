@@ -1,14 +1,16 @@
-import { Input, InputProps } from "@mui/material";
-import { inputStyles } from "./TvInput.styles";
+import { InputHTMLAttributes } from "react";
 
-interface ITvInputProps extends InputProps {
-  customVariant?: "primary" | "secondary" | "tertiary";
-};
-
+interface ITvInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  customVariant?: "primaryInput" | "secondaryInput",
+  labelName?: string,
+  placeholderName?: string
+}
 export const TvInput = (props: ITvInputProps): JSX.Element => {
-  const { customVariant = "primary", ...rest } = props;
+  const { customVariant = "primaryInput", placeholderName, labelName, ...rest } = props;
   return (
-    <Input  {...rest} sx={inputStyles[customVariant as keyof typeof inputStyles]}
-    />
+    <>
+      <label>{labelName}</label>
+      <input {...rest} placeholder={`${placeholderName ? placeholderName : ""}`} className={`${customVariant}`} />
+    </>
   );
 };

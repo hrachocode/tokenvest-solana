@@ -14,6 +14,7 @@ module.exports = {
       backgroundColor: {
         backgroundPrimary: "#121823",
         backgroundSecondary: "#28DBD1",
+        backgroundTertiary: "#09202F",
       },
       fontFamily: {
         fontPrimary: [ "Oxanium", "cursive" ],
