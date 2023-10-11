@@ -7,8 +7,8 @@ const baseButtonStyles = {
   paddingX: 5,
   border: (theme: ICustomTheme) => `2px solid ${theme.palette.callToAction}`,
   ":hover": {
-    backgroundColor: "backgroundPrimary"
-  }
+    backgroundColor: "backgroundPrimary",
+  },
 };
 
 const primaryButtonStyles = {
