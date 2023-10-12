@@ -10,7 +10,7 @@ import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { NotificationContext } from "@/context/context";
-import tokenvest from "../../../public/images/tokenvest.png";
+import tokenvest from "../../../public/images/tokenvest.svg";
 
 const Header = (): JSX.Element => {
   const router = useRouter();

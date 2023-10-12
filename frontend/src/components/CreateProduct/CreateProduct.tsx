@@ -6,10 +6,12 @@ import { selectOptions } from "@/constants/selectOptions";
 import { useSmartInputs } from "@/hooks/useSmartInputs";
 import { ICategory } from "@/interfaces/cmsinterace";
 import { createProductCMS } from "@/utils/cmsUtils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { handleBlur, handleChange, handleChangeSelect } from "./utils";
 import { SOLANA_ACCOUNT_NAME } from "@/constants/solana";
 import UploadImage from "../UploadImage/UploadImage";
+import { useRouter } from "next/router";
+import { PRODUCTS } from "@/constants/routes";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -33,6 +35,8 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     editId
   } = useSmartInputs();
   const [ files, setFiles ] = useState([]);
+  const [ productId, setProductId ] = useState<string | undefined>();
+  const router = useRouter();
 
   const handleClick = async () => {
     try {
@@ -43,11 +47,20 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
         raiseGoal,
         files[0],
         days,
-        category);
+        category,
+        setProductId
+      );
     } catch (err) {
       alert(err);
     }
   };
+
+  useEffect(() => {
+    if (productId) {
+      router.push(`${PRODUCTS}/${productId}`);
+    }
+  }, [ productId ]);
+
   return (
     <div className="flex flex-col justify-center items-center mt-[214px]">
       <div className="flex flex-col items-center">

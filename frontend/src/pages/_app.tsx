@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { Footer } from "@/components/Footer/Footer";
 import { ReactNode, useState } from "react";
 import { INotification, NotificationContext, initialNotifactionState } from "@/context/context";
+import Head from "next/head";
 
 const Header = dynamic(() => import("../components/Header/Header"), {
   ssr: false
@@ -24,6 +25,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <NotificationContext.Provider value={{ notifications, setNotifactions }}>
       <WalletConnectionProvider>
+        <Head>
+          <title>Tokenvest</title>
+        </Head>
         <Header />
         <Component {...pageProps} />
         <Footer />

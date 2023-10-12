@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const TvProductImage = ({ image, title, wide }: { image: string | null, title: string, wide?: boolean }) => {
   return (
-    <div className="w-full relative"
+    <div className="w-full relative rounded-[10px_10px_0_0]"
     >
       <div className="relative">
         <div className="z-10">
@@ -13,7 +13,7 @@ const TvProductImage = ({ image, title, wide }: { image: string | null, title: s
               src={`${CMS_URL}${image}`}
               width={0}
               height={0}
-              style={{ maxWidth: wide ? "unset" : 470, minHeight: wide ? "unset" : 304, height: wide ? 450 : "unset" }}
+              style={{ width: wide ? "100%" : 470, minHeight: wide ? "unset" : 304, height: wide ? 450 : 300 }}
               sizes="100vw"
               className={`w-full object-cover rounded-${wide ? "unset" : "[10px_10px_0_0]"}`}
             /> : <div className=" min-w-[455px] h-[304px]" />

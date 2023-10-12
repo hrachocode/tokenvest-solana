@@ -5,7 +5,6 @@ declare_id!("5daxCs5LvkZuU599JuRTWc1poexpkSwPU1hCPWQDQzmJ");
 mod investment_contract {
     use super::*;
     pub fn initialize(ctx: Context<Initialize>, investment_goal: u64, end_time: i64) -> Result<()> {
-        msg!("first goal is: {}!", investment_goal);
         let contract_storage = &mut ctx.accounts.investment_contract;
         let startup_owner = &mut ctx.accounts.startup_owner;
         contract_storage.startup_owner = *startup_owner.key;
@@ -56,8 +55,6 @@ mod investment_contract {
         let startup_owner = investment_contract.startup_owner;
         let tokenvest_key = &investment_contract.tokenvest_key;
         let caller = &ctx.accounts.caller;
-        msg!("tokenvest_key is {}", tokenvest_key);
-        msg!("startup_owner is {}", startup_owner.to_string());
 
         if investment_contract.end_time > ctx.accounts.clock.unix_timestamp {
             msg!("CAMPAIGN STILL RUNNING");
@@ -72,7 +69,6 @@ mod investment_contract {
                 let tokenvest_cut = investment_contract.tokens_collected / 100 * 3;
                 let final_amount = investment_contract.tokens_collected - tokenvest_cut;
                 if caller.key == &startup_owner {
-                    investment_contract.tokens_collected -= final_amount;
                     **ctx
                         .accounts
                         .investment_contract
