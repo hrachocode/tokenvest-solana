@@ -1,5 +1,5 @@
 import Image from "next/image";
-import tokenvest from "../../../public/images/tokenvest.png";
+import tokenvest from "../../../public/images/tokenvest.svg";
 
 export const Footer = () => {
   return (

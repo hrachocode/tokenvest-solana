@@ -7,6 +7,7 @@ import {
   IMAGE_FIELD,
 } from "@/constants/cms";
 import { handleRequest, METHODS } from "./handleRequest";
+import { Dispatch, SetStateAction } from "react";
 
 export const createProductCMS = async (
   accountName: string,
@@ -15,7 +16,8 @@ export const createProductCMS = async (
   raiseGoal: string,
   imageFile: Blob,
   days: string,
-  category: string
+  category: string,
+  setProductId: Dispatch<SetStateAction<string | undefined>>
 ) => {
   try {
     const postRes = await handleRequest(
@@ -41,6 +43,7 @@ export const createProductCMS = async (
     );
     if (postRes?.data?.id) {
       const id = postRes.data.id;
+      setProductId(id);
       if (imageFile) {
         const formData = new FormData();
         formData.append("ref", CMS_PRODUCTS_REF);

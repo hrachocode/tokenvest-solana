@@ -87,6 +87,7 @@ export default function Product({
     isComplete,
     isDraft,
     category,
+    description,
     isReady
   } }: { product: IProduct }) {
   const [ isPopupOpen, setPopupOpen ] = useState(false);
@@ -152,12 +153,7 @@ export default function Product({
         <div className="w-[50%]">
           <p className="text-[48px] font-[500]">About Project</p>
           <p className="text-[20px] font-[400] text-textSecondary font-fontSecondary">
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatu.
+            {description}
           </p>
         </div>
         <div className="w-[50%] bg-backgroundTertiary p-[32px] rounded-[24px]">

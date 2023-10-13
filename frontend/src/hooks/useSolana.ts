@@ -19,7 +19,7 @@ export const useSolana = () => {
   const initialize = async (
     raiseGoal: string,
     days: string,
-    productId:string,
+    productId: string
   ) => {
     const provider = await getProvider;
     const program = new Program(
@@ -28,33 +28,40 @@ export const useSolana = () => {
       provider.provider
     );
     const { wallet } = provider.provider;
-    const { pda, pda: { publicKey } } = provider;
+    const {
+      pda,
+      pda: { publicKey },
+    } = provider;
 
     try {
       await program.rpc.initialize(
         new anchor.BN(+raiseGoal * LAMPORTS_PER_SOL),
-        new anchor.BN(addDaysToTimestamp(days)), {
+        new anchor.BN(addDaysToTimestamp(days)),
+        {
           accounts: {
             investmentContract: publicKey,
             startupOwner: wallet.publicKey,
             systemProgram: SystemProgram.programId,
             clock: SYSVAR_CLOCK_PUBKEY,
           },
-          signers: [ pda ]
-        });
-      const account = await program.account.investmentContract.fetch(
-        publicKey
+          signers: [ pda ],
+        }
       );
-      console.log(account, "accountInitialize");
-      if (account){
-        await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
-          data: {
-            ownerAddress: publicKey.toString(),
+      const account = await program.account.investmentContract.fetch(publicKey);
+      alert("Campaign successfully initialized");
+      if (account) {
+        await handleRequest(
+          `${CMS_API}${CMS_PRODUCTS}/${productId}`,
+          METHODS.PUT,
+          {
+            data: {
+              ownerAddress: publicKey.toString(),
+            },
           }
-        });
+        );
       }
     } catch (err) {
-      console.log("Transaction error: ", err);
+      alert(err);
     }
   };
 
@@ -71,7 +78,12 @@ export const useSolana = () => {
       provider.provider
     );
     const { wallet } = provider.provider;
-    const { data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`, METHODS.GET);
+    const {
+      data: { attributes },
+    } = await handleRequest(
+      `${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
+      METHODS.GET
+    );
     try {
       await program.methods
         .invest(new anchor.BN(investAmount * LAMPORTS_PER_SOL))
@@ -84,7 +96,6 @@ export const useSolana = () => {
       const account = await program.account.investmentContract.fetch(
         new PublicKey(`${attributes.ownerAddress}`)
       );
-      console.log(account, "acountInvest");
       const resInvestAmount = Number(investAmount);
       const ownerAddress = wallet.publicKey.toString();
       await solanaInvest(
@@ -95,11 +106,11 @@ export const useSolana = () => {
         ownerAddress
       );
     } catch (err) {
-      console.log("Transaction error: ", err);
+      alert(err);
     }
   };
 
-  const finishStartup = async (productId:string) => {
+  const finishStartup = async (productId: string) => {
     const provider = await getProvider;
     const program = new Program(
       idl as anchor.Idl,
@@ -107,7 +118,12 @@ export const useSolana = () => {
       provider.provider
     );
     const { wallet } = provider.provider;
-    const { data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`, METHODS.GET);
+    const {
+      data: { attributes },
+    } = await handleRequest(
+      `${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
+      METHODS.GET
+    );
     try {
       await program.methods
         .finishStartup()
@@ -120,13 +136,12 @@ export const useSolana = () => {
       const account = await program.account.investmentContract.fetch(
         new PublicKey(`${attributes.ownerAddress}`)
       );
-      console.log(account, "acountFinishStartup");
     } catch (err) {
-      console.log("Transaction error: ", err);
+      alert(err);
     }
   };
 
-  const refundStartup = async (productId:string) => {
+  const refundStartup = async (productId: string) => {
     const provider = await getProvider;
     const program = new Program(
       idl as anchor.Idl,
@@ -134,10 +149,15 @@ export const useSolana = () => {
       provider.provider
     );
     const { wallet } = provider.provider;
-    const { data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`, METHODS.GET);
+    const {
+      data: { attributes },
+    } = await handleRequest(
+      `${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
+      METHODS.GET
+    );
     try {
       await program.methods
-        .refundStartup ()
+        .refundStartup()
         .accounts({
           user: wallet.publicKey,
           investmentContract: new PublicKey(`${attributes.ownerAddress}`),
@@ -147,10 +167,8 @@ export const useSolana = () => {
       const account = await program.account.investmentContract.fetch(
         new PublicKey(`${attributes.ownerAddress}`)
       );
-
-      console.log(account, "acountRefundStartup ");
     } catch (err) {
-      console.log("Transaction error: ", err);
+      alert(err);
     }
   };
 
