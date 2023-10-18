@@ -21,8 +21,10 @@ const TvProductImage = ({ image, title, wide }: { image: string | null, title: s
         </div>
         <div className="flex w-full absolute bottom-[-31px] justify-center items-center z-[20]">
           <div className="w-[10%] border-b-[2px] border-[#28DBD1]" />
-          <div className="p-[16px_25px_16px_25px] w-[80%] bg-backgroundTertiary rounded-[30px] border-b-[2px] border-[#28DBD1] text-[20px] font-[500] ">
-            {title}
+          <div className="w-[80%] p-[16px_25px_16px_25px] bg-backgroundTertiary rounded-[30px] border-b-[2px] border-[#28DBD1]">
+            <p className="text-[16px] sm:text-[20px] font-[500]">
+              {title}
+            </p>
           </div>
           <div className="w-[10%] border-b-[2px] border-[#28DBD1]" />
         </div>

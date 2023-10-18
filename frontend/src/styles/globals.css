@@ -11,7 +11,7 @@
     @apply bg-backgroundPrimary;
   }
   h1 {
-    @apply text-[94px];
+    @apply text-[40px] md:text-[70px] xl:text-[94px];
   }
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -21,12 +21,20 @@
 }
 
 @layer components {
+  /*FLEX*/
+  .primaryFlex {
+    @apply flex justify-center;
+  }
+  .secondaryFlex {
+    @apply flex justify-center items-center;
+  }
+
   /*BUTTON*/
   .primaryButton {
-    @apply bg-backgroundSecondary text-[20px] border-none rounded-[5px] p-[8px_25px] skew-x-[-15deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
+    @apply bg-backgroundSecondary text-[16px] md:text-[20px] border-none rounded-[5px] p-[8px_12px] md:p-[8px_25px] skew-x-[-15deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
   }
   .secondaryButton {
-    @apply text-[20px] text-[#79FDFF] border-[1px] border-[#79FDFF] rounded-[5px] p-[8px_25px] skew-x-[-15deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
+    @apply text-[16px] md:text-[20px] text-[#79FDFF] border-[1px] border-[#79FDFF] rounded-[5px] p-[8px_12px] md:p-[8px_25px] skew-x-[-15deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
   }
 
   /*INPUT*/
@@ -53,13 +61,13 @@
 
   /*PAGE CARD*/
   .pageCard {
-    @apply flex flex-col w-full items-center p-[44px_23px] rounded-[10px] border-[1px];
+    @apply flex flex-col max-w-[280px] w-full items-center p-[44px_23px] rounded-[10px] border-[1px];
   }
   .primaryHomePageCard {
     @apply pageCard bg-[#030B15] mt-[32px] border-[#353535];
   }
   .primaryHomePageCardTitle {
-    @apply text-[28px] font-fontSecondary font-[500] pt-[32px];
+    @apply text-[20px] lg:text-[28px] font-fontSecondary font-[500] pt-[32px];
   }
   .secondaryHomePageCard {
     @apply pageCard max-w-[535px] border-[#60CACB];

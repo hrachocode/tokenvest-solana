@@ -12,6 +12,7 @@ import { SOLANA_ACCOUNT_NAME } from "@/constants/solana";
 import UploadImage from "../UploadImage/UploadImage";
 import { useRouter } from "next/router";
 import { PRODUCTS } from "@/constants/routes";
+import StartCompaign from "../StartCompaign/StartCompaign";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -59,23 +60,13 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
     if (productId) {
       router.push(`${PRODUCTS}/${productId}`);
     }
-  }, [ productId ]);
+  }, [ productId, router ]);
 
   return (
-    <div className="flex flex-col justify-center items-center mt-[214px]">
-      <div className="flex flex-col items-center">
-        <h1 className="font-[600]">
-          Start Your <span className="text-textPrimary">Campaign</span>
-        </h1>
-        <div className="max-w-[70%]">
-          <p className="text-center text-textSecondary font-fontSecondary text-[26px] font-[300]">
-            Welcome to the project creation process. We&apos;re excited to help you bring your innovative idea to life.
-            Fill the fields below to add your project to Tokenvest.
-          </p>
-        </div>
-      </div>
-      <div className="flex flex-col max-w-[1100px] w-full p-[32px] rounded-[24px] bg-backgroundTertiary mt-[214px]">
-        <p className="text-[48px] font-[500]">Project Information</p>
+    <div className="secondaryFlex flex-col mt-[80px] md:mt-[214px] px-[20px] sm:px-[60px]">
+      <StartCompaign />
+      <div className="flex flex-col w-full md:w-[90%] p-[32px] mt-[80px] md:mt-[214px] rounded-[24px] bg-backgroundTertiary">
+        <p className="text-[28px] sm:text-[32px] md:text-[48px] font-[500]">Project Information</p>
         <TvInput
           value={name}
           labelName={NAME}

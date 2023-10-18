@@ -43,7 +43,6 @@ export const createProductCMS = async (
     );
     if (postRes?.data?.id) {
       const id = postRes.data.id;
-      setProductId(id);
       if (imageFile) {
         const formData = new FormData();
         formData.append("ref", CMS_PRODUCTS_REF);
@@ -58,6 +57,7 @@ export const createProductCMS = async (
         );
         if (postRes.length !== 0) {
           alert("Product successfully created!!!");
+          setProductId(id);
         } else {
           alert("There was a problem with image");
         }
