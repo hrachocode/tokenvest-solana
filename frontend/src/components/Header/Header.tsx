@@ -1,4 +1,4 @@
-import { HOME, PRODUCTS, ROUTES } from "@/constants/routes";
+import { CREATE_PRODUCT, HOME, PRODUCTS, ROUTES } from "@/constants/routes";
 import Link from "next/link";
 import notification from "../../../public/images/notification.png";
 import Image from "next/image";
@@ -11,12 +11,15 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { NotificationContext } from "@/context/context";
 import tokenvest from "../../../public/images/tokenvest.svg";
+import burgerMenu from "../../../public/images/burger_menu.svg";
+import closeIcon from "../../../public/images/close.svg";
 
 const Header = (): JSX.Element => {
   const router = useRouter();
   const { publicKey } = useWallet();
-  const [ openNotification, setOpenNotification ] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
   const { notifications, setNotifactions } = useContext(NotificationContext);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,7 +37,7 @@ const Header = (): JSX.Element => {
             productId: item.attributes.productId
           };
         }) || [];
-        setNotifactions([ ...unreadNotifications ]);
+        setNotifactions([...unreadNotifications]);
       };
     })();
   }, []);
@@ -55,32 +58,36 @@ const Header = (): JSX.Element => {
       const nextNotifactions = notifications.filter(({ id: notifId }: { id: number }) => {
         return notifId !== id;
       });
-      setNotifactions([ ...nextNotifactions ]);
+      setNotifactions([...nextNotifactions]);
     }
     if (openNotifData) {
       router.push(`${PRODUCTS}/${productId}`);
     };
   };
 
+  const toggleNavbar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <header className="flex justify-between items-center px-[80px] py-[24px] border-b-[1px] border-textPrimary border-opacity-[20%]">
+    <header className="flex justify-between items-center p-[15px_60px] lg:p-[24px_80px] border-b-[1px] border-textPrimary border-opacity-[20%]">
       <div className="flex items-center z-10">
         <Link href={HOME}>
-          <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px]" />
+          <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px] w-[95px] lg:w-[115px] object-cover" />
         </Link>
         <div
           className="relative cursor-pointer"
           onClick={handleNotificationClick}
         >
-          <Image src={notification.src} alt="" width={48} height={48} />
+          <Image src={notification.src} alt="" width={0} height={0} sizes="100vw" className="w-[35px] md:w-[48px]" />
           {notifications.length > 0 ?
             <div
-              className=" flex absolute justify-center items-center bottom-[-10px] right-[-17px] rounded-[50%] w-[30px] h-[30px] bg-red-600"
+              className="secondaryFlex absolute bottom-[-5px] md:bottom-[-10px] right-[-9px] md:right-[-17px] rounded-[50%] w-[25px] md:w-[30px] h-[25px] md:h-[30px] bg-red-600"
             >
               <p>{notifications.length}</p>
             </div> : <></>}
           {openNotification ? <div
-            className="flex flex-col gap-1 w-[500px] absolute top-[60px] left-[50px] z-10 p-4 bg-[#26545B] rounded-[10px]"
+            className="flex flex-col w-[350px] md:w-[500px] absolute top-[60px] md:top-[70px] lg:top-[55px] left-[-170px] md:left-[60px] z-10 p-4 bg-[#26545B] rounded-[10px]"
           >
             {notifications.map((item: INotification) =>
               <p
@@ -92,21 +99,29 @@ const Header = (): JSX.Element => {
           </div> : <></>}
         </div>
       </div>
-      <div className="flex justify-center items-center">
-        {
-          ROUTES.map((item, index) =>
-
-            <Link
-              className={item.title === "Add Project" ? "secondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[20px] p-4 hover:text-textPrimary"}
-              key={index + 1}
-              href={item.slug}
-            >
-              <p>{item.title}</p>
-            </Link>
-          )}
-        <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "25px", borderRadius: "5px", transform: "skew(-15deg) " }} />
-      </div>
-    </header>
+      <div className="flex items-center">
+        <div className="md:hidden block">
+          {
+            isOpen ? <Image alt="nav" src={burgerMenu} width={40} height={40} onClick={toggleNavbar} /> :
+              <Image alt="close" src={closeIcon} width={40} height={40} onClick={toggleNavbar} />
+          }
+        </div>
+        <div className={`${!isOpen ? "top-[85px] left-0 opacity-100 bg-backgroundPrimary" : ""} flex justify-center items-center z-10 md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500`}>
+          {
+            ROUTES.map((item, index) =>
+              < Link
+                className={item.slug === CREATE_PRODUCT ? "secondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"}
+                key={index + 1}
+                href={item.slug}
+                onClick={toggleNavbar}
+              >
+                <p>{item.title}</p>
+              </Link>
+            )}
+          <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "10px", borderRadius: "5px", transform: "skew(-15deg)" }} />
+        </div>
+      </div >
+    </header >
   );
 };
 

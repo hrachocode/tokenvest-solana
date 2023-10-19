@@ -23,12 +23,12 @@ const TvProductInfo = ({
   const raisedAmountProgres = getProgress(raisedAmount, raiseGoal);
   const daysLeft = getDaysLeft(createdAt, days);
   return (
-    <div className="m-[60px_24px_0_24px]">
+    <div className="p-[60px_15px_0_15px] md:p-[60px_24px_0_24px]">
       <div className="inline-block p-[6px_12px] rounded-[20px] border-[2px] border-[#28DBD1]">
         <p className="text-[16px] font-[400] text-center">{category}</p>
       </div>
       <div className="py-[32px]">
-        <p className="text-[16px] w-80 truncate text-textSecondary font-fontSecondary">{description}</p>
+        <p className="text-[16px] w-60 md:w-80 truncate text-textSecondary font-fontSecondary">{description}</p>
       </div>
       <div>
         <p className="text-[18px] font-[400] pb-[12px]">Raised Ammount</p>
@@ -42,7 +42,7 @@ const TvProductInfo = ({
         <div className="h-[1px] my-[32px] bg-backgroundSecondary bg-opacity-[20%]" />
       </div>
       <div className="flex justify-between items-center pb-[24px]">
-        <div className="flex justify-center items-center">
+        <div className="secondaryFlex">
           <Image alt="days" src={daysIcon} />
           <p className="px-[8px]">{`${daysLeft} Days Left`}</p>
         </div>

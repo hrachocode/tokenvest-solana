@@ -121,7 +121,7 @@ export default function Product({
     if (isComplete) {
       return <TvButton disabled>{COMPLETE}</TvButton>;
     }
-    return <div className="flex justify-center gap-3 mt-[12px]">
+    return <div className="primaryFlex gap-3 mt-[12px]">
       <TvButton onClick={openPopup}>{INVEST}</TvButton>
       <TvFinishStartupButton productId={id} />
       <TvRefundStartupButton productId={id} />
@@ -144,29 +144,29 @@ export default function Product({
         </div>
       }
       <TvProductImage image={image} title={title} wide={true} />
-      <div className="flex justify-center">
+      <div className="primaryFlex">
         <div className="p-[6px_12px] mt-[64px] rounded-[20px] border-[2px] border-[#28DBD1]">
           <p className="text-[16px] font-[400] text-center">{category}</p>
         </div>
       </div>
-      <div className="flex w-full justify-center px-[120px] mt-[64px] gap-[32px]">
-        <div className="w-[50%]">
-          <p className="text-[48px] font-[500]">About Project</p>
-          <p className="text-[20px] font-[400] text-textSecondary font-fontSecondary">
+      <div className="primaryFlex flex-col lg:flex-row px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px] gap-[32px]">
+        <div className="lg:w-[50%] text-center sm:text-start">
+          <p className="text-[32px] lg:text-[48px] font-[500]">About Project</p>
+          <p className="text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary">
             {description}
           </p>
         </div>
-        <div className="w-[50%] bg-backgroundTertiary p-[32px] rounded-[24px]">
-          <div className="flex justify-center w-full gap-[28px]">
-            <div className="flex w-full items-center bg-[#26545B] rounded-[16px]">
-              <Image alt="days" src={daysIcon} className="mx-[20px]" />
+        <div className="lg:w-[50%] bg-backgroundTertiary p-[24px] xl:p-[32px] rounded-[24px]">
+          <div className="primaryFlex flex-col sm:flex-row gap-[16px] xl:gap-[28px]">
+            <div className="flex w-full bg-[#26545B] rounded-[16px]">
+              <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
               <div className="py-[16px]">
                 <p className="text-[20px] font-[600]">Create Date</p>
                 <p className="text-[16px] font-[600] text-textPrimary">{dateText}</p>
               </div>
             </div>
-            <div className="flex w-full items-center bg-[#26545B] rounded-[16px]">
-              <Image alt="days" src={daysIcon} className="mx-[20px]" />
+            <div className="flex w-full bg-[#26545B] rounded-[16px]">
+              <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
               <div className="py-[16px]">
                 <p className="text-[20px] font-[600]">Days Left</p>
                 <p className="text-[16px] font-[600] text-textPrimary">{daysLeft}</p>
@@ -184,7 +184,7 @@ export default function Product({
           {renderButton()}
         </div>
       </div>
-      <div className="p-[64px_120px_0_120px]">
+      <div className="p-[64px_30px_0_30px] sm:p-[64px_60px_0_60px] xl:p-[64px_120px_0_120px]">
         <Link href={PRODUCTS} >
           <TvButton customVariant="secondaryButton" icon={leftAngle}>All Projects</TvButton>
         </Link>

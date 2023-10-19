@@ -6,14 +6,14 @@ import { CREATE_PRODUCT } from "@/constants/routes";
 
 const FeeStructure = () => {
   return (
-    <section className="flex px-[100px] bg-[#26545B] py-[64px] gap-[64px]">
-      <div className="flex items-end w-full">
+    <section className="flex bg-[#26545B] p-[64px_60px] lg:px-[100px] gap-[64px]">
+      <div className="w-full hidden lg:flex items-center xl:items-end ">
         <Image alt="vector" src={vector} />
       </div>
       <div className="w-full">
-        <p className="text-[24px] font-fontSecondary font-[500]">Our success is tied to yours.</p>
-        <p className="text-[48px] font-[500] pb-[20px]">Fair and Transparent Fee Structure</p>
-        <p className="pb-[32px] text-[22px] font-[400] text-justify text-textSecondary">
+        <p className="text-[20px] lg:text-[24px] font-fontSecondary font-[500]">Our success is tied to yours.</p>
+        <p className="text-[32px] lg:text-[48px] font-[500] pb-[20px]">Fair and Transparent Fee Structure</p>
+        <p className="text-textSecondary pb-[32px] text-[18px] lg:text-[22px] lg:text-justify ">
           Tokenvest charges a nominal 3% fee, applicable only after a campaign reaches its funding
           goal and successfully executes.We&apos;re committed to your success and only succeed when you do.
         </p>

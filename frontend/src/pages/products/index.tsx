@@ -6,8 +6,9 @@ import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { PRODUCTS } from "@/constants/routes";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
+import Image from "next/image";
 import Link from "next/link";
-
+import vector from "../../../public/images/vector5.svg";
 export async function getStaticProps() {
   const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
@@ -43,7 +44,7 @@ const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <div>
       <DiscoverInnovative />
-      <div className="flex flex-wrap justify-center gap-[32px] mt-[417px] mx-[122px]">
+      <div className="flex flex-wrap justify-center mt-[80px] lg:mt-[250px] z-50">
         {
           products.length !== 0 && products.map((item) =>
             <Link href={`${PRODUCTS}/${item.id}`} key={item.id}>
@@ -52,10 +53,13 @@ const Products = ({ products }: { products: IProduct[] }) => {
           )
         }
       </div>
-      <div className="flex justify-center mt-[64px]">
+      <div className="primaryFlex mt-[64px]">
         <TvButton customVariant="secondaryButton">Load More</TvButton>
       </div>
       <ReadyGetStarted title="Have Any Project?" />
+      <div className='absolute left-0 top-[50px]' >
+        <Image alt='vector' src={vector} />
+      </div>
     </div>
   );
 };
