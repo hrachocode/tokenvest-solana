@@ -1,4 +1,4 @@
-import { HOME, PRODUCTS, ROUTES } from "@/constants/routes";
+import { CREATE_PRODUCT, HOME, PRODUCTS, ROUTES } from "@/constants/routes";
 import Link from "next/link";
 import notification from "../../../public/images/notification.png";
 import Image from "next/image";
@@ -17,9 +17,9 @@ import closeIcon from "../../../public/images/close.svg";
 const Header = (): JSX.Element => {
   const router = useRouter();
   const { publicKey } = useWallet();
-  const [ openNotification, setOpenNotification ] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
   const { notifications, setNotifactions } = useContext(NotificationContext);
-  const [ isOpen, setIsOpen ] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -37,7 +37,7 @@ const Header = (): JSX.Element => {
             productId: item.attributes.productId
           };
         }) || [];
-        setNotifactions([ ...unreadNotifications ]);
+        setNotifactions([...unreadNotifications]);
       };
     })();
   }, []);
@@ -58,7 +58,7 @@ const Header = (): JSX.Element => {
       const nextNotifactions = notifications.filter(({ id: notifId }: { id: number }) => {
         return notifId !== id;
       });
-      setNotifactions([ ...nextNotifactions ]);
+      setNotifactions([...nextNotifactions]);
     }
     if (openNotifData) {
       router.push(`${PRODUCTS}/${productId}`);
@@ -110,10 +110,10 @@ const Header = (): JSX.Element => {
           {
             ROUTES.map((item, index) =>
               < Link
-                className={item.title === "Add Project" ? "secondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"}
+                className={item.slug === CREATE_PRODUCT ? "secondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"}
                 key={index + 1}
                 href={item.slug}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={toggleNavbar}
               >
                 <p>{item.title}</p>
               </Link>
