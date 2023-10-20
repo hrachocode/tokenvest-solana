@@ -9,7 +9,7 @@ export const handleBlur = async (
 ) => {
   try {
     await handleRequest(
-      `${CMS_API}${CMS_LAST_CHANGES}/${editId}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_LAST_CHANGES}/${editId}`,
       METHODS.PUT,
       {
         data: {
@@ -46,7 +46,7 @@ export const handleChangeSelect = (
 export const getLastChanges = async () => {
   const { data = [] } =
     (await handleRequest(
-      `${CMS_API}${CMS_LAST_CHANGES}${POPULATE_ALL}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_LAST_CHANGES}${POPULATE_ALL}`,
       METHODS.GET
     )) ?? {};
   return data[0];
@@ -56,18 +56,22 @@ export const createNewChange = async () => {
   try {
     const {
       data: { id },
-    } = await handleRequest(`${CMS_API}${CMS_LAST_CHANGES}`, METHODS.POST, {
-      data: {
-        title: "",
-        description: "",
-        raiseGoal: 0,
-        ownerAddress: "",
-        ownerName: "",
-        raisedAmount: 0,
-        days: 0,
-        category: 1,
-      },
-    });
+    } = await handleRequest(
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_LAST_CHANGES}`,
+      METHODS.POST,
+      {
+        data: {
+          title: "",
+          description: "",
+          raiseGoal: 0,
+          ownerAddress: "",
+          ownerName: "",
+          raisedAmount: 0,
+          days: 0,
+          category: 1,
+        },
+      }
+    );
     return id;
   } catch {
     return undefined;

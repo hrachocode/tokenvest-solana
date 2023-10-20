@@ -1,4 +1,3 @@
-import { CMS_URL } from "@/constants/cms";
 import Image from "next/image";
 
 const TvProductImage = ({ image, title, wide }: { image: string | null, title: string, wide?: boolean }) => {
@@ -10,7 +9,7 @@ const TvProductImage = ({ image, title, wide }: { image: string | null, title: s
           {
             image ? <Image
               alt="product"
-              src={`${CMS_URL}${image}`}
+              src={`${process.env.NEXT_PUBLIC_CMS_URL}${image}`}
               width={0}
               height={0}
               style={{ width: wide ? "100%" : 470, minHeight: wide ? "unset" : 304, height: wide ? 450 : 300 }}

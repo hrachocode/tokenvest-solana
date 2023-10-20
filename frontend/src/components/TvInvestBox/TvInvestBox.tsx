@@ -44,7 +44,7 @@ const TvInvestBox = ({
     await invest(investAmount, resRaisedAmount, setResRaisedAmount, productId);
     const { data = [] } =
       await handleRequest(
-        `${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
+        `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
         METHODS.GET) ?? {};
     if (data.length > 0) {
       const filteredData = data.filter((item: ICMSNotification) => item.attributes.isOpened === false);
