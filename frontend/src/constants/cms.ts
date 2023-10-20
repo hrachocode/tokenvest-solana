@@ -1,3 +1,4 @@
+export const CMS_API: string = "/api";
 export const CMS_PRODUCTS: string = "/products";
 export const CMS_NOTIFICATIONS: string = "/notifications";
 export const CMS_CATEGORIES: string = "/categories";

@@ -3,7 +3,7 @@ import { TvButton } from "../TvButton/TvButton";
 import { useSolana } from "@/hooks/useSolana";
 import { Dispatch, SetStateAction } from "react";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
-import { CMS_PRODUCTS } from "@/constants/cms";
+import { CMS_API, CMS_PRODUCTS } from "@/constants/cms";
 
 interface ITvInitializeButton {
   raiseGoal: string,
@@ -25,7 +25,7 @@ const TvInitializeButton = ({
       await initialize(
         raiseGoal, days, productId
       );
-      const putRes = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
+      const putRes = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
         data: {
           isDraft: false,
         }

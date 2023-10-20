@@ -1,10 +1,10 @@
-import { CMS_CATEGORIES, POPULATE_ALL } from "@/constants/cms";
+import { CMS_API, CMS_CATEGORIES, POPULATE_ALL } from "@/constants/cms";
 import { ICategory, ICMSCategory } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import CreateProductPage from "../components/CreateProduct/CreateProduct";
 
 export async function getStaticProps() {
-  const { data: category = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
+  const { data: category = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
   const categories: ICategory[] = category.map((item: ICMSCategory) => {
     return {

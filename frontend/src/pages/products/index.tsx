@@ -2,7 +2,7 @@ import DiscoverInnovative from "@/components/DiscoverInnovative/DiscoverInnovati
 import ReadyGetStarted from "@/components/ReadyGetStarted/ReadyGetStarted";
 import { TvButton } from "@/components/TvButton/TvButton";
 import { TvProduct } from "@/components/TvProduct/TvProduct";
-import { CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { PRODUCTS } from "@/constants/routes";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import vector from "../../../public/images/vector5.svg";
 export async function getStaticProps() {
-  const { data: product = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
+  const { data: product = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
   const products: IProduct[] = product.map((item: ICMSProduct) => {
     return {

@@ -4,7 +4,7 @@ import notification from "../../../public/images/notification.png";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
+import { CMS_API, CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
 import { useRouter } from "next/router";
 import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -25,7 +25,7 @@ const Header = (): JSX.Element => {
     (async () => {
       const { data = [] } =
         await handleRequest(
-          `${process.env.NEXT_PUBLIC_CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
+          `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
           METHODS.GET) ?? {};
       if (data.length > 0) {
         const filteredData = data.filter((item: ICMSNotification) => item.attributes.isOpened === false);
@@ -49,7 +49,7 @@ const Header = (): JSX.Element => {
     setOpenNotification((state) => !state);
   };
   const handleOpenNotification = async (id: number, productId: string) => {
-    const { date: openNotifData = {} } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
+    const { date: openNotifData = {} } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
       "data": {
         "isOpened": true,
       }

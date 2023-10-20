@@ -1,4 +1,4 @@
-import { CMS_NOTIFICATIONS, CMS_PRODUCTS } from "@/constants/cms";
+import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS } from "@/constants/cms";
 import { METHODS, handleRequest } from "./handleRequest";
 import { detectFractionalPart } from "./detectFractionalPartUtils";
 import { Dispatch, SetStateAction } from "react";
@@ -15,7 +15,7 @@ export const solanaInvest = async (
     investAmount
   );
   const putRes = await handleRequest(
-    `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${productId}`,
+    `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}`,
     METHODS.PUT,
     {
       data: {
@@ -25,7 +25,7 @@ export const solanaInvest = async (
   );
   if (putRes.data) {
     await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_NOTIFICATIONS}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_NOTIFICATIONS}`,
       METHODS.POST,
       {
         data: {

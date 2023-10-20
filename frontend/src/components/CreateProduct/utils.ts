@@ -1,4 +1,4 @@
-import { CMS_LAST_CHANGES, POPULATE_ALL } from "@/constants/cms";
+import { CMS_API, CMS_LAST_CHANGES, POPULATE_ALL } from "@/constants/cms";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { ChangeEvent } from "react";
 
@@ -9,7 +9,7 @@ export const handleBlur = async (
 ) => {
   try {
     await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_LAST_CHANGES}/${editId}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_LAST_CHANGES}/${editId}`,
       METHODS.PUT,
       {
         data: {
@@ -46,7 +46,7 @@ export const handleChangeSelect = (
 export const getLastChanges = async () => {
   const { data = [] } =
     (await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_LAST_CHANGES}${POPULATE_ALL}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_LAST_CHANGES}${POPULATE_ALL}`,
       METHODS.GET
     )) ?? {};
   return data[0];
@@ -57,7 +57,7 @@ export const createNewChange = async () => {
     const {
       data: { id },
     } = await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_LAST_CHANGES}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_LAST_CHANGES}`,
       METHODS.POST,
       {
         data: {

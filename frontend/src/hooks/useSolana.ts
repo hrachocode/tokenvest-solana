@@ -6,7 +6,7 @@ import { useSolanaGetProvider } from "./useSolanaGetProvider";
 import { solanaInvest } from "@/utils/solanaHookUtils";
 import { Dispatch, SetStateAction } from "react";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
-import { CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { addDaysToTimestamp } from "../utils/addDaysToTimestamp";
 
 export const useSolana = () => {
@@ -51,7 +51,7 @@ export const useSolana = () => {
       alert("Campaign successfully initialized");
       if (account) {
         await handleRequest(
-          `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${productId}`,
+          `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}`,
           METHODS.PUT,
           {
             data: {
@@ -81,7 +81,7 @@ export const useSolana = () => {
     const {
       data: { attributes },
     } = await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
       METHODS.GET
     );
     try {
@@ -121,7 +121,7 @@ export const useSolana = () => {
     const {
       data: { attributes },
     } = await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
       METHODS.GET
     );
     try {
@@ -152,7 +152,7 @@ export const useSolana = () => {
     const {
       data: { attributes },
     } = await handleRequest(
-      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
       METHODS.GET
     );
     try {
