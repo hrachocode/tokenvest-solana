@@ -1,5 +1,4 @@
 import {
-  CMS_API,
   CMS_PRODUCTS,
   CMS_PRODUCTS_REF,
   CMS_UPLOAD,
@@ -21,7 +20,7 @@ export const createProductCMS = async (
 ) => {
   try {
     const postRes = await handleRequest(
-      `${CMS_API}${CMS_PRODUCTS}`,
+      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}`,
       METHODS.POST,
       {
         data: {
@@ -50,7 +49,7 @@ export const createProductCMS = async (
         formData.append("field", IMAGE_FIELD);
         formData.append("files", imageFile);
         const postRes = await handleRequest(
-          `${CMS_API}${CMS_UPLOAD}`,
+          `${process.env.NEXT_PUBLIC_CMS_API}${CMS_UPLOAD}`,
           METHODS.POST,
           formData,
           true

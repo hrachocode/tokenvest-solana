@@ -4,7 +4,7 @@ import notification from "../../../public/images/notification.png";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CMS_API, CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
+import { CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
 import { useRouter } from "next/router";
 import { ICMSNotification, INotification } from "@/interfaces/cmsinterace";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -17,15 +17,15 @@ import closeIcon from "../../../public/images/close.svg";
 const Header = (): JSX.Element => {
   const router = useRouter();
   const { publicKey } = useWallet();
-  const [openNotification, setOpenNotification] = useState(false);
+  const [ openNotification, setOpenNotification ] = useState(false);
   const { notifications, setNotifactions } = useContext(NotificationContext);
-  const [isOpen, setIsOpen] = useState(false);
+  const [ isOpen, setIsOpen ] = useState(false);
 
   useEffect(() => {
     (async () => {
       const { data = [] } =
         await handleRequest(
-          `${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
+          `${process.env.NEXT_PUBLIC_CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}&${FILTERS}[${NOTIFICATION_ADDRESS}][${EQUALS}]=${publicKey}`,
           METHODS.GET) ?? {};
       if (data.length > 0) {
         const filteredData = data.filter((item: ICMSNotification) => item.attributes.isOpened === false);
@@ -37,7 +37,7 @@ const Header = (): JSX.Element => {
             productId: item.attributes.productId
           };
         }) || [];
-        setNotifactions([...unreadNotifications]);
+        setNotifactions([ ...unreadNotifications ]);
       };
     })();
   }, []);
@@ -49,7 +49,7 @@ const Header = (): JSX.Element => {
     setOpenNotification((state) => !state);
   };
   const handleOpenNotification = async (id: number, productId: string) => {
-    const { date: openNotifData = {} } = await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
+    const { date: openNotifData = {} } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_NOTIFICATIONS}/${id}`, METHODS.PUT, {
       "data": {
         "isOpened": true,
       }
@@ -58,7 +58,7 @@ const Header = (): JSX.Element => {
       const nextNotifactions = notifications.filter(({ id: notifId }: { id: number }) => {
         return notifId !== id;
       });
-      setNotifactions([...nextNotifactions]);
+      setNotifactions([ ...nextNotifactions ]);
     }
     if (openNotifData) {
       router.push(`${PRODUCTS}/${productId}`);

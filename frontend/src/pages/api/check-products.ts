@@ -1,9 +1,4 @@
-import {
-  CMS_API,
-  CMS_NOTIFICATIONS,
-  CMS_PRODUCTS,
-  POPULATE_ALL,
-} from "@/constants/cms";
+import { CMS_NOTIFICATIONS, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { ICMSProduct, IProduct, IProductDate } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -14,7 +9,7 @@ export default async function handler(
 ) {
   const { data: product = [] } =
     (await handleRequest(
-      `${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`,
+      `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`,
       METHODS.GET
     )) ?? {};
 
@@ -62,7 +57,7 @@ export default async function handler(
   dates.forEach(async (item: IProductDate) => {
     if (item.endDate <= Date.now()) {
       const putRes = await handleRequest(
-        `${CMS_API}${CMS_PRODUCTS}/${item.id}`,
+        `${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${item.id}`,
         METHODS.PUT,
         {
           data: {
@@ -71,14 +66,18 @@ export default async function handler(
         }
       );
       if (putRes.data) {
-        await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}`, METHODS.POST, {
-          data: {
-            message: `Time has expired for product N: ${item.id.toString()}`,
-            address: item.ownerAddress,
-            isOpened: false,
-            productId: item.id.toString(),
-          },
-        });
+        await handleRequest(
+          `${process.env.NEXT_PUBLIC_CMS_API}${CMS_NOTIFICATIONS}`,
+          METHODS.POST,
+          {
+            data: {
+              message: `Time has expired for product N: ${item.id.toString()}`,
+              address: item.ownerAddress,
+              isOpened: false,
+              productId: item.id.toString(),
+            },
+          }
+        );
       }
     }
   });

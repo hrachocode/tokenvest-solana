@@ -1,7 +1,7 @@
 import { TvButton } from "@/components/TvButton/TvButton";
 import { PRODUCTS } from "@/constants/routes";
 import TvProductImage from "@/components/TvProductImage/TvProductImage";
-import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
+import { CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { COMPLETE, DRAFT, INVEST } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
@@ -31,7 +31,7 @@ const TvRefundStartupButton = dynamic(() => import("../../components/TvRefundSta
 
 export async function getStaticPaths() {
 
-  const { data: product = [] } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.GET) ?? {};
+  const { data: product = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}`, METHODS.GET) ?? {};
 
   const paths = product.map(({ id }: ICMSProduct) => {
     return {
@@ -45,7 +45,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } = {} }: GetStaticPropsContext) {
-  const { data, data: { attributes } } = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${id}${POPULATE_ALL}`, METHODS.GET);
+  const { data, data: { attributes } } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_API}${CMS_PRODUCTS}/${id}${POPULATE_ALL}`, METHODS.GET);
 
   const product: IProduct = {
     id: data.id,
