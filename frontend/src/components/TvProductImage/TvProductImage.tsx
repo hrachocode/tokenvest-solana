@@ -1,4 +1,6 @@
 import Image from "next/image";
+import vector from "../../../public/images/vector6.svg";
+import vector1 from "../../../public/images/vector7.svg";
 
 const TvProductImage = ({ image, title, wide }: { image: string | null, title: string, wide?: boolean }) => {
   return (
@@ -18,14 +20,15 @@ const TvProductImage = ({ image, title, wide }: { image: string | null, title: s
             /> : <div className=" min-w-[455px] h-[304px]" />
           }
         </div>
-        <div className="flex w-full absolute bottom-[-31px] justify-center items-center z-[20]">
-          <div className="w-[10%] border-b-[2px] border-[#28DBD1]" />
-          <div className="w-[80%] p-[16px_25px_16px_25px] bg-backgroundTertiary rounded-[30px] border-b-[2px] border-[#28DBD1]">
-            <p className="text-[16px] sm:text-[20px] font-[500]">
-              {title}
-            </p>
-          </div>
-          <div className="w-[10%] border-b-[2px] border-[#28DBD1]" />
+
+        <div className="flex w-full justify-center xl:justify-start absolute z-50">
+          <Image alt="vector" src={wide ? vector1 : vector} />
+          <p className={`absolute text-[18px] sm:text-[20px] z-20 ${wide ? "bottom-[calc(100%_-_8px)] sm:bottom-[calc(100%_-_8px)] md:bottom-[calc(100%_-_12px)] clear-left xl:left-[18%]" : "bottom-[11px] sm:bottom-[15px] clear-left sm:left-[60px]"}`}>
+            {title}
+          </p>
+        </div>
+        <div className="secondaryFlex w-full absolute bottom-0 z-10">
+          <div className={`relative rounded-[30px_30px_1px_8px] ${wide ? "h-[43px] w-[71%] bg-backgroundPrimary product-border-radius" : "h-[29px] w-[82%] bg-backgroundTertiary products-border-radius"}`} />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
 } from "@/constants/cms";
 import { handleRequest, METHODS } from "./handleRequest";
 import { Dispatch, SetStateAction } from "react";
+import { getNotify } from "./getNotify";
 
 export const createProductCMS = async (
   accountName: string,
@@ -56,16 +57,16 @@ export const createProductCMS = async (
           true
         );
         if (postRes.length !== 0) {
-          alert("Product successfully created!!!");
+          getNotify("Product successfully created!!!");
           setProductId(id);
         } else {
-          alert("There was a problem with image");
+          getNotify("There was a problem with image", "error");
         }
       } else {
-        alert("Product successfully created!!!");
+        getNotify("Product successfully created!!!");
       }
     }
   } catch (error) {
-    alert((error as { message: string }).message);
+    getNotify((error as { message: string }).message, "error");
   }
 };

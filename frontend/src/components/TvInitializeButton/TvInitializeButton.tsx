@@ -4,6 +4,7 @@ import { useSolana } from "@/hooks/useSolana";
 import { Dispatch, SetStateAction } from "react";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
 import { CMS_API, CMS_PRODUCTS } from "@/constants/cms";
+import { getNotify } from "@/utils/getNotify";
 
 interface ITvInitializeButton {
   raiseGoal: string,
@@ -33,8 +34,8 @@ const TvInitializeButton = ({
       if (putRes) {
         setIsDraftButton(false);
       }
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      getNotify((error as { message: string }).message, "error");
     }
 
   };

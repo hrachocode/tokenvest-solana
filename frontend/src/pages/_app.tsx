@@ -5,6 +5,8 @@ import { Footer } from "@/components/Footer/Footer";
 import { ReactNode, useState } from "react";
 import { INotification, NotificationContext, initialNotifactionState } from "@/context/context";
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = dynamic(() => import("../components/Header/Header"), {
   ssr: false
@@ -28,9 +30,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <Head>
           <title>Tokenvest</title>
         </Head>
+        <ToastContainer />
         <Header />
         <Component {...pageProps} />
         <Footer />
+        <ToastContainer />
       </WalletConnectionProvider>
     </NotificationContext.Provider >
   );

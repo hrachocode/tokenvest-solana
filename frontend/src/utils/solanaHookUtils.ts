@@ -2,6 +2,7 @@ import { CMS_API, CMS_NOTIFICATIONS, CMS_PRODUCTS } from "@/constants/cms";
 import { METHODS, handleRequest } from "./handleRequest";
 import { detectFractionalPart } from "./detectFractionalPartUtils";
 import { Dispatch, SetStateAction } from "react";
+import { getNotify } from "./getNotify";
 
 export const solanaInvest = async (
   productId: string,
@@ -36,9 +37,9 @@ export const solanaInvest = async (
         },
       }
     );
-    alert(`Successfully invested ${investAmount}!!!`);
+    getNotify(`Successfully invested ${investAmount}!!!`);
     setResRaisedAmount(Number(raisedAmount));
   } else {
-    alert("Something went wrong!!!");
+    getNotify("Something went wrong!!!", "error");
   }
 };
