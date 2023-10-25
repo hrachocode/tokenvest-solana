@@ -18,6 +18,132 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  .products-border-radius::before {
+    content: "";
+    position: absolute;
+    width: 35px;
+    height: 15px;
+    left: 3px;
+    border-radius: 0 0 0 15px;
+    box-shadow: 0 15px 0 0 #09202f;
+    bottom: -5px;
+    transform: rotate(122deg);
+  }
+  .products-border-radius::after {
+    content: "";
+    position: absolute;
+    width: 35px;
+    height: 15px;
+    border-radius: 0 0 15px 0;
+    box-shadow: 0 15px 0 0 #09202f;
+    bottom: -5px;
+    right: 3px;
+    transform: rotate(244deg);
+  }
+
+  .product-border-radius:before {
+    content: "";
+    border-top: 30px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 80px solid #121823;
+    position: absolute;
+    top: 8px;
+    right: -60px;
+    transform: rotate(7deg);
+  }
+  .product-border-radius:after {
+    content: "";
+    border-top: 40px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 80px solid #121823;
+    position: absolute;
+    top: 15px;
+    left: -56px;
+    transform: rotate(162deg);
+  }
+
+  @keyframes roll {
+    0% {
+      transform: rotateX(0);
+    }
+    100% {
+      transform: rotateX(180deg);
+    }
+  }
+
+  @keyframes roll-reverse {
+    0% {
+      transform: rotateX(180deg);
+    }
+    100% {
+      transform: rotateX(0);
+    }
+  }
+
+  .primaryButton::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #28dbd1;
+    z-index: -1;
+    border-radius: 5px;
+    animation: roll-reverse 0.4s;
+  }
+  .primaryButton:hover::before {
+    animation: roll 0.4s ease-in;
+  }
+
+  .secondaryButton::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 5px;
+    animation: roll-reverse 0.6s;
+    background-color: #121823;
+  }
+  .secondaryButton:hover::before {
+    background-color: #ffff;
+    animation: roll 0.6s ease-in;
+  }
+
+  @keyframes dropDown {
+    from {
+      top: -200px;
+    }
+    to {
+      top: 0;
+    }
+  }
+  .animationDropDown {
+    animation-name: dropDown;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+    animation-fill-mode: both;
+  }
+
+  @keyframes climbUp {
+    from {
+      bottom: -100px;
+    }
+    to {
+      bottom: 0;
+    }
+  }
+
+  .animationClimbUp {
+    animation-name: climbUp;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+    animation-fill-mode: both;
+  }
 }
 
 @layer components {
@@ -30,11 +156,14 @@
   }
 
   /*BUTTON*/
+  .button {
+    @apply text-[16px] md:text-[20px] rounded-[8px] p-[8px_12px] md:p-[8px_25px] skew-x-[-12deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
+  }
   .primaryButton {
-    @apply bg-backgroundSecondary text-[16px] md:text-[20px] border-none rounded-[5px] p-[8px_12px] md:p-[8px_25px] skew-x-[-15deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
+    @apply button border-none;
   }
   .secondaryButton {
-    @apply text-[16px] md:text-[20px] text-[#79FDFF] border-[1px] border-[#79FDFF] rounded-[5px] p-[8px_12px] md:p-[8px_25px] skew-x-[-15deg] hover:shadow-[0_0_0_4px_#121823,0_0_0_6px_#79FDFF];
+    @apply button text-[#79FDFF] border-[1px] border-[#79FDFF];
   }
 
   /*INPUT*/
@@ -61,7 +190,7 @@
 
   /*PAGE CARD*/
   .pageCard {
-    @apply flex flex-col max-w-[280px] w-full items-center p-[44px_23px] rounded-[10px] border-[1px];
+    @apply flex flex-col max-w-[280px] w-full items-center p-[44px_23px] rounded-[10px] border-[1px] z-20;
   }
   .primaryHomePageCard {
     @apply pageCard bg-[#030B15] mt-[32px] border-[#353535];

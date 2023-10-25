@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction } from "react";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
 import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { addDaysToTimestamp } from "../utils/addDaysToTimestamp";
+import { getNotify } from "@/utils/getNotify";
 
 export const useSolana = () => {
   const { SystemProgram, LAMPORTS_PER_SOL } = web3;
@@ -48,7 +49,7 @@ export const useSolana = () => {
         }
       );
       const account = await program.account.investmentContract.fetch(publicKey);
-      alert("Campaign successfully initialized");
+      getNotify("Campaign successfully initialized");
       if (account) {
         await handleRequest(
           `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}`,
@@ -60,8 +61,8 @@ export const useSolana = () => {
           }
         );
       }
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      getNotify((error as { message: string }).message, "error");
     }
   };
 
@@ -105,8 +106,8 @@ export const useSolana = () => {
         setResRaisedAmount,
         ownerAddress
       );
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      getNotify((error as { message: string }).message, "error");
     }
   };
 
@@ -136,8 +137,8 @@ export const useSolana = () => {
       const account = await program.account.investmentContract.fetch(
         new PublicKey(`${attributes.ownerAddress}`)
       );
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      getNotify((error as { message: string }).message, "error");
     }
   };
 
@@ -167,8 +168,8 @@ export const useSolana = () => {
       const account = await program.account.investmentContract.fetch(
         new PublicKey(`${attributes.ownerAddress}`)
       );
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      getNotify((error as { message: string }).message, "error");
     }
   };
 

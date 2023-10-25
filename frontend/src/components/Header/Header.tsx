@@ -102,11 +102,11 @@ const Header = (): JSX.Element => {
       <div className="flex items-center">
         <div className="md:hidden block">
           {
-            isOpen ? <Image alt="nav" src={burgerMenu} width={40} height={40} onClick={toggleNavbar} /> :
+            !isOpen ? <Image alt="nav" src={burgerMenu} width={40} height={40} onClick={toggleNavbar} /> :
               <Image alt="close" src={closeIcon} width={40} height={40} onClick={toggleNavbar} />
           }
         </div>
-        <div className={`${!isOpen ? "top-[85px] left-0 opacity-100 bg-backgroundPrimary" : ""} flex justify-center items-center z-10 md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500`}>
+        <div className={`${isOpen ? "top-[85px] left-0 opacity-100 bg-backgroundPrimary" : ""} flex justify-center items-center z-10 md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500`}>
           {
             ROUTES.map((item, index) =>
               < Link
@@ -118,7 +118,7 @@ const Header = (): JSX.Element => {
                 <p>{item.title}</p>
               </Link>
             )}
-          <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "10px", borderRadius: "5px", transform: "skew(-15deg)" }} />
+          <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "10px", borderRadius: "8px", transform: "skew(-12deg)" }} />
         </div>
       </div >
     </header >
