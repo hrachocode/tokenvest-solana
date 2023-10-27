@@ -115,7 +115,9 @@ export default function Product({
           setIsDraftButton={setIsDraftButton}
         />;
       } else {
-        return <TvButton disabled>{DRAFT}</TvButton>;
+        return <div className="flex">
+          <TvButton disabled>{DRAFT}</TvButton>
+        </div>;
       }
     }
     if (isComplete) {
@@ -184,9 +186,14 @@ export default function Product({
           {renderButton()}
         </div>
       </div>
-      <div className="p-[64px_30px_0_30px] sm:p-[64px_60px_0_60px] xl:p-[64px_120px_0_120px]">
+      <div className="flex p-[64px_30px_0_30px] sm:p-[64px_60px_0_60px] xl:p-[64px_120px_0_120px]">
         <Link href={PRODUCTS} >
-          <TvButton customVariant="secondaryButton" icon={leftAngle}>All Projects</TvButton>
+          <TvButton
+            customVariant="secondaryButton"
+            animationCustomVariant="animationSecondaryButton"
+            icon={leftAngle}>
+            All Projects
+          </TvButton>
         </Link>
       </div>
     </div>

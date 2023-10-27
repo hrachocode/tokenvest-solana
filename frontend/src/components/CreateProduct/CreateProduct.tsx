@@ -101,7 +101,7 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
           handleChange={(e) => { handleChangeSelect(e, setCategory, CATEGORY_KEY, editId); }}
           selectOptions={selectCategories} />
         <UploadImage setFiles={setFiles} />
-        <div className="text-end my-[32px]">
+        <div className="flex justify-end my-[32px]">
           <TvButton onClick={handleClick}>{CREATE_PRODUCT_TEXT}</TvButton>
         </div>
       </div>

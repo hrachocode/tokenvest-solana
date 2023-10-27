@@ -68,7 +68,7 @@ const TvInvestBox = ({
         type="number"
         onChange={({ target: { value = "" } = {} }) => { handleChange(value, setInvestAmount); }}
       />
-      <div className="max-w-[100px] w-full flex m-auto mt-[10px]">
+      <div className="flex justify-center m-[10px_auto] max-w-[100px] w-full ">
         <TvButton onClick={handleClick}>{INVEST}</TvButton>
       </div>
     </div>

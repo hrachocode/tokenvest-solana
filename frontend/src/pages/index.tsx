@@ -3,6 +3,7 @@ import CrowdfundingSolutions from "@/components/CrowdfundingSolutions/Crowdfundi
 import FeeStructure from "@/components/FeeStructure/FeeStructure";
 import EmpoweringInnovators from "@/components/EmpoweringInnovators/EmpoweringInnovators";
 import ReadyGetStarted from "@/components/ReadyGetStarted/ReadyGetStarted";
+import InnovatingTechnology from "@/components/InnovatingTechnology/InnovatingTechnology";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <CrowdfundingSolutions />
       <FeeStructure />
       <EmpoweringInnovators />
+      <InnovatingTechnology />
       <ReadyGetStarted title="Ready to Get Started?" />
     </main>
   );

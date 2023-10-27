@@ -8,7 +8,9 @@ export const useScroll = () => {
     const handleScroll = () => {
       if (animationRef.current) {
         const rect = animationRef.current.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+        const elementCenter = rect.top + rect.height;
+        const windowHeight = window.innerHeight;
+        if (elementCenter >= 0 && elementCenter <= windowHeight) {
           setIsVisible(true);
         }
       }
