@@ -47,7 +47,7 @@
     "arrow-spacing":"warn",
     "block-spacing":["warn","always"],
     "comma-spacing":"warn",
-    "import/no-unresolved": "error"
+    "import/no-unresolved": ["error", { "ignore": ["^@/"] }]
   },
   "settings": {
     "import/parsers": {

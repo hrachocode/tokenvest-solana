@@ -110,7 +110,7 @@ const Header = (): JSX.Element => {
           {
             ROUTES.map((item, index) =>
               < Link
-                className={item.slug === CREATE_PRODUCT ? "secondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"}
+                className={item.slug === CREATE_PRODUCT ? "secondaryButton animationSecondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"}
                 key={index + 1}
                 href={item.slug}
                 onClick={toggleNavbar}

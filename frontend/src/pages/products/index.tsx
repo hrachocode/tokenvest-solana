@@ -54,7 +54,11 @@ const Products = ({ products }: { products: IProduct[] }) => {
         }
       </div>
       <div className="primaryFlex mt-[64px]">
-        <TvButton customVariant="secondaryButton">Load More</TvButton>
+        <TvButton
+          customVariant="secondaryButton"
+          animationCustomVariant="animationSecondaryButton">
+          Load More
+        </TvButton>
       </div>
       <ReadyGetStarted title="Have Any Project?" />
       <div className='absolute left-0 top-[50px]' >
