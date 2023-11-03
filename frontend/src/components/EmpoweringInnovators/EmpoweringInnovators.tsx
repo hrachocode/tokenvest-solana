@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { EmpoweringData } from "@/constants/general";
-import vector from "../../../public/images/vector2.svg";
+import vector from "../../../public/images/vector2.png";
 import TvPageCard from "../TvHomePageCard/TvHomePageCard";
 import { useScroll } from "@/hooks/useScroll";
 

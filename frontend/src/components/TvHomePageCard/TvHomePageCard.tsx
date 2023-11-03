@@ -13,7 +13,7 @@ const TvHomePageCard = (
       {
         cardData.map(({ icon, title, description }, index) => (
           <div key={index} className={customVariant.pageCard}>
-            <Image alt={alt} src={icon} />
+            <Image alt={alt} src={icon} className="cursor-pointer hover:animate-spin" />
             <p className={customVariant.pageCardTitle}>{title}</p>
             <p className={customVariant.pageCardDescription}>
               {description}

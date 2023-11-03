@@ -1,8 +1,8 @@
-import { CREATE_PRODUCT, HOME, PRODUCTS, ROUTES } from "@/constants/routes";
+import { HOME, PRODUCTS, ROUTES } from "@/constants/routes";
 import Link from "next/link";
 import notification from "../../../public/images/notification.png";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { CMS_API, CMS_NOTIFICATIONS, EQUALS, FILTERS, NOTIFICATION_ADDRESS, POPULATE_ALL } from "@/constants/cms";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ import { NotificationContext } from "@/context/context";
 import tokenvest from "../../../public/images/tokenvest.svg";
 import burgerMenu from "../../../public/images/burger_menu.svg";
 import closeIcon from "../../../public/images/close.svg";
+import SquaresEffect from "../SquaresEffect/SquaresEffect";
 
 const Header = (): JSX.Element => {
   const router = useRouter();
@@ -20,6 +21,8 @@ const Header = (): JSX.Element => {
   const [ openNotification, setOpenNotification ] = useState(false);
   const { notifications, setNotifactions } = useContext(NotificationContext);
   const [ isOpen, setIsOpen ] = useState(false);
+  const animationRef = useRef<HTMLDivElement | null>(null);
+  const isHomePage = router.pathname === HOME;
 
   useEffect(() => {
     (async () => {
@@ -70,8 +73,9 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <header className="flex justify-between items-center p-[15px_60px] lg:p-[24px_80px] border-b-[1px] border-textPrimary border-opacity-[20%]">
-      <div className="flex items-center z-10">
+    <header ref={animationRef} className="flex justify-between items-center p-[10px_30px] md:p-[18px_60px] lg:p-[25px_80px] border-b-[1px] border-textPrimary border-opacity-[20%]">
+      {isHomePage && <SquaresEffect animationRef={animationRef} />}
+      <div className="flex items-center z-40">
         <Link href={HOME}>
           <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px] w-[95px] lg:w-[115px] object-cover" />
         </Link>
@@ -87,7 +91,7 @@ const Header = (): JSX.Element => {
               <p>{notifications.length}</p>
             </div> : <></>}
           {openNotification ? <div
-            className="flex flex-col w-[350px] md:w-[500px] absolute top-[60px] md:top-[70px] lg:top-[55px] left-[-170px] md:left-[60px] z-10 p-4 bg-[#26545B] rounded-[10px]"
+            className="flex flex-col w-[350px] md:w-[500px] absolute top-[60px] md:top-[70px] lg:top-[55px] left-[-140px] md:left-[60px] z-10 p-4 bg-[#26545B] rounded-[10px]"
           >
             {notifications.map((item: INotification) =>
               <p
@@ -99,18 +103,18 @@ const Header = (): JSX.Element => {
           </div> : <></>}
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center z-40">
         <div className="md:hidden block">
           {
             !isOpen ? <Image alt="nav" src={burgerMenu} width={40} height={40} onClick={toggleNavbar} /> :
               <Image alt="close" src={closeIcon} width={40} height={40} onClick={toggleNavbar} />
           }
         </div>
-        <div className={`${isOpen ? "top-[85px] left-0 opacity-100 bg-backgroundPrimary" : ""} flex justify-center items-center z-10 md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500`}>
+        <div className={`${isOpen ? "top-[85px] left-0 opacity-100" : ""} secondaryFlex md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500`}>
           {
             ROUTES.map((item, index) =>
-              < Link
-                className={item.slug === CREATE_PRODUCT ? "secondaryButton animationSecondaryButton" : "hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"}
+              <Link
+                className="hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"
                 key={index + 1}
                 href={item.slug}
                 onClick={toggleNavbar}

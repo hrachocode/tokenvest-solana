@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth !important;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply text-[#FFFFFF];
     @apply font-fontPrimary;
