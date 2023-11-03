@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { SolutionsData } from "@/constants/general";
-import vector from "../../../public/images/vector1.svg";
+import vector from "../../../public/images/vector1.png";
 import TvPageCard from "../TvHomePageCard/TvHomePageCard";
 import { useScroll } from "@/hooks/useScroll";
 
 const CrowdfundingSolutions = () => {
   const { isVisible, animationRef } = useScroll();
   return (
-    <section id="section-to" ref={animationRef} className='secondaryFlex w-full flex-col relative text-center p-[90px_60px_145px_60px]'>
+    <section id="section-to" ref={animationRef} className='secondaryFlex  w-full flex-col relative text-center p-[90px_60px_145px_60px]'>
       {
         isVisible &&
         <div>
@@ -22,7 +22,7 @@ const CrowdfundingSolutions = () => {
           </div>
         </div>
       }
-      <div className='absolute right-0' >
+      <div className='absolute right-0 top-0' >
         <Image alt='vector' src={vector} />
       </div>
     </section >

@@ -6,15 +6,16 @@ export const useScroll = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (animationRef.current) {
-        const rect = animationRef.current.getBoundingClientRect();
-        const elementCenter = rect.top + rect.height;
-        const windowHeight = window.innerHeight;
-        if (elementCenter >= 0 && elementCenter <= windowHeight) {
-          setIsVisible(true);
+      setTimeout(() => {
+        if (animationRef.current) {
+          const rect = animationRef.current.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom >= 0) {
+            setIsVisible(true);
+          }
         }
-      }
+      }, 100);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
