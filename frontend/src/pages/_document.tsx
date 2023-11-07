@@ -7,14 +7,14 @@ export default function Document() {
       <Head>
         <link rel="icon" href="/favicon.ico" />
         {/* Google tag (gtag.js) */}
-        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}></Script>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-YC927WDBEG"></Script>
         <Script id="ga-script">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+        
+            gtag('config', 'G-YC927WDBEG');
           `}
         </Script>
         <Script id="google-analytics" type="text/javascript">
