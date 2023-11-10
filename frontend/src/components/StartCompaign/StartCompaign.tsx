@@ -2,7 +2,7 @@ const StartCompaign = () => {
   return (
     <section className="secondaryFlex flex-col">
       <h1 className="font-[600] text-center">
-        Start Your <span className="text-textPrimary">Campaign</span>
+        Start Your <span className="text-textTertiary">Campaign</span>
       </h1>
       <div className="w-full md:w-[60%]">
         <p className="text-center text-textSecondary font-fontSecondary font-[300] text-[20px] lg:text-[26px]">

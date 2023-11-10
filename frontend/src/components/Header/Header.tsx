@@ -48,7 +48,9 @@ const Header = (): JSX.Element => {
   const handleNotificationClick = () => {
     if (notifications.length === 0) {
       return;
-    };
+    } else if (isOpen) {
+      setIsOpen(false);
+    }
     setOpenNotification((state) => !state);
   };
   const handleOpenNotification = async (id: number, productId: string) => {
@@ -69,6 +71,7 @@ const Header = (): JSX.Element => {
   };
 
   const toggleNavbar = () => {
+    openNotification && setOpenNotification(false);
     setIsOpen(!isOpen);
   };
 

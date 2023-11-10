@@ -4,14 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { CREATE_PRODUCT } from "@/constants/routes";
 import { useScroll } from "@/hooks/useScroll";
+interface IReadyGetStartedProps {
+  title: string,
+  background?: string,
+}
 
-const ReadyGetStarted = ({ title }: { title?: string }) => {
+const ReadyGetStarted = (props: IReadyGetStartedProps): JSX.Element => {
+  const { title, background = "readyGetStartedPrimary" } = props;
   const { isVisible, animationRef } = useScroll();
   return (
-    <section ref={animationRef} className="secondaryFlex flex-col px-[20px] m-[40px] sm:m-[80px] md:mt-[200px] bg-[#26545B] rounded-[20px]">
+    <section ref={animationRef} className={`secondaryFlex flex-col px-[20px] m-[40px] sm:m-[80px] md:mt-[200px] rounded-[20px] ${background}`}>
       {
         isVisible &&
-        <div>
+        <div className="z-20">
           <div className="relative max-w-[655px] w-full text-center pt-[64px] lg:pt-[100px] animationDropDown">
             <p className="text-[32px] lg:text-[48px] font-[500] pt-[20px]">{title}</p>
             <p className="text-[18px] lg:text-[22px] text-textSecondary font-fontSecondary font-[400]">

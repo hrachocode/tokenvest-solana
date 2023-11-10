@@ -60,7 +60,7 @@ const Products = ({ products }: { products: IProduct[] }) => {
           Load More
         </TvButton>
       </div>
-      <ReadyGetStarted title="Have Any Project?" />
+      <ReadyGetStarted title="Have Any Project?" background="readyGetStartedSecondary" />
       <div className='absolute left-0 top-[50px]' >
         <Image alt='vector' src={vector} />
       </div>

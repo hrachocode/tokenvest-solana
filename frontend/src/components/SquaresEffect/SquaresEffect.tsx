@@ -20,15 +20,16 @@ const SquaresEffect = ({ animationRef }: { animationRef: RefObject<HTMLDivElemen
       className="flex w-full absolute top-0 left-0 cursor-pointer z-20 overflow-hidden"
     >
       {
+        squaresColumn && squaresRow &&
         Array.from(Array(squaresRow).keys()).map((squareRow) => (
-          <div key={squareRow} className="flex flex-col">
+          <div key={squareRow} className="flex flex-col w-full">
 
             {
               Array.from(Array(squaresColumn).keys()).map((squareColumn) => (
                 <div
                   id="light"
                   key={squareColumn}
-                  className="w-[122px] h-[122px] bg-[url('/images/cell.svg')] hover:bg-[url('/images/cell1.svg')] transition duration-300"
+                  className="min-w-[122px] min-h-[122px] bg-[url('/images/cell.svg')] hover:bg-[url('/images/cell1.svg')] hover:transition duration-200"
                 >
                 </div>
               ))

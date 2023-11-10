@@ -133,7 +133,7 @@ export default function Product({
   return (
     <div>
       {isPopupOpen &&
-        <div onMouseDown={closePopup} className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[50]">
+        <div onMouseDown={closePopup} className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[60]">
           <TvInvestBox
             contractAddress={address}
             productId={id}
