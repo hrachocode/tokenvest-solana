@@ -11,7 +11,9 @@ export const TvButton = (props: ITvButtonProps): JSX.Element => {
     <div className={`${customVariant}`}>
       {icon && <Image alt="leftAngle" src={icon} className="absolute top-[7px] left-[5px]" />}
       <button {...rest} className={`${animationCustomVariant}`} style={{ paddingLeft: `${icon ? "35px" : ""}` }}>
-        {props.children}
+        <span className="flex skew-x-[12deg]">
+          {props.children}
+        </span>
       </button>
     </div>
   );

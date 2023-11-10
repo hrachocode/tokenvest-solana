@@ -8,11 +8,11 @@ import SquaresEffect from "../SquaresEffect/SquaresEffect";
 const CrowdfundingTechnology = () => {
   const animationRef = useRef<HTMLDivElement | null>(null);
   return (
-    <section ref={animationRef} className="primaryFlex flex-col relative px-[60px] overflow-hidden">
+    <section ref={animationRef} className="secondaryFlex w-full flex-col relative px-[60px] overflow-hidden">
       <SquaresEffect animationRef={animationRef} />
-      <div className="primaryFlex mt-[80px] lg:mt-[150px]">
-        <h1 className="text-center leading-normal font-fontSecondary font-[700]">
-          Revolutionizing <span className="text-textPrimary">Crowdfunding</span> with Web 3.0 Technology
+      <div className="primaryFlex max-w-[1317px] w-full mt-[80px] lg:mt-[150px]" >
+        <h1 className="text-center leading-normal font-[700]">
+          Revolutionizing <span className="text-textTertiary">Crowdfunding</span> with Web 3.0 Technology
         </h1>
       </div>
       <div className="primaryFlex pt-[32px]">
@@ -23,8 +23,8 @@ const CrowdfundingTechnology = () => {
       <div className="primaryFlex pt-[32px]">
         <TvButton>Explore Projects</TvButton>
       </div>
-      <Link href={"#section-to"} className="primaryFlex m-[70px_0_50px_0] lg:m-[160px_0_110px_0] cursor-pointer z-30">
-        <Image alt="arrowDown" src={arrowDown} />
+      <Link href={"#section-to"} className="primaryFlex m-[70px_0_50px_0] lg:m-[160px_0_110px_0] cursor-pointer">
+        <Image alt="arrowDown" src={arrowDown} className="z-30" />
       </Link>
       <div className="absolute top-[60px] lg:top-0">
         <div

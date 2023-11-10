@@ -21,7 +21,7 @@ const TvProductImage = ({ image, title, wide }: { image: string | null, title: s
           }
         </div>
 
-        <div className="flex w-full justify-center xl:justify-start absolute z-50">
+        <div className="flex w-full justify-center xl:justify-start absolute z-40">
           <Image alt="vector" src={wide ? vector1 : vector} />
           <p className={`absolute text-[18px] sm:text-[20px] z-20 ${wide ? "bottom-[calc(100%_-_8px)] sm:bottom-[calc(100%_-_8px)] md:bottom-[calc(100%_-_12px)] clear-left xl:left-[18%]" : "bottom-[11px] sm:bottom-[15px] clear-left sm:left-[60px]"}`}>
             {title}

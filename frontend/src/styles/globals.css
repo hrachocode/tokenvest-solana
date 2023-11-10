@@ -50,7 +50,7 @@
     content: "";
     border-top: 30px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 80px solid #121823;
+    border-left: 80px solid #030b15;
     position: absolute;
     top: 8px;
     right: -60px;
@@ -60,7 +60,7 @@
     content: "";
     border-top: 40px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 80px solid #121823;
+    border-left: 80px solid #030b15;
     position: absolute;
     top: 15px;
     left: -56px;
@@ -96,6 +96,7 @@
     height: 100%;
     background-color: #28dbd1;
     border-radius: 4px;
+    box-shadow: 0 0 1px 1px #28dbd1;
     z-index: -1;
     animation: roll-reverse-primary 0.4s ease-in;
   }
@@ -103,6 +104,7 @@
     animation: roll-primary 0.4s ease-in;
     border-radius: 8px;
     border-width: 3px;
+    box-shadow: none;
     border-color: #26545b;
   }
 
@@ -207,7 +209,7 @@
 
   /*BUTTON*/
   .button {
-    @apply text-[16px] md:text-[20px] font-[600] rounded-[8px] skew-x-[-12deg];
+    @apply text-[16px] md:text-[20px] font-[600] rounded-[8px] skew-x-[-12deg] z-50;
   }
   .primaryButton {
     @apply button p-[8px_12px] md:p-[8px_25px] border-[2px] border-[#28DBD1];
@@ -256,5 +258,12 @@
   }
   .secondaryHomePageCardDescription {
     @apply pt-[16px] text-[16px] font-fontSecondary font-[400] text-center text-[#7D7D7D];
+  }
+  /*READY GET STARTED*/
+  .readyGetStartedPrimary {
+    @apply bg-[#79fdff] bg-opacity-30;
+  }
+  .readyGetStartedSecondary {
+    @apply bg-[#28DBD1] bg-opacity-30;
   }
 }
