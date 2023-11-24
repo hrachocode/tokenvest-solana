@@ -115,8 +115,8 @@ export default function Product({
           setIsDraftButton={setIsDraftButton}
         />;
       } else {
-        return <div className="flex">
-          <TvButton disabled>{DRAFT}</TvButton>
+        return <div className="flex justify-end">
+          <TvButton animationBorderColor="#09202F" disabled>{DRAFT}</TvButton>
         </div>;
       }
     }
@@ -124,7 +124,7 @@ export default function Product({
       return <TvButton disabled>{COMPLETE}</TvButton>;
     }
     return <div className="primaryFlex gap-3 mt-[12px]">
-      <TvButton onClick={openPopup}>{INVEST}</TvButton>
+      <TvButton animationBorderColor="#09202F" onClick={openPopup}>{INVEST}</TvButton>
       <TvFinishStartupButton productId={id} />
       <TvRefundStartupButton productId={id} />
     </div>;
@@ -147,7 +147,7 @@ export default function Product({
       }
       <TvProductImage image={image} title={title} wide={true} />
       <div className="primaryFlex">
-        <div className="p-[6px_12px] mt-[64px] rounded-[20px] border-[2px] border-[#28DBD1]">
+        <div className="p-[6px_12px] mt-[94px] rounded-[20px] border-[2px] border-[#28DBD1]">
           <p className="text-[16px] font-[400] text-center">{category}</p>
         </div>
       </div>
@@ -191,6 +191,7 @@ export default function Product({
           <TvButton
             customVariant="secondaryButton"
             animationCustomVariant="animationSecondaryButton"
+            animationBorderColor="#09202F"
             icon={leftAngle}>
             All Projects
           </TvButton>

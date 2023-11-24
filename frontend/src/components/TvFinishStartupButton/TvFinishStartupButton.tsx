@@ -15,7 +15,7 @@ const TvFinishStartupButton = ({
     finishStartup(productId);
   };
   return <div>
-    <TvButton onClick={handleClick}>{FINISH}</TvButton>
+    <TvButton animationBorderColor="#09202F" onClick={handleClick}>{FINISH}</TvButton>
   </div>;
 };
 

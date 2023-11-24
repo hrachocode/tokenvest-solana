@@ -15,56 +15,12 @@
     @apply bg-backgroundPrimary;
   }
   h1 {
-    @apply text-[40px] md:text-[70px] xl:text-[94px];
+    @apply text-[40px] md:text-[70px] 2xl:text-[94px];
   }
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
-
-  .products-border-radius::before {
-    content: "";
-    position: absolute;
-    width: 35px;
-    height: 15px;
-    left: 3px;
-    border-radius: 0 0 0 15px;
-    box-shadow: 0 15px 0 0 #09202f;
-    bottom: -5px;
-    transform: rotate(122deg);
-  }
-  .products-border-radius::after {
-    content: "";
-    position: absolute;
-    width: 35px;
-    height: 15px;
-    border-radius: 0 0 15px 0;
-    box-shadow: 0 15px 0 0 #09202f;
-    bottom: -5px;
-    right: 3px;
-    transform: rotate(244deg);
-  }
-
-  .product-border-radius:before {
-    content: "";
-    border-top: 30px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 80px solid #030b15;
-    position: absolute;
-    top: 8px;
-    right: -60px;
-    transform: rotate(7deg);
-  }
-  .product-border-radius:after {
-    content: "";
-    border-top: 40px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 80px solid #030b15;
-    position: absolute;
-    top: 15px;
-    left: -56px;
-    transform: rotate(162deg);
   }
 
   @keyframes roll-primary {
@@ -105,7 +61,6 @@
     border-radius: 8px;
     border-width: 3px;
     box-shadow: none;
-    border-color: #26545b;
   }
 
   @keyframes roll-secondary {
@@ -145,7 +100,6 @@
     background-color: #ffff;
     border-radius: 8px;
     border-width: 3px;
-    border-color: #26545b;
     animation: roll-secondary 0.4s ease-in;
   }
 
@@ -206,7 +160,6 @@
   .secondaryFlex {
     @apply flex justify-center items-center;
   }
-
   /*BUTTON*/
   .button {
     @apply text-[16px] md:text-[20px] font-[600] rounded-[8px] skew-x-[-12deg] z-50;
@@ -217,7 +170,6 @@
   .secondaryButton {
     @apply button p-[7px_12px] md:p-[7px_25px] text-[#28DBD1] border-[2px] border-[#28DBD1];
   }
-
   /*INPUT*/
   .input {
     @apply flex m-[8px_0_20px_0] focus:outline-none focus:border-[#CFCFCF] bg-backgroundTertiary rounded-[8px] border-[1px] border-[#28DBD1];
@@ -228,7 +180,6 @@
   .secondaryInput {
     @apply input p-[10px_10px_35px_10px];
   }
-
   /*SELECT*/
   .select {
     @apply w-full m-[8px_0_20px_0] p-[13px_20px_13px_35px] cursor-pointer focus:outline-none focus:border-[#CFCFCF] bg-backgroundTertiary rounded-[8px] border-[1px] border-[#28DBD1];
@@ -239,13 +190,12 @@
   .secondarySelect {
     @apply select p-[13px_10px_13px_10px];
   }
-
   /*PAGE CARD*/
   .pageCard {
-    @apply flex flex-col max-w-[280px] w-full items-center p-[44px_23px] rounded-[10px] border-[1px] z-20;
+    @apply flex flex-col items-center p-[44px_60px] rounded-[10px] border-[1px] z-20;
   }
   .primaryHomePageCard {
-    @apply pageCard bg-[#030B15] mt-[32px] border-[#353535];
+    @apply pageCard bg-[#030B15] border-[#353535];
   }
   .primaryHomePageCardTitle {
     @apply text-[20px] lg:text-[28px] font-fontSecondary font-[500] pt-[32px];
@@ -261,9 +211,19 @@
   }
   /*READY GET STARTED*/
   .readyGetStartedPrimary {
-    @apply bg-[#79fdff] bg-opacity-30;
+    @apply bg-[#79fdff]/30;
   }
   .readyGetStartedSecondary {
-    @apply bg-[#28DBD1] bg-opacity-30;
+    @apply bg-[#28DBD1]/30;
+  }
+  /*ROUNDED SHADOW*/
+  .primaryRoundedShadow {
+    @apply absolute top-[60px] lg:top-0;
+  }
+  .secondaryRoundedShadow {
+    @apply absolute top-[220px] right-0;
+  }
+  .tertiaryRoundedShadow {
+    @apply absolute left-[-120px] bottom-[-120px];
   }
 }

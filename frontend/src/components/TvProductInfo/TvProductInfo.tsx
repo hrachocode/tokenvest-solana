@@ -47,7 +47,7 @@ const TvProductInfo = ({
           <p className="px-[8px]">{`${daysLeft} Days Left`}</p>
         </div>
         <div>
-          <TvButton>VIew Details</TvButton>
+          <TvButton animationBorderColor="#09202F">VIew Details</TvButton>
         </div>
       </div>
     </div>

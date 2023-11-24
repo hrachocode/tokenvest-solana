@@ -102,7 +102,7 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
           selectOptions={selectCategories} />
         <UploadImage setFiles={setFiles} />
         <div className="flex justify-end my-[32px]">
-          <TvButton onClick={handleClick}>{CREATE_PRODUCT_TEXT}</TvButton>
+          <TvButton animationBorderColor="#09202F" onClick={handleClick}>{CREATE_PRODUCT_TEXT}</TvButton>
         </div>
       </div>
     </div >

@@ -16,7 +16,7 @@ const InnovatingTechnology = () => {
             <p className="text-[18px] lg:text-[24px] text-textPrimary font-fontSecondary font-[500]">
               Smart contracts ensure trust and efficiency in every campaign.
             </p>
-            <p className="text-[32px] lg:text-[48px] font-[500] pb-[20]">Innovating with Solana Technology</p>
+            <p className="text-[32px] lg:text-[40px] 2xl:text-[48px] font-[500] pb-[20]">Innovating with Solana Technology</p>
             <p className="text-[16px] lg:text-[22px] font-[400] text-textSecondary">
               Our platform operates with the speed, scalability, and security of the Solana blockchain.
               We&apos;re proud to harness the potential of Web 3.0 through Solana,

@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { EmpoweringData } from "@/constants/general";
-import vector from "../../../public/images/vector2.png";
 import TvPageCard from "../TvHomePageCard/TvHomePageCard";
 import { useScroll } from "@/hooks/useScroll";
+import ParticlesCanvas from "../ParticlesCanvas/ParticlesCanvas";
 
 const EmpoweringInnovators = () => {
   const { isVisible, animationRef } = useScroll();
@@ -12,7 +11,7 @@ const EmpoweringInnovators = () => {
         isVisible &&
         <div>
           <div className="relative text-center animationDropDown">
-            <p className="text-[32px] lg:text-[48px] font-[500]">Empowering Innovators and Backers</p>
+            <p className="text-[32px] lg:text-[40px] 2xl:text-[48px] font-[500]">Empowering Innovators and Backers</p>
             <p className="text-textSecondary font-fontSecondary text-center text-[18px] font-[400]">
               Tokenvest caters to two essential user groups
             </p>
@@ -25,9 +24,7 @@ const EmpoweringInnovators = () => {
           </div>
         </div>
       }
-      <div className='absolute top-[140px] left-0 lg:left-[-100px] w-[calc(100%_/_2.1)] 2xl:top-[50px]' >
-        <Image alt='vector' src={vector} />
-      </div>
+      <ParticlesCanvas width="18%" left="0" top="280px" id="particlesInnovators" />
     </section>
   );
 };

@@ -4,6 +4,7 @@ import FeeStructure from "@/components/FeeStructure/FeeStructure";
 import EmpoweringInnovators from "@/components/EmpoweringInnovators/EmpoweringInnovators";
 import ReadyGetStarted from "@/components/ReadyGetStarted/ReadyGetStarted";
 import InnovatingTechnology from "@/components/InnovatingTechnology/InnovatingTechnology";
+import RoundedShadow from "@/components/RoundedShadow/RoundedShadow";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <EmpoweringInnovators />
       <InnovatingTechnology />
       <ReadyGetStarted title="Ready to Get Started?" />
+      <RoundedShadow />
     </main>
   );
 }

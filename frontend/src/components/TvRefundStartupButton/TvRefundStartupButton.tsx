@@ -15,7 +15,7 @@ const TvRefundStartupButton = ({
     refundStartup(productId);
   };
   return <div>
-    <TvButton onClick={handleClick}>{REFUND}</TvButton>
+    <TvButton animationBorderColor="#09202F" onClick={handleClick}>{REFUND}</TvButton>
   </div>;
 };
 
