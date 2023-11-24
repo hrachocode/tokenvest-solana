@@ -7,17 +7,16 @@ import emtyImage from "../../../public/images/empty.png";
 
 const TvProductImage = ({ image, title, wide }: { image: string | null, title: string, wide?: boolean }) => {
   return (
-    <div className="w-full relative rounded-[10px_10px_0_0]"
+    <div className="w-full relative"
     >
-      <Image
-        alt="product"
-        src={image ? `${process.env.NEXT_PUBLIC_CMS_URL}${image}` : emtyImage}
-        width={0}
-        height={0}
-        style={{ width: wide ? "100%" : 470, minHeight: wide ? "unset" : 304, height: wide ? 450 : 300 }}
-        sizes="100vw"
-        className={`w-full object-cover rounded-${wide ? "unset" : "[10px_10px_0_0]"}`}
-      />
+      <div className={`${wide ? "w-[100%] h-[450px]" : "w-[470] h-[300px]"}`}>
+        <Image
+          alt="product"
+          src={image ? `${process.env.NEXT_PUBLIC_CMS_URL}${image}` : emtyImage}
+          layout="fill"
+          className={`object-cover rounded-${wide ? "unset" : "[10px_10px_0_0]"}`}
+        />
+      </div>
       <Image alt="vector" src={wide ? vector2 : vector3} className={`rotate-[180deg] absolute left-0 ${wide ? "min-h-[21px] bottom-[-5px] sm:bottom-[-3px]" : "bottom-[-3px]"}`} />
       <div className="flex w-full justify-center xl:justify-start absolute z-40">
         <Image alt="vector" src={wide ? vector1 : vector} className={`${wide ? "min-h-[15px]" : ""}`} />

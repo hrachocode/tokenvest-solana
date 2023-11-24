@@ -14,8 +14,15 @@ interface IParticlesCanvasProps {
   id: string;
 }
 
-const ParticlesCanvas = (props: IParticlesCanvasProps) => {
-  const { width, height = "100%", top, right = "unset", left = "unset", linksWidth = "1", id } = props;
+const ParticlesCanvas = ({
+  width,
+  height = "100%",
+  top,
+  right = "unset",
+  left = "unset",
+  linksWidth = "1",
+  id
+}: IParticlesCanvasProps) => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
