@@ -1,6 +1,8 @@
+import RoundedShadow from "../RoundedShadow/RoundedShadow";
+
 const DiscoverInnovative = () => {
   return (
-    <section className="secondaryFlex flex-col mt-[80px] lg:mt-[150px] px-[60px]">
+    <section className="secondaryFlex flex-col mt-[80px] lg:mt-[150px] px-[60px] relative">
       <div className="font-[700] text-center">
         <h1>Discover Innovative</h1>
         <h1 className="text-textTertiary">Projects</h1>
@@ -12,9 +14,7 @@ const DiscoverInnovative = () => {
           Your support can turn these visions into reality.
         </p>
       </div>
-      <div
-        className="absolute right-0 top-[200px] w-[561px] h-[561px] rounded-[50%] opacity-[0.41] bg-blend-screen mix-blend-screen bg-gradientPrimary">
-      </div>
+      <RoundedShadow customVariant="secondaryRoundedShadow" />
     </section>
   );
 };

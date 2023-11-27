@@ -9,7 +9,7 @@ const TvHomePageCard = (
   },
   cardData = [], alt = "ellipse" }: ITvHomePageCard): JSX.Element => {
   return (
-    <>
+    <div className={`grid lg:grid-cols-2 ${customVariant.pageCard === "primaryHomePageCard" ? "md:grid-cols-2 2xl:grid-cols-4" : " 2xl:grid-cols-2"} gap-[32px]`}>
       {
         cardData.map(({ icon, title, description }, index) => (
           <div key={index} className={customVariant.pageCard}>
@@ -21,7 +21,7 @@ const TvHomePageCard = (
           </div>
         ))
       }
-    </>
+    </div>
   );
 };
 
