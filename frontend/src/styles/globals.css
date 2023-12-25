@@ -151,6 +151,11 @@
     animation: RightToLeft 1s ease-out both;
   }
 }
+/*PARTICLES*/
+.particles {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
 
 @layer components {
   /*FLEX*/

@@ -9,8 +9,8 @@ const CrowdfundingSolutions = () => {
     <section id="section-to" ref={animationRef} className='secondaryFlex w-full flex-col relative text-center p-[90px_60px_145px_60px]'>
       {
         isVisible &&
-        <div className="z-50">
-          <div className="relative animationDropDown">
+        <div>
+          <div className="relative animationDropDown z-50">
             <p className='text-[26px] lg:text-[40px] 2xl:text-[48px] font-[500]'>Tokenvest: Pioneering Web 3.0 Crowdfunding Solutions</p>
             <p className='text-[18px] text-textSecondary font-fontSecondary font-[400] pt-[20px]'>
               Discover how Tokenvest addresses these challenges and reimagines crowdfunding for the future.

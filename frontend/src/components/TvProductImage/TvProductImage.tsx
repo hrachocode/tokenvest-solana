@@ -9,7 +9,7 @@ const TvProductImage = ({ image, title, wide }: { image: string | null, title: s
   return (
     <div className="w-full relative"
     >
-      <div className={`${wide ? "w-[100%] h-[450px]" : "w-[470] h-[300px]"}`}>
+      <div className={`${wide ? "w-[100%] h-[450px]" : "w-[470] h-[300px] rounded-[10px_10px_0_0]"}`}>
         <Image
           alt="product"
           src={image ? `${process.env.NEXT_PUBLIC_CMS_URL}${image}` : emtyImage}

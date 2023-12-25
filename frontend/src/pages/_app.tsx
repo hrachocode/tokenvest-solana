@@ -1,16 +1,13 @@
 import "@/styles/globals.css";
 import dynamic from "next/dynamic";
 import type { AppProps } from "next/app";
+import Header from "@/components/Header/Header";
 import { Footer } from "@/components/Footer/Footer";
 import { ReactNode, useState } from "react";
 import { INotification, NotificationContext, initialNotifactionState } from "@/context/context";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const Header = dynamic(() => import("../components/Header/Header"), {
-  ssr: false
-});
 
 const WalletConnectionProvider = dynamic<{ children: ReactNode }>(
   () =>
