@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import SquaresEffect from "../SquaresEffect/SquaresEffect";
+import { CMS_PRODUCTS } from "@/constants/cms";
 
 const CrowdfundingTechnology = () => {
   const animationRef = useRef<HTMLDivElement | null>(null);
@@ -21,7 +22,9 @@ const CrowdfundingTechnology = () => {
         </p>
       </div>
       <div className="primaryFlex pt-[32px]">
-        <TvButton animationBorderColor="#09202F">Explore Projects</TvButton>
+        <Link href={CMS_PRODUCTS} className="z-30">
+          <TvButton animationBorderColor="#09202F">Explore Projects</TvButton>
+        </Link>
       </div>
       <Link href={"#section-to"} className="primaryFlex m-[70px_0_50px_0] lg:m-[160px_0_110px_0] cursor-pointer">
         <Image alt="arrowDown" src={arrowDown} className="z-30" />
