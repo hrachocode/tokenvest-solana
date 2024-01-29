@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CREATE_PRODUCT } from "@/constants/routes";
 import { useScroll } from "@/hooks/useScroll";
 import ParticlesCanvas from "../ParticlesCanvas/ParticlesCanvas";
+import { CMS_PRODUCTS } from "@/constants/cms";
 interface IReadyGetStartedProps {
   title: string,
   background?: string,
@@ -28,7 +29,9 @@ const ReadyGetStarted = (props: IReadyGetStartedProps): JSX.Element => {
               <TvButton>Add Projects</TvButton>
             </Link>
             <div className="relative animationRightToLeft">
-              <TvButton customVariant="secondaryButton" animationCustomVariant="animationSecondaryButton">Explore Projects</TvButton>
+              <Link href={CMS_PRODUCTS}>
+                <TvButton customVariant="secondaryButton" animationCustomVariant="animationSecondaryButton">Explore Projects</TvButton>
+              </Link>
             </div>
           </div>
         </div>
