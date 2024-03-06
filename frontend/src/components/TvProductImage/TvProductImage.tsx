@@ -6,6 +6,7 @@ import vector3 from "../../../public/images/vector9.svg";
 import emtyImage from "../../../public/images/empty.png";
 
 const TvProductImage = ({ image, title, wide }: { image: string | null, title: string, wide?: boolean }) => {
+  console.log(`${process.env.NEXT_PUBLIC_CMS_URL}${image}`, 'image');
   return (
     <div className="w-full relative"
     >
