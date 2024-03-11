@@ -13,7 +13,7 @@ import UploadImage from "../UploadImage/UploadImage";
 import { useRouter } from "next/router";
 import { PRODUCTS } from "@/constants/routes";
 import StartCompaign from "../StartCompaign/StartCompaign";
-import { getNotify } from "@/utils/getNotify";
+import { showNotification } from "@/utils/showNotification";
 
 interface ICreateProduct {
   categories: ICategory[];
@@ -53,7 +53,7 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
         setProductId
       );
     } catch (error) {
-      getNotify((error as { message: string }).message, "error");
+      showNotification((error as { message: string }).message, "error");
     }
   };
 

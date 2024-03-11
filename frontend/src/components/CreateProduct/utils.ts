@@ -1,5 +1,5 @@
 import { CMS_API, CMS_LAST_CHANGES, POPULATE_ALL } from "@/constants/cms";
-import { getNotify } from "@/utils/getNotify";
+import { showNotification } from "@/utils/showNotification";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { ChangeEvent } from "react";
 
@@ -19,7 +19,7 @@ export const handleBlur = async (
       }
     );
   } catch (error) {
-    getNotify((error as { message: string }).message, "error");
+    showNotification((error as { message: string }).message, "error");
   }
 };
 
