@@ -9,6 +9,7 @@ import { handleRequest, METHODS } from "@/utils/handleRequest";
 import Link from "next/link";
 import RoundedShadow from "@/components/RoundedShadow/RoundedShadow";
 import ParticlesCanvas from "@/components/ParticlesCanvas/ParticlesCanvas";
+
 export async function getStaticProps() {
   const { data: product = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
 
@@ -36,7 +37,8 @@ export async function getStaticProps() {
   return {
     props: {
       products
-    }
+    },
+    revalidate: 3600,
   };
 }
 

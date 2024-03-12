@@ -69,7 +69,8 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
   return {
     props: {
       product
-    }
+    },
+    revalidate: 3600,
   };
 };
 

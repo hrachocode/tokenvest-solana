@@ -1,18 +1,17 @@
-import { Program, web3 } from "@project-serum/anchor";
-import idl from "../../investment_contract.json";
-import * as anchor from "@project-serum/anchor";
 import { PublicKey, PublicKeyData, SYSVAR_CLOCK_PUBKEY } from "@solana/web3.js";
+import { Program, web3, Idl, BN } from "@project-serum/anchor";
+import { Dispatch, SetStateAction } from "react";
+import idl from "../../investment_contract.json";
+import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { useSolanaGetProvider } from "./useSolanaGetProvider";
 import { solanaInvest } from "@/utils/solanaHookUtils";
-import { Dispatch, SetStateAction } from "react";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
-import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { addDaysToTimestamp } from "../utils/addDaysToTimestamp";
-import { getNotify } from "@/utils/getNotify";
+import { showNotification } from "@/utils/showNotification";
 
 export const useSolana = () => {
   const { SystemProgram, LAMPORTS_PER_SOL } = web3;
-  const programID = new anchor.web3.PublicKey(
+  const programID = new web3.PublicKey(
     process.env.NEXT_PUBLIC_SOLANA_PROGRAM_ID as PublicKeyData
   );
   const getProvider = useSolanaGetProvider();
@@ -23,11 +22,7 @@ export const useSolana = () => {
     productId: string
   ) => {
     const provider = await getProvider;
-    const program = new Program(
-      idl as anchor.Idl,
-      programID,
-      provider.provider
-    );
+    const program = new Program(idl as Idl, programID, provider.provider);
     const { wallet } = provider.provider;
     const {
       pda,
@@ -36,8 +31,8 @@ export const useSolana = () => {
 
     try {
       await program.rpc.initialize(
-        new anchor.BN(+raiseGoal * LAMPORTS_PER_SOL),
-        new anchor.BN(addDaysToTimestamp(days)),
+        new BN(+raiseGoal * LAMPORTS_PER_SOL),
+        new BN(addDaysToTimestamp(days)),
         {
           accounts: {
             investmentContract: publicKey,
@@ -49,8 +44,8 @@ export const useSolana = () => {
         }
       );
       const account = await program.account.investmentContract.fetch(publicKey);
-      getNotify("Campaign successfully initialized");
       if (account) {
+        showNotification("Campaign successfully initialized");
         await handleRequest(
           `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}`,
           METHODS.PUT,
@@ -62,7 +57,7 @@ export const useSolana = () => {
         );
       }
     } catch (error) {
-      getNotify((error as { message: string }).message, "error");
+      showNotification((error as { message: string }).message, "error");
     }
   };
 
@@ -73,11 +68,7 @@ export const useSolana = () => {
     productId: string
   ) => {
     const provider = await getProvider;
-    const program = new Program(
-      idl as anchor.Idl,
-      programID,
-      provider.provider
-    );
+    const program = new Program(idl as Idl, programID, provider.provider);
     const { wallet } = provider.provider;
     const {
       data: { attributes },
@@ -87,7 +78,7 @@ export const useSolana = () => {
     );
     try {
       await program.methods
-        .invest(new anchor.BN(investAmount * LAMPORTS_PER_SOL))
+        .invest(new BN(investAmount * LAMPORTS_PER_SOL))
         .accounts({
           user: wallet.publicKey,
           investmentContract: new PublicKey(`${attributes.ownerAddress}`),
@@ -107,17 +98,13 @@ export const useSolana = () => {
         ownerAddress
       );
     } catch (error) {
-      getNotify((error as { message: string }).message, "error");
+      showNotification((error as { message: string }).message, "error");
     }
   };
 
   const finishStartup = async (productId: string) => {
     const provider = await getProvider;
-    const program = new Program(
-      idl as anchor.Idl,
-      programID,
-      provider.provider
-    );
+    const program = new Program(idl as Idl, programID, provider.provider);
     const { wallet } = provider.provider;
     const {
       data: { attributes },
@@ -138,17 +125,13 @@ export const useSolana = () => {
         new PublicKey(`${attributes.ownerAddress}`)
       );
     } catch (error) {
-      getNotify((error as { message: string }).message, "error");
+      showNotification((error as { message: string }).message, "error");
     }
   };
 
   const refundStartup = async (productId: string) => {
     const provider = await getProvider;
-    const program = new Program(
-      idl as anchor.Idl,
-      programID,
-      provider.provider
-    );
+    const program = new Program(idl as Idl, programID, provider.provider);
     const { wallet } = provider.provider;
     const {
       data: { attributes },
@@ -169,7 +152,7 @@ export const useSolana = () => {
         new PublicKey(`${attributes.ownerAddress}`)
       );
     } catch (error) {
-      getNotify((error as { message: string }).message, "error");
+      showNotification((error as { message: string }).message, "error");
     }
   };
 

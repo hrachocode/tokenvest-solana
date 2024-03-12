@@ -1,4 +1,4 @@
-import { getNotify } from "./getNotify";
+import { showNotification } from "./showNotification";
 
 export const handleRequest = async (
   url: string,
@@ -20,7 +20,7 @@ export const handleRequest = async (
     return res;
   } catch (error) {
     if (typeof window !== "undefined") {
-      getNotify((error as { message: string }).message, "error");
+      showNotification((error as { message: string }).message, "error");
     }
   }
 };
