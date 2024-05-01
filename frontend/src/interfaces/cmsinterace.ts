@@ -29,6 +29,12 @@ export interface ICMSProduct {
         };
       };
     };
+    product_user: {
+      name: string;
+      title: string;
+      country: string;
+      city: string;
+    };
   };
 }
 
@@ -68,6 +74,9 @@ export interface IProduct {
   isDraft: boolean;
   isReady: boolean;
   category: string;
+  content?: any;
+  video?: any;
+  productUser?: any;
 }
 
 export interface IProductDate {
