@@ -61,7 +61,7 @@ const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <div className="flex flex-col items-center relative">
       <DiscoverInnovative />
-      <div className="mt-[50px]">
+      <div className="mt-[50px] z-50">
         <TvTabCategory setCategory={setCategory} />
       </div>
       <div className="primaryFlex flex-wrap gap-[32px] mt-[80px] z-50">

@@ -59,3 +59,16 @@ export const DESCRIPTION_KEY: string = "description";
 export const RAISE_GOAL_KEY: string = "raiseGoal";
 export const DAYS_KEY: string = "days";
 export const CATEGORY_KEY: string = "category";
+
+export const LINKS: any = {
+  linkedin: "Linkedin",
+  facebook: "Facebook",
+  instagram: "Instagram",
+};
+
+export const USER_INFO: any = {
+  name: "Name",
+  country: "Country",
+  city: "City",
+  description: " Description",
+};
