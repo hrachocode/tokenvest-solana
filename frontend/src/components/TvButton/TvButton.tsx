@@ -10,7 +10,7 @@ export const TvButton = (props: ITvButtonProps): JSX.Element => {
   const { customVariant = "primaryButton", animationCustomVariant = "animationPrimaryButton", animationBorderColor, icon, ...rest } = props;
   const buttonClasses = animationBorderColor === "#09202F" ? "before:hover:border-[#09202F]" : "before:hover:border-[#26545b]";
   return (
-    <div className={`${customVariant}`}>
+    <div className={`${customVariant}`} style={{ maxWidth: "fit-content" }}>
       {icon && <Image alt="leftAngle" src={icon} className="absolute top-[7px] left-[5px]" />}
       <button {...rest} className={`${animationCustomVariant} ${buttonClasses}`} style={{ paddingLeft: `${icon ? "35px" : ""}` }}>
         <span className="flex skew-x-[12deg]">

@@ -7,6 +7,7 @@ const nextConfig = {
       "tokenvest.net",
       "tokenvest-solana.vercel.app",
       "strapi-um4k.onrender.com",
+      "127.0.0.1",
     ],
   },
 };

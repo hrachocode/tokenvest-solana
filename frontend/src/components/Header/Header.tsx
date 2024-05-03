@@ -82,7 +82,7 @@ const Header = (): JSX.Element => {
         <Link href={HOME}>
           <Image src={tokenvest} alt="tokenvest" width={0} height={0} sizes="100vw" className="mr-[20px] w-[95px] lg:w-[115px] object-cover" />
         </Link>
-        <div
+        {/* <div
           className="relative cursor-pointer"
           onClick={handleNotificationClick}
         >
@@ -104,7 +104,7 @@ const Header = (): JSX.Element => {
               >{item.message}</p>
             )}
           </div> : <></>}
-        </div>
+        </div> */}
       </div>
       <div className="flex items-center z-40">
         <div className="md:hidden block">

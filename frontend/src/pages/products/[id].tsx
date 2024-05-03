@@ -11,10 +11,12 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import daysIcon from "../../../public/images/days.svg";
 import leftAngle from "../../../public/images/leftAngle.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getDaysLeft } from "@/utils/getDaysLeft";
 import { getProgress } from "@/utils/getProgress";
+import { marked } from "marked";
+import TvUserPopUp from "@/components/TvUserPopUp/TvUserPopUp";
 
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
   ssr: false
@@ -63,7 +65,10 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     isExpired: attributes.isExpired,
     isDraft: attributes.isDraft,
     isReady: attributes.isReady,
-    category: attributes.category.data.attributes.title
+    category: attributes.category.data.attributes.title,
+    content: attributes.content,
+    video: attributes.video.data?.attributes?.url || null,
+    productUser: attributes.product_user
   };
 
   return {
@@ -89,14 +94,47 @@ export default function Product({
     isDraft,
     category,
     description,
-    isReady
+    isReady,
+    content,
+    video,
+    productUser
   } }: { product: IProduct }) {
   const [ isPopupOpen, setPopupOpen ] = useState(false);
+  const [ IsUserPopUp, setIsUserPopUp ] = useState(false);
   const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
   const [ resRaisedAmount, setResRaisedAmount ] = useState<number>(raisedAmount);
   const dateText = receiveDate(createdAt);
   const daysLeft = getDaysLeft(createdAt, days);
   const raisedAmountProgres = getProgress(resRaisedAmount, raiseGoal);
+  const [ htmlContent, setContent ] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      function convertMarkdownToHTML(content: string) {
+        return marked(content);
+      }
+      if (content) {
+
+        const htmlContent: any = convertMarkdownToHTML(content);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, "text/html");
+
+        // Manipulate the src attributes of images
+        const images = doc.querySelectorAll("img");
+
+        images.forEach(img => {
+          const currentSrc = img.getAttribute("src");
+
+          // Here, you can perform any logic to update the src attribute dynamically
+          // For example, you can replace 'incorrect_path' with 'correct_path'
+          const updatedSrc = `${process.env.NEXT_PUBLIC_CMS_URL}${currentSrc}`;
+          img.setAttribute("src", updatedSrc);
+        });
+        const correctedHTML = doc.documentElement.outerHTML;
+        setContent(correctedHTML);
+      }
+    })();
+  }, []);
 
   const openPopup = () => {
     setPopupOpen(true);
@@ -133,6 +171,12 @@ export default function Product({
 
   return (
     <div>
+      {
+        IsUserPopUp &&
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[60]">
+          <TvUserPopUp setIsUserPopUp={setIsUserPopUp} productUser={productUser} />
+        </div>
+      }
       {isPopupOpen &&
         <div onMouseDown={closePopup} className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[60]">
           <TvInvestBox
@@ -147,9 +191,9 @@ export default function Product({
         </div>
       }
       <TvProductImage image={image} title={title} wide={true} />
-      <div className="primaryFlex">
-        <div className="p-[6px_12px] mt-[94px] rounded-[20px] border-[2px] border-[#28DBD1]">
-          <p className="text-[16px] font-[400] text-center">{category}</p>
+      <div onClick={() => setIsUserPopUp(!IsUserPopUp)} className="primaryFlex">
+        <div className="p-[8px_12px] mt-[94px] rounded-[20px] border-[2px] border-[#28DBD1]">
+          <button>USER INFO</button>
         </div>
       </div>
       <div className="primaryFlex flex-col lg:flex-row px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px] gap-[32px]">
@@ -186,6 +230,22 @@ export default function Product({
           </div>
           {renderButton()}
         </div>
+      </div>
+      {
+        video &&
+        <div className="px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px]">
+          <h1 className="text-center">The Video of the project</h1>
+          <div>
+            <div className="max-w-[900px] mx-auto w-full h-[450px] overflow-hidden">
+              <video controls className="w-full h-full object-cover rounded-lg">
+                <source src={`${process.env.NEXT_PUBLIC_CMS_URL}${video}`} />
+              </video>
+            </div>
+          </div>
+        </div>
+      }
+      <div className="primaryFlex flex-col lg:flex-row px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px] gap-[32px] myHtmlContent">
+        {htmlContent ? <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> : null}
       </div>
       <div className="flex p-[64px_30px_0_30px] sm:p-[64px_60px_0_60px] xl:p-[64px_120px_0_120px]">
         <Link href={PRODUCTS} >

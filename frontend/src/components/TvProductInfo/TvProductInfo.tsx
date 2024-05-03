@@ -17,7 +17,8 @@ const TvProductInfo = ({
     raisedAmount,
     raiseGoal,
     createdAt,
-    days
+    days,
+    address,
   },
 }: ITvProduct): JSX.Element => {
   const raisedAmountProgres = getProgress(raisedAmount, raiseGoal);
@@ -25,7 +26,7 @@ const TvProductInfo = ({
   return (
     <div className="p-[60px_15px_0_15px] md:p-[60px_24px_0_24px]">
       <div className="inline-block p-[6px_12px] rounded-[20px] border-[2px] border-[#28DBD1]">
-        <p className="text-[16px] font-[400] text-center">{category}</p>
+        <p className="text-[16px] font-[400] text-center capitalize">{category}</p>
       </div>
       <div className="py-[32px]">
         <p className="text-[16px] w-60 md:w-80 truncate text-textSecondary font-fontSecondary">{description}</p>
@@ -40,6 +41,7 @@ const TvProductInfo = ({
           <div style={{ width: `${raisedAmountProgres}%` }} className={"bg-backgroundSecondary h-3 rounded-full"}></div>
         </div>
         <div className="h-[1px] my-[32px] bg-backgroundSecondary bg-opacity-[20%]" />
+        <p className="pb-3">{address}</p>
       </div>
       <div className="flex justify-between items-center pb-[24px]">
         <div className="secondaryFlex">

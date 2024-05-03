@@ -9,6 +9,8 @@ import { handleRequest, METHODS } from "@/utils/handleRequest";
 import Link from "next/link";
 import RoundedShadow from "@/components/RoundedShadow/RoundedShadow";
 import ParticlesCanvas from "@/components/ParticlesCanvas/ParticlesCanvas";
+import TvTabCategory from "@/components/TvTabCategory/TvTabCategory";
+import { useEffect, useState } from "react";
 
 export async function getStaticProps() {
   const { data: product = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}${POPULATE_ALL}`, METHODS.GET) ?? {};
@@ -30,7 +32,8 @@ export async function getStaticProps() {
       isExpired: item.attributes.isExpired,
       isDraft: item.attributes.isDraft,
       isReady: item.attributes.isReady,
-      category: item.attributes.category.data.attributes.title
+      category: item.attributes.category.data?.attributes?.title,
+      productUser: item.attributes.product_user
     };
   }) || [];
 
@@ -43,12 +46,27 @@ export async function getStaticProps() {
 }
 
 const Products = ({ products }: { products: IProduct[] }) => {
+  const [ productsTab, setProductsTab ] = useState(products);
+  const [ category, setCategory ] = useState("all");
+
+  useEffect(() => {
+    if (category === "all") {
+      setProductsTab(products);
+    } else {
+      const filteredProducts = products.filter(product => product.category === category);
+      setProductsTab(filteredProducts);
+    }
+  }, [ category, products ]);
+
   return (
-    <div className="relative">
+    <div className="flex flex-col items-center relative">
       <DiscoverInnovative />
-      <div className="primaryFlex flex-wrap gap-[32px] mt-[80px] lg:mt-[250px] z-50">
+      <div className="mt-[50px] z-50">
+        <TvTabCategory setCategory={setCategory} />
+      </div>
+      <div className="primaryFlex flex-wrap gap-[32px] mt-[80px] z-50">
         {
-          products.length !== 0 && products.map((item) =>
+          productsTab.length !== 0 && productsTab.map((item) =>
             <Link href={`${PRODUCTS}/${item.id}`} key={item.id} className="z-10">
               <TvProduct product={item} />
             </Link>

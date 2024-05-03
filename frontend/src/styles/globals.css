@@ -231,4 +231,20 @@
   .tertiaryRoundedShadow {
     @apply absolute left-[-120px] bottom-[-120px];
   }
+  /*myHtmlContent*/
+  .myHtmlContent img {
+    @apply w-[80%] mx-auto max-h-[400px] object-cover rounded-lg my-5;
+  }
+  .myHtmlContent p {
+    @apply text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary;
+  }
+  .myHtmlContent h1 {
+    @apply text-[32px] lg:text-[48px] font-[500] mt-16;
+  }
+  .myHtmlContent strong {
+    @apply text-[#28dbd1];
+  }
+  .myHtmlContent li {
+    @apply py-2;
+  }
 }
