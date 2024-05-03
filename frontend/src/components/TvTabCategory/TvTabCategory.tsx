@@ -10,7 +10,12 @@ const TvTabCategory = ({ setCategory }: { setCategory: (category: string) => voi
   useEffect(() => {
     (async () => {
       const { data: category = [] } = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_CATEGORIES}${POPULATE_ALL}`, METHODS.GET) ?? {};
-      setCategories(category);
+      if (category) {
+        const newCategories = category.map((el: any) => el.attributes.title);
+        if (newCategories) {
+          setCategories([ "all", ...newCategories ]);
+        }
+      }
     })();
   }, []);
 
@@ -22,19 +27,13 @@ const TvTabCategory = ({ setCategory }: { setCategory: (category: string) => voi
   return (
     <div>
       <div className="flex space-x-4">
-        <button
-          className={`px-4 py-2 rounded ${activeTab === "all" ? "bg-[#28dbd1] text-white" : "bg-gray-300 text-gray-700"}`}
-          onClick={() => handleTabClick("all")}
-        >
-          All
-        </button>
         {categories ? categories.map((category: any, i: number) => (
           <button
             key={i}
-            className={`px-4 py-2 rounded ${activeTab === category.attributes.title ? "bg-[#28dbd1] text-white" : "bg-gray-300 text-gray-700"}`}
-            onClick={() => handleTabClick(category.attributes.title)}
+            className={`px-4 py-2 rounded capitalize ${activeTab === category ? "bg-[#28dbd1] text-white" : "bg-gray-300 text-gray-700"}`}
+            onClick={() => handleTabClick(category)}
           >
-            {category.attributes.title}
+            {category}
           </button>
         )) : null
         }
