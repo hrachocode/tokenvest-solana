@@ -2,7 +2,7 @@ import { TvButton } from "@/components/TvButton/TvButton";
 import { PRODUCTS } from "@/constants/routes";
 import TvProductImage from "@/components/TvProductImage/TvProductImage";
 import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
-import { COMPLETE, DRAFT, INVEST } from "@/constants/general";
+import { COMING_SOON, COMPLETE, DRAFT, INVEST } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { receiveDate } from "@/utils/productUtils";
@@ -17,6 +17,7 @@ import { getDaysLeft } from "@/utils/getDaysLeft";
 import { getProgress } from "@/utils/getProgress";
 import { marked } from "marked";
 import TvUserPopUp from "@/components/TvUserPopUp/TvUserPopUp";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
   ssr: false
@@ -58,10 +59,13 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     ownerName: attributes.ownerName,
     raisedAmount: attributes.raisedAmount,
     image: attributes.image?.data?.attributes?.url || null,
+    image1: attributes.image1?.data?.attributes?.url || null,
     createdAt: attributes.createdAt,
+    initializeDate: attributes.initializeDate,
     description: attributes.description,
     days: attributes.days,
     isComplete: attributes.isComplete,
+    isComingSoon: attributes.isComingSoon,
     isExpired: attributes.isExpired,
     isDraft: attributes.isDraft,
     isReady: attributes.isReady,
@@ -82,7 +86,7 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
 export default function Product({
   product: {
     id,
-    createdAt,
+    initializeDate,
     image,
     title,
     raiseGoal,
@@ -91,22 +95,23 @@ export default function Product({
     ownerAddress,
     days,
     isComplete,
+    isComingSoon,
     isDraft,
-    category,
     description,
     isReady,
     content,
     video,
     productUser
   } }: { product: IProduct }) {
-  const [ isPopupOpen, setPopupOpen ] = useState(false);
-  const [ IsUserPopUp, setIsUserPopUp ] = useState(false);
-  const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
-  const [ resRaisedAmount, setResRaisedAmount ] = useState<number>(raisedAmount);
-  const dateText = receiveDate(createdAt);
-  const daysLeft = getDaysLeft(createdAt, days);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [IsUserPopUp, setIsUserPopUp] = useState(false);
+  const [isDraftButton, setIsDraftButton] = useState(isDraft);
+  const [resRaisedAmount, setResRaisedAmount] = useState<number>(raisedAmount);
+  const dateText = receiveDate(initializeDate);
+  const daysLeft = getDaysLeft(initializeDate, days);
   const raisedAmountProgres = getProgress(resRaisedAmount, raiseGoal);
-  const [ htmlContent, setContent ] = useState("");
+  const [htmlContent, setContent] = useState("");
+  const walletPublicKey = useWallet().publicKey?.toString();
 
   useEffect(() => {
     (async () => {
@@ -162,11 +167,14 @@ export default function Product({
     if (isComplete) {
       return <TvButton disabled>{COMPLETE}</TvButton>;
     }
-    return <div className="primaryFlex gap-3 mt-[12px]">
-      <TvButton animationBorderColor="#09202F" onClick={openPopup}>{INVEST}</TvButton>
-      <TvFinishStartupButton productId={id} />
-      <TvRefundStartupButton productId={id} />
-    </div>;
+
+    if (+raisedAmount < +raiseGoal && daysLeft > 0) {
+      return <TvButton animationBorderColor="#09202F" onClick={openPopup}>{INVEST}</TvButton>;
+    } else if (+raisedAmount >= +raiseGoal && daysLeft === 0 && walletPublicKey === ownerAddress) {
+      return <TvFinishStartupButton productId={id} />;
+    } else if (+raisedAmount < +raiseGoal && daysLeft === 0) {
+      return <TvRefundStartupButton productId={id} />;
+    }
   };
 
   return (
@@ -192,43 +200,58 @@ export default function Product({
       }
       <TvProductImage image={image} title={title} wide={true} />
       <div onClick={() => setIsUserPopUp(!IsUserPopUp)} className="primaryFlex">
-        <div className="p-[8px_12px] mt-[94px] rounded-[20px] border-[2px] border-[#28DBD1]">
-          <button>USER INFO</button>
+        <div className="p-[8px_12px] mt-[40px] md:mt-[80px] rounded-[20px]">
+          <button className=" group relative h-12 w-48 overflow-hidden rounded-lg bg-white text-lg shadow">
+            <div className="absolute inset-0 w-5 bg-backgroundSecondary transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+            <span className="relative text-[#030B15] group-hover:text-white">User Info</span>
+          </button>
         </div>
       </div>
       <div className="primaryFlex flex-col lg:flex-row px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px] gap-[32px]">
         <div className="lg:w-[50%] text-center sm:text-start">
-          <p className="text-[32px] lg:text-[48px] font-[500]">About Project</p>
+          <p className="text-[32px] lg:text-[48px] font-[500]">{`About ${title}`}</p>
           <p className="text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary">
             {description}
           </p>
         </div>
         <div className="lg:w-[50%] bg-backgroundTertiary p-[24px] xl:p-[32px] rounded-[24px]">
-          <div className="primaryFlex flex-col sm:flex-row gap-[16px] xl:gap-[28px]">
-            <div className="flex w-full bg-[#26545B] rounded-[16px]">
-              <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
-              <div className="py-[16px]">
-                <p className="text-[20px] font-[600]">Create Date</p>
-                <p className="text-[16px] font-[600] text-textPrimary">{dateText}</p>
+          {isComingSoon ?
+            <div
+              className="secondaryFlex h-full text-[26px] lg:text-[36px] xl:text-[42px] tracking-[4px] lg:tracking-[6px] xl:tracking-[8px] text-textTertiary comingsoon"
+            >
+              {COMING_SOON}
+            </div>
+            :
+            <div>
+              <div className="primaryFlex flex-col sm:flex-row gap-[16px] xl:gap-[28px]">
+                <div className="flex w-full bg-[#26545B] rounded-[16px]">
+                  <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
+                  <div className="py-[16px]">
+                    <p className="text-[20px] font-[600]">Create Date</p>
+                    <p className="text-[16px] font-[600] text-textPrimary">{dateText}</p>
+                  </div>
+                </div>
+                <div className="flex w-full bg-[#26545B] rounded-[16px]">
+                  <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
+                  <div className="py-[16px]">
+                    <p className="text-[20px] font-[600]">Days Left</p>
+                    <p className="text-[16px] font-[600] text-textPrimary">
+                      {daysLeft <= 0 ? "Campaign Finished" : `${daysLeft} Days Left`}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex w-full bg-[#26545B] rounded-[16px]">
-              <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
-              <div className="py-[16px]">
-                <p className="text-[20px] font-[600]">Days Left</p>
-                <p className="text-[16px] font-[600] text-textPrimary">{daysLeft}</p>
+              <div className="mt-[32px] font-[600] ">
+                <p className="text-[24px] ">Raised Amount</p>
+                <p className="text-[20px] pb-[8px]">{`${resRaisedAmount} SOL`}</p>
+                <div className="w-full bg-[#030B15] bg-opacity-[60%] rounded-full h-3">
+                  <div style={{ width: `${raisedAmountProgres}%` }} className={"bg-backgroundSecondary h-3 rounded-full"}></div>
+                </div>
+                <p className="text-end text-[20px] pt-[5px] text-textPrimary">{`GOAL: ${raiseGoal} SOL`}</p>
               </div>
+              {renderButton()}
             </div>
-          </div>
-          <div className="mt-[32px] font-[600] ">
-            <p className="text-[24px] ">Raised Amount</p>
-            <p className="text-[20px] pb-[8px]">{`${resRaisedAmount} SOL`}</p>
-            <div className="w-full bg-[#030B15] bg-opacity-[60%] rounded-full h-3">
-              <div style={{ width: `${raisedAmountProgres}%` }} className={"bg-backgroundSecondary h-3 rounded-full"}></div>
-            </div>
-            <p className="text-end text-[20px] pt-[5px] text-textPrimary">{`GOAL: ${raiseGoal} SOL`}</p>
-          </div>
-          {renderButton()}
+          }
         </div>
       </div>
       {

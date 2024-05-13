@@ -1,6 +1,5 @@
 import DiscoverInnovative from "@/components/DiscoverInnovative/DiscoverInnovative";
 import ReadyGetStarted from "@/components/ReadyGetStarted/ReadyGetStarted";
-import { TvButton } from "@/components/TvButton/TvButton";
 import { TvProduct } from "@/components/TvProduct/TvProduct";
 import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
 import { PRODUCTS } from "@/constants/routes";
@@ -25,10 +24,13 @@ export async function getStaticProps() {
       ownerName: item.attributes.ownerName,
       raisedAmount: item.attributes.raisedAmount,
       createdAt: item.attributes.createdAt,
+      initializeDate: item.attributes.initializeDate,
       image: item.attributes.image?.data?.attributes?.url || null,
+      image1: item.attributes.image1?.data?.attributes?.url || null,
       description: item.attributes.description,
       days: item.attributes.days,
       isComplete: item.attributes.isComplete,
+      isComingSoon: item.attributes.isComingSoon,
       isExpired: item.attributes.isExpired,
       isDraft: item.attributes.isDraft,
       isReady: item.attributes.isReady,
@@ -46,8 +48,8 @@ export async function getStaticProps() {
 }
 
 const Products = ({ products }: { products: IProduct[] }) => {
-  const [ productsTab, setProductsTab ] = useState(products);
-  const [ category, setCategory ] = useState("all");
+  const [productsTab, setProductsTab] = useState(products);
+  const [category, setCategory] = useState("all");
 
   useEffect(() => {
     if (category === "all") {
@@ -56,14 +58,14 @@ const Products = ({ products }: { products: IProduct[] }) => {
       const filteredProducts = products.filter(product => product.category === category);
       setProductsTab(filteredProducts);
     }
-  }, [ category, products ]);
+  }, [category, products]);
 
   return (
     <div className="flex flex-col items-center relative">
       <DiscoverInnovative />
-      <div className="mt-[50px] z-50">
+      {/* <div className="mt-[50px] z-50">
         <TvTabCategory setCategory={setCategory} />
-      </div>
+      </div> */}
       <div className="primaryFlex flex-wrap gap-[32px] mt-[80px] z-50">
         {
           productsTab.length !== 0 && productsTab.map((item) =>
@@ -74,12 +76,12 @@ const Products = ({ products }: { products: IProduct[] }) => {
         }
       </div>
       <div className="primaryFlex relative mt-[64px]">
-        <TvButton
+        {/* <TvButton
           customVariant="secondaryButton"
           animationCustomVariant="animationSecondaryButton"
           animationBorderColor="#09202F">
           Load More
-        </TvButton>
+        </TvButton> */}
         <RoundedShadow customVariant="tertiaryRoundedShadow" />
       </div>
       <ReadyGetStarted title="Have Any Project?" background="readyGetStartedSecondary" />

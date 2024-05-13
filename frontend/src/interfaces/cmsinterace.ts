@@ -8,13 +8,22 @@ export interface ICMSProduct {
     ownerName: string;
     raisedAmount: string;
     createdAt: string;
+    initializeDate: any;
     description: string;
     days: string;
     isComplete: boolean;
+    isComingSoon: boolean;
     isExpired: boolean;
     isDraft: boolean;
     isReady: boolean;
     image: {
+      data: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+    image1: {
       data: {
         attributes: {
           url: string;
@@ -66,10 +75,13 @@ export interface IProduct {
   ownerName: string;
   raisedAmount: number;
   image: string | null;
+  image1: string | null;
   createdAt: string;
+  initializeDate: any;
   description: string;
   days: string;
   isComplete: boolean;
+  isComingSoon: boolean;
   isExpired: boolean;
   isDraft: boolean;
   isReady: boolean;

@@ -8,6 +8,7 @@ import { solanaInvest } from "@/utils/solanaHookUtils";
 import { METHODS, handleRequest } from "@/utils/handleRequest";
 import { addDaysToTimestamp } from "../utils/addDaysToTimestamp";
 import { showNotification } from "@/utils/showNotification";
+import * as anchor from "@coral-xyz/anchor";
 
 export const useSolana = () => {
   const { SystemProgram, LAMPORTS_PER_SOL } = web3;
@@ -22,28 +23,38 @@ export const useSolana = () => {
     productId: string
   ) => {
     const provider = await getProvider;
+    const productIdString = productId.toString();
     const program = new Program(idl as Idl, programID, provider.provider);
     const { wallet } = provider.provider;
-    const {
-      pda,
-      pda: { publicKey },
-    } = provider;
+
+    const investmentContract = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("tokenvest"),
+        wallet.publicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(productIdString),
+      ],
+      programID
+    )[0];
 
     try {
-      await program.rpc.initialize(
-        new BN(+raiseGoal * LAMPORTS_PER_SOL),
-        new BN(addDaysToTimestamp(days)),
-        {
-          accounts: {
-            investmentContract: publicKey,
-            startupOwner: wallet.publicKey,
-            systemProgram: SystemProgram.programId,
-            clock: SYSVAR_CLOCK_PUBKEY,
-          },
-          signers: [ pda ],
-        }
+      await program.methods
+        .initialize(
+          productIdString,
+          new BN(+raiseGoal * LAMPORTS_PER_SOL),
+          new BN(addDaysToTimestamp(days))
+        )
+        .accounts({
+          investmentContract: investmentContract,
+          startupOwner: wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+          clock: SYSVAR_CLOCK_PUBKEY,
+        })
+        .rpc();
+
+      const account = await program.account.investmentContract.fetch(
+        investmentContract
       );
-      const account = await program.account.investmentContract.fetch(publicKey);
+
       if (account) {
         showNotification("Campaign successfully initialized");
         await handleRequest(
@@ -51,7 +62,7 @@ export const useSolana = () => {
           METHODS.PUT,
           {
             data: {
-              ownerAddress: publicKey.toString(),
+              ownerAddress: wallet.publicKey.toString(),
             },
           }
         );
@@ -76,18 +87,25 @@ export const useSolana = () => {
       `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
       METHODS.GET
     );
+    const ownerPublicKey = new PublicKey(`${attributes.ownerAddress}`);
+    const investmentContract = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("tokenvest"),
+        ownerPublicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(productId),
+      ],
+      programID
+    )[0];
     try {
       await program.methods
         .invest(new BN(investAmount * LAMPORTS_PER_SOL))
         .accounts({
           user: wallet.publicKey,
-          investmentContract: new PublicKey(`${attributes.ownerAddress}`),
+          investmentContract: investmentContract,
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-      const account = await program.account.investmentContract.fetch(
-        new PublicKey(`${attributes.ownerAddress}`)
-      );
+
       const resInvestAmount = Number(investAmount);
       const ownerAddress = wallet.publicKey.toString();
       await solanaInvest(
@@ -112,18 +130,25 @@ export const useSolana = () => {
       `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
       METHODS.GET
     );
+    const ownerPublicKey = new PublicKey(`${attributes.ownerAddress}`);
+    const investmentContract = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("tokenvest"),
+        ownerPublicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(productId),
+      ],
+      programID
+    )[0];
     try {
       await program.methods
         .finishStartup()
         .accounts({
           user: wallet.publicKey,
-          investmentContract: new PublicKey(`${attributes.ownerAddress}`),
+          investmentContract: investmentContract,
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-      const account = await program.account.investmentContract.fetch(
-        new PublicKey(`${attributes.ownerAddress}`)
-      );
+      showNotification("Transaction Successful");
     } catch (error) {
       showNotification((error as { message: string }).message, "error");
     }
@@ -139,18 +164,25 @@ export const useSolana = () => {
       `${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}${POPULATE_ALL}`,
       METHODS.GET
     );
+    const ownerPublicKey = new PublicKey(`${attributes.ownerAddress}`);
+
+    const investmentContract = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("tokenvest"),
+        ownerPublicKey.toBuffer(),
+        anchor.utils.bytes.utf8.encode(productId),
+      ],
+      programID
+    )[0];
     try {
       await program.methods
         .refundStartup()
         .accounts({
           user: wallet.publicKey,
-          investmentContract: new PublicKey(`${attributes.ownerAddress}`),
+          investmentContract: investmentContract,
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-      const account = await program.account.investmentContract.fetch(
-        new PublicKey(`${attributes.ownerAddress}`)
-      );
     } catch (error) {
       showNotification((error as { message: string }).message, "error");
     }

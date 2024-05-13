@@ -16,10 +16,8 @@ export const useSolanaGetProvider = async () => {
     wallet as unknown as AnchorWallet,
     opts
   );
-  const pda = web3.Keypair.generate();
 
   return {
     provider,
-    pda,
   };
 };
