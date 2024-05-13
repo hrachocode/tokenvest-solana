@@ -13,22 +13,35 @@ const TvUserPopUp = ({
 
   return (
     <div className="max-w-[450px] flex flex-col p-7 mx-5 rounded-[20px] gap-2 bg-[#26545B]">
-      <p><span className="text-[#28dbd1]">{USER_INFO.name}:</span> {attributes.name}</p>
-      <p><span className="text-[#28dbd1]">{USER_INFO.country}:</span> {attributes.country}</p>
-      <p><span className="text-[#28dbd1]">{USER_INFO.city}:</span> {attributes.city}</p>
-      <p><span className="text-[#28dbd1]">{USER_INFO.description}:</span> {attributes.description}</p>
+      {
+        attributes.name && <p><span className="text-[#28dbd1]">{USER_INFO.name}:</span> {attributes.name}</p>
+      }
+      {
+        attributes.country && <p><span className="text-[#28dbd1]">{USER_INFO.country}:</span> {attributes.country}</p>
+      }
+      {
+        attributes.city && <p><span className="text-[#28dbd1]">{USER_INFO.city}:</span> {attributes.city}</p>
+      }
+      {
+        attributes.description && <p><span className="text-[#28dbd1]">{USER_INFO.description}:</span> {attributes.description}</p>
+      }
       <div className="flex justify-evenly text-[#28dbd1] my-2">
-        <Link href={attributes.linkedin} target="_blank">
-          {LINKS.linkedin}
-        </Link>
-        <Link href={attributes.facebook} target="_blank">
-          {LINKS.facebook}
-        </Link>
-        <Link href={attributes.instagram} target="_blank">
-          {LINKS.instagram}
-        </Link>
+        {
+          attributes.linkedin &&
+          <Link href={attributes.linkedin} target="_blank">
+            {LINKS.linkedin}
+          </Link>
+        }
+        {
+          attributes.facebook &&
+          <Link href={attributes.facebook} target="_blank">
+            {LINKS.facebook}
+          </Link>
+        }
       </div>
-      <TvButton onClick={() => setIsUserPopUp(false)}>Close</TvButton>
+      <div className="secondaryFlex">
+        <TvButton onClick={() => setIsUserPopUp(false)}>Close</TvButton>
+      </div>
     </div>
   );
 };

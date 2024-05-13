@@ -2,7 +2,7 @@ import RoundedShadow from "../RoundedShadow/RoundedShadow";
 
 const DiscoverInnovative = () => {
   return (
-    <section className="secondaryFlex flex-col px-[60px] relative">
+    <section className="secondaryFlex flex-col px-[60px] relative mt-[62px]">
       <div className="font-[700] text-center">
         <h1>Discover Innovative</h1>
         <h1 className="text-textTertiary">Projects</h1>

@@ -72,3 +72,5 @@ export const USER_INFO: any = {
   city: "City",
   description: " Description",
 };
+
+export const COMING_SOON: string = "COMING SOON!";

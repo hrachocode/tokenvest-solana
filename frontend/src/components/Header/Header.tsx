@@ -113,7 +113,7 @@ const Header = (): JSX.Element => {
               <Image alt="close" src={closeIcon} width={40} height={40} onClick={toggleNavbar} />
           }
         </div>
-        <div className={`${isOpen ? "top-[85px] left-0 opacity-100" : ""} secondaryFlex md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500`}>
+        <div className={`${isOpen ? "top-[75px] left-0 opacity-100" : ""} secondaryFlex md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-backgroundPrimary md:bg-transparent `}>
           {
             ROUTES.map((item, index) =>
               <Link

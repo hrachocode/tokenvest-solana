@@ -29,6 +29,7 @@ const TvInitializeButton = ({
       const putRes = await handleRequest(`${process.env.NEXT_PUBLIC_CMS_URL}${CMS_API}${CMS_PRODUCTS}/${productId}`, METHODS.PUT, {
         data: {
           isDraft: false,
+          initializeDate: new Date(),
         }
       });
       if (putRes) {

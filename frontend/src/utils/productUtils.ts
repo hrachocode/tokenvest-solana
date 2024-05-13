@@ -5,6 +5,9 @@ const getMonthName = (monthNumber: number) => {
 };
 
 export const receiveDate = (dateString: string) => {
+  if (!dateString) {
+    return null;
+  }
   const date = dateString.split("T")[0].split("-");
   date[1] = getMonthName(Number(date[1]));
   const [ year, month, day ] = date;
