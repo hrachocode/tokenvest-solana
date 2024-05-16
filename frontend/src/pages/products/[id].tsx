@@ -18,6 +18,7 @@ import { getProgress } from "@/utils/getProgress";
 import { marked } from "marked";
 import TvUserPopUp from "@/components/TvUserPopUp/TvUserPopUp";
 import { useWallet } from "@solana/wallet-adapter-react";
+import TvVideo from "@/components/TvVideo/TvVideo";
 
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
   ssr: false
@@ -72,6 +73,8 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     category: attributes.category.data.attributes.title,
     content: attributes.content,
     video: attributes.video.data?.attributes?.url || null,
+    mainVideoLink: attributes.mainVideoLink,
+    storeVideoLink: attributes.storeVideoLink,
     productUser: attributes.product_user
   };
 
@@ -79,7 +82,7 @@ export async function getStaticProps({ params: { id } = {} }: GetStaticPropsCont
     props: {
       product
     },
-    revalidate: 3600,
+    revalidate: 300,
   };
 };
 
@@ -101,16 +104,18 @@ export default function Product({
     isReady,
     content,
     video,
+    mainVideoLink,
+    storeVideoLink,
     productUser
   } }: { product: IProduct }) {
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const [IsUserPopUp, setIsUserPopUp] = useState(false);
-  const [isDraftButton, setIsDraftButton] = useState(isDraft);
-  const [resRaisedAmount, setResRaisedAmount] = useState<number>(raisedAmount);
+  const [ isPopupOpen, setPopupOpen ] = useState(false);
+  const [ IsUserPopUp, setIsUserPopUp ] = useState(false);
+  const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
+  const [ resRaisedAmount, setResRaisedAmount ] = useState<number>(raisedAmount);
   const dateText = receiveDate(initializeDate);
   const daysLeft = getDaysLeft(initializeDate, days);
   const raisedAmountProgres = getProgress(resRaisedAmount, raiseGoal);
-  const [htmlContent, setContent] = useState("");
+  const [ htmlContent, setContent ] = useState("");
   const walletPublicKey = useWallet().publicKey?.toString();
 
   useEffect(() => {
@@ -139,7 +144,7 @@ export default function Product({
         setContent(correctedHTML);
       }
     })();
-  }, []);
+  }, [ content ]);
 
   const openPopup = () => {
     setPopupOpen(true);
@@ -255,21 +260,27 @@ export default function Product({
         </div>
       </div>
       {
-        video &&
-        <div className="px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px]">
-          <h1 className="text-center">The Video of the project</h1>
-          <div>
-            <div className="max-w-[900px] mx-auto w-full h-[450px] overflow-hidden">
-              <video controls className="w-full h-full object-cover rounded-lg">
-                <source src={`${process.env.NEXT_PUBLIC_CMS_URL}${video}`} />
-              </video>
+        video ?
+          <div className="px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px]">
+            <h1 className="text-center">The Video of the project</h1>
+            <div>
+              <div className="max-w-[900px] mx-auto w-full h-[450px] overflow-hidden">
+                <video controls className="w-full h-full object-cover rounded-lg">
+                  <source src={`${process.env.NEXT_PUBLIC_CMS_URL}${video}`} />
+                </video>
+              </div>
             </div>
-          </div>
-        </div>
+          </div> : null
+      }
+      {
+        mainVideoLink ? <TvVideo videoLink={mainVideoLink} title="The Video of the project" /> : null
       }
       <div className="primaryFlex flex-col lg:flex-row px-[30px] sm:px-[60px] xl:px-[120px] mt-[64px] gap-[32px] myHtmlContent">
         {htmlContent ? <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> : null}
       </div>
+      {
+        storeVideoLink ? <TvVideo videoLink={storeVideoLink} /> : null
+      }
       <div className="flex p-[64px_30px_0_30px] sm:p-[64px_60px_0_60px] xl:p-[64px_120px_0_120px]">
         <Link href={PRODUCTS} >
           <TvButton

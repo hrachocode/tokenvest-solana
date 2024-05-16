@@ -88,6 +88,8 @@ export interface IProduct {
   category: string;
   content?: any;
   video?: any;
+  mainVideoLink?: string;
+  storeVideoLink?: string;
   productUser?: any;
 }
 

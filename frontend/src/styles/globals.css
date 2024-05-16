@@ -252,7 +252,7 @@
   }
   /*myHtmlContent*/
   .myHtmlContent img {
-    @apply w-[80%] mx-auto object-cover rounded-lg my-5;
+    @apply w-[100%] lg:w-[60%] mx-auto object-cover rounded-2xl my-5;
   }
   .myHtmlContent p {
     @apply text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary;
@@ -264,6 +264,6 @@
     @apply text-[#28dbd1];
   }
   .myHtmlContent li {
-    @apply py-2;
+    @apply py-2 text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary;
   }
 }
