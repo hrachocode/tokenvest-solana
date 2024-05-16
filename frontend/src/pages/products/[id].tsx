@@ -144,7 +144,7 @@ export default function Product({
         setContent(correctedHTML);
       }
     })();
-  }, []);
+  }, [ content ]);
 
   const openPopup = () => {
     setPopupOpen(true);

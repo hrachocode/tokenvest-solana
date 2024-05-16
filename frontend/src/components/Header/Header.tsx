@@ -43,7 +43,7 @@ const Header = (): JSX.Element => {
         setNotifactions([ ...unreadNotifications ]);
       };
     })();
-  }, []);
+  }, [ publicKey, setNotifactions ]);
 
   const handleNotificationClick = () => {
     if (notifications.length === 0) {
