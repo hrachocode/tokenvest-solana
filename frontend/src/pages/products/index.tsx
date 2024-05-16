@@ -43,29 +43,36 @@ export async function getStaticProps() {
     props: {
       products
     },
-    revalidate: 3600,
+    revalidate: 300,
   };
 }
 
 const Products = ({ products }: { products: IProduct[] }) => {
-  const [productsTab, setProductsTab] = useState(products);
-  const [category, setCategory] = useState("all");
+  const [ productsTab, setProductsTab ] = useState(products);
+  const [ category, setCategory ] = useState("all");
+  const [ isDiferentCategory, setIsDiferentCategory ] = useState(false);
 
   useEffect(() => {
     if (category === "all") {
+      const firstProductCategory = products[0]?.category;
+      const isDiferentCategoryProduct = !products.every(product => product.category === firstProductCategory);
+
+      setIsDiferentCategory(isDiferentCategoryProduct);
       setProductsTab(products);
     } else {
       const filteredProducts = products.filter(product => product.category === category);
       setProductsTab(filteredProducts);
     }
-  }, [category, products]);
-
+  }, [ category, products ]);
   return (
     <div className="flex flex-col items-center relative">
       <DiscoverInnovative />
-      {/* <div className="mt-[50px] z-50">
-        <TvTabCategory setCategory={setCategory} />
-      </div> */}
+      {
+        isDiferentCategory ?
+          <div className="mt-[50px] z-50">
+            <TvTabCategory setCategory={setCategory} />
+          </div> : null
+      }
       <div className="primaryFlex flex-wrap gap-[32px] mt-[80px] z-50">
         {
           productsTab.length !== 0 && productsTab.map((item) =>
