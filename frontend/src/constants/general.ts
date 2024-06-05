@@ -33,7 +33,7 @@ export const EmpoweringData = [
   },
   {
     icon: ellipse5,
-    title: "Donators",
+    title: "Backers",
     description:
       "Support innovative ideas, back projects you believe in, and be part of the crowdfunding revolution.",
   },
