@@ -1,4 +1,4 @@
-import { HOME, PRODUCTS, ROUTES } from "@/constants/routes";
+import { HOME, PRODUCTS, ROUTES, SIGN_IN } from "@/constants/routes";
 import Link from "next/link";
 import notification from "../../../public/images/notification.png";
 import Image from "next/image";
@@ -14,6 +14,9 @@ import tokenvest from "../../../public/images/tokenvest.svg";
 import burgerMenu from "../../../public/images/burger_menu.svg";
 import closeIcon from "../../../public/images/close.svg";
 import SquaresEffect from "../SquaresEffect/SquaresEffect";
+import { AUTH_LOG_OUT, AUTH_SIGN_IN } from "@/constants/auth";
+import { Spinner } from "../TvSpiner/TvSpinner";
+import { handleRequestAuth } from "@/utils/handleRequestAuth";
 
 const Header = (): JSX.Element => {
   const router = useRouter();
@@ -21,8 +24,23 @@ const Header = (): JSX.Element => {
   const [ openNotification, setOpenNotification ] = useState(false);
   const { notifications, setNotifactions } = useContext(NotificationContext);
   const [ isOpen, setIsOpen ] = useState(false);
+  const [ isShowAuthorizationUser, setIsShowAuthorizationUser ] = useState<boolean>();
+  const [ isLoading, setIsLoading ] = useState<boolean>(true);
   const animationRef = useRef<HTMLDivElement | null>(null);
   const isHomePage = router.pathname === HOME;
+  const authToken = localStorage.getItem("jwtToken");
+
+  useEffect(() => {
+    (async () => {
+      const res = await handleRequestAuth(authToken);
+      if (res.error) {
+        setIsShowAuthorizationUser(false);
+      } else {
+        setIsShowAuthorizationUser(true);
+      }
+      setIsLoading(false);
+    })();
+  }, [ authToken ]);
 
   useEffect(() => {
     (async () => {
@@ -75,6 +93,18 @@ const Header = (): JSX.Element => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("jwtToken");
+    setIsShowAuthorizationUser(false);
+    router.push(HOME);
+    setIsOpen(!isOpen);
+  };
+
+  const handleSignIn = () => {
+    router.push(SIGN_IN);
+    setIsOpen(!isOpen);
+  };
+
   return (
     <header ref={animationRef} className="flex justify-between items-center p-[10px_30px] md:p-[18px_60px] lg:p-[25px_80px] border-b-[1px] border-textPrimary border-opacity-[20%]">
       {isHomePage && <SquaresEffect animationRef={animationRef} />}
@@ -113,18 +143,29 @@ const Header = (): JSX.Element => {
               <Image alt="close" src={closeIcon} width={40} height={40} onClick={toggleNavbar} />
           }
         </div>
-        <div className={`${isOpen ? "top-[75px] left-0 opacity-100" : ""} secondaryFlex md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-backgroundPrimary md:bg-transparent `}>
+        <div className={`${isOpen ? "top-[75px] left-0 opacity-100" : ""} secondaryFlex flex-col md:flex-row md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-backgroundPrimary md:bg-transparent `}>
           {
-            ROUTES.map((item, index) =>
+            ROUTES.map(({ slug, title }, index) =>
               <Link
                 className="hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"
                 key={index + 1}
-                href={item.slug}
+                href={slug}
                 onClick={toggleNavbar}
               >
-                <p>{item.title}</p>
+                <p>{title}</p>
               </Link>
             )}
+          <div
+            className="hover:underline decoration-2 decoration-[#79FDFF] cursor-pointer underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"
+          >
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              isShowAuthorizationUser
+                ? <p onClick={handleLogOut}>{AUTH_LOG_OUT}</p>
+                : <p onClick={handleSignIn}>{AUTH_SIGN_IN}</p>
+            )}
+          </div>
           <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "10px", borderRadius: "8px", transform: "skew(-12deg)" }} />
         </div>
       </div >

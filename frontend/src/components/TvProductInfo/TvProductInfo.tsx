@@ -43,7 +43,7 @@ const TvProductInfo = ({
               <p className="text-[18px] font-[400] pb-[12px]">Raised Ammount</p>
               <div className="text-[16px] font-[600] mb-[8px]">
                 <span className="text-textPrimary">{raisedAmount}</span>
-                <span>{` / ${raiseGoal} SOL`}</span>
+                <span>{` / ${raiseGoal} USDC`}</span>
               </div>
               <div className="w-full bg-[#030B15] bg-opacity-[60%] rounded-full h-3">
                 <div style={{ width: `${raisedAmountProgres}%` }} className={"bg-backgroundSecondary h-3 rounded-full"}></div>

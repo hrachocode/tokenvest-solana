@@ -23,6 +23,20 @@
     margin: 0;
   }
 
+  @keyframes custom-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-1rem);
+    }
+  }
+
+  .custom-animate-bounce {
+    animation: custom-bounce 0.5s infinite;
+  }
+
   @keyframes roll-primary {
     0% {
       transform: rotateX(0);
@@ -199,7 +213,7 @@
     @apply flex m-[8px_0_20px_0] focus:outline-none focus:border-[#CFCFCF] bg-backgroundTertiary rounded-[8px] border-[1px] border-[#28DBD1];
   }
   .primaryInput {
-    @apply input p-[10px];
+    @apply input p-[10px] w-full;
   }
   .secondaryInput {
     @apply input p-[10px_10px_35px_10px];
@@ -255,7 +269,7 @@
     @apply w-[100%] lg:w-[60%] mx-auto object-cover rounded-2xl my-5;
   }
   .myHtmlContent p {
-    @apply text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary;
+    @apply text-[16px] lg:text-[20px] font-[400] text-textSecondary font-fontSecondary text-justify;
   }
   .myHtmlContent h1 {
     @apply text-[32px] lg:text-[48px] font-[500] mt-16;

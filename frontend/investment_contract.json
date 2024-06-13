@@ -1,120 +1,298 @@
 {
-  "version": "0.1.0",
-  "name": "investment_contract",
+  "address": "FxouSLUnFdHhvAz1HVfSwHDxJyhomf9miwh2YNW7FAHR",
+  "metadata": {
+    "name": "tokenvest_campaign",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
   "instructions": [
     {
-      "name": "initialize",
+      "name": "finish_startup",
+      "discriminator": [131, 219, 88, 236, 249, 209, 125, 12],
       "accounts": [
         {
-          "name": "investmentContract",
-          "isMut": true,
-          "isSigner": false
+          "name": "investment_contract",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.startup_owner",
+                "account": "InvestmentContract"
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.campaign_seed",
+                "account": "InvestmentContract"
+              }
+            ]
+          }
         },
         {
-          "name": "startupOwner",
-          "isMut": true,
-          "isSigner": true
+          "name": "caller",
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "caller_ata",
+          "writable": true
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "usdc_vault",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",
-          "isMut": false,
-          "isSigner": false
+          "address": "SysvarC1ock11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "discriminator": [175, 175, 109, 31, 13, 152, 155, 237],
+      "accounts": [
+        {
+          "name": "startup_owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "investment_contract",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "startup_owner"
+              },
+              {
+                "kind": "arg",
+                "path": "campaign_seed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "usdc_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "clock",
+          "address": "SysvarC1ock11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "campaignSeed",
+          "name": "campaign_seed",
           "type": "string"
         },
         {
-          "name": "investmentGoal",
+          "name": "investment_goal",
           "type": "u64"
         },
         {
-          "name": "endTime",
+          "name": "end_time",
           "type": "i64"
         }
       ]
     },
     {
       "name": "invest",
+      "discriminator": [13, 245, 180, 103, 254, 182, 121, 4],
       "accounts": [
         {
-          "name": "investmentContract",
-          "isMut": true,
-          "isSigner": false
+          "name": "investment_contract",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.startup_owner",
+                "account": "InvestmentContract"
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.campaign_seed",
+                "account": "InvestmentContract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "investor_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "from"
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.campaign_seed",
+                "account": "InvestmentContract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
         },
         {
           "name": "from",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "investor_ata",
+          "writable": true
+        },
+        {
+          "name": "usdc_vault",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "investmentAmount",
+          "name": "investment_amount",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "finishStartup",
+      "name": "refund_startup",
+      "discriminator": [16, 189, 55, 166, 255, 116, 83, 196],
       "accounts": [
         {
-          "name": "investmentContract",
-          "isMut": true,
-          "isSigner": false
+          "name": "investment_contract",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.startup_owner",
+                "account": "InvestmentContract"
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.campaign_seed",
+                "account": "InvestmentContract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "investor_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [116, 111, 107, 101, 110, 118, 101, 115, 116]
+              },
+              {
+                "kind": "account",
+                "path": "caller"
+              },
+              {
+                "kind": "account",
+                "path": "investment_contract.campaign_seed",
+                "account": "InvestmentContract"
+              }
+            ]
+          }
         },
         {
           "name": "caller",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "caller_ata",
+          "writable": true
         },
         {
-          "name": "clock",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "refundStartup",
-      "accounts": [
-        {
-          "name": "investmentContract",
-          "isMut": true,
-          "isSigner": false
+          "name": "usdc_mint"
         },
         {
-          "name": "caller",
-          "isMut": true,
-          "isSigner": true
+          "name": "usdc_vault",
+          "writable": true
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
           "name": "clock",
-          "isMut": false,
-          "isSigner": false
+          "address": "SysvarC1ock11111111111111111111111111111111"
         }
       ],
       "args": []
@@ -123,45 +301,45 @@
   "accounts": [
     {
       "name": "InvestmentContract",
+      "discriminator": [236, 37, 203, 173, 105, 219, 30, 158]
+    },
+    {
+      "name": "InvestorData",
+      "discriminator": [78, 74, 13, 200, 49, 153, 230, 18]
+    }
+  ],
+  "types": [
+    {
+      "name": "InvestmentContract",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "startupOwner",
-            "type": "publicKey"
+            "name": "startup_owner",
+            "type": "pubkey"
           },
           {
-            "name": "startTime",
+            "name": "start_time",
             "type": "i64"
           },
           {
-            "name": "endTime",
+            "name": "usdc_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "end_time",
             "type": "i64"
           },
           {
-            "name": "tokensCollected",
+            "name": "tokens_collected",
             "type": "u64"
           },
           {
-            "name": "investmentGoal",
+            "name": "investment_goal",
             "type": "u64"
           },
           {
-            "name": "investors",
-            "type": {
-              "vec": "publicKey"
-            }
-          },
-          {
-            "name": "investorsList",
-            "type": {
-              "vec": {
-                "defined": "InvestorInfo"
-              }
-            }
-          },
-          {
-            "name": "campaignSeed",
+            "name": "campaign_seed",
             "type": "string"
           },
           {
@@ -170,21 +348,21 @@
           }
         ]
       }
-    }
-  ],
-  "types": [
+    },
     {
-      "name": "InvestorInfo",
+      "name": "InvestorData",
       "type": {
         "kind": "struct",
         "fields": [
           {
             "name": "pubkey",
-            "type": "publicKey"
+            "type": "pubkey"
           },
           {
             "name": "amount",
-            "type": "u64"
+            "type": {
+              "option": "u64"
+            }
           }
         ]
       }

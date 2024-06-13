@@ -28,10 +28,15 @@ export default function App({ Component, pageProps }: AppProps) {
           <title>Tokenvest</title>
         </Head>
         <ToastContainer />
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow">
+            <Component {...pageProps} />
+          </main>
+          <Footer />
+        </div>
       </WalletConnectionProvider>
-    </NotificationContext.Provider >
+    </NotificationContext.Provider>
   );
 }
+

@@ -44,17 +44,17 @@ const CreateProduct = ({ categories }: ICreateProduct): JSX.Element => {
         showNotification("Form data submitted successfully");
         router.push(`${HOME}`);
       } else {
-        console.error("Failed to submit form data");
+        showNotification("Failed to submit form data", "error");
       }
     } catch (error) {
-      console.error("An error occurred while submitting form data:", error);
+      showNotification("An error occurred while submitting form data");
     }
   };
 
   return (
-    <div className="secondaryFlex flex-col mt-[80px] md:mt-[214px] px-[20px] sm:px-[60px]">
+    <div className="secondaryFlex flex-col mt-[80px] px-[20px] sm:px-[60px]">
       <StartCompaign />
-      <div className="flex flex-col w-full md:w-[90%] p-[32px] mt-[80px] md:mt-[214px] rounded-[24px] bg-backgroundTertiary">
+      <div className="flex flex-col w-full md:w-[90%] p-[32px] mt-[80px] rounded-[24px] bg-backgroundTertiary">
         <p className="text-[28px] sm:text-[32px] md:text-[48px] font-[500]">Project Information</p>
         <TvInput
           value={name}

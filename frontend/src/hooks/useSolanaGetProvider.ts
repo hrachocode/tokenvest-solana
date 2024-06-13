@@ -1,8 +1,8 @@
 import { AnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { web3, AnchorProvider } from "@project-serum/anchor";
+import { web3, AnchorProvider } from "@coral-xyz/anchor";
 import { Cluster } from "@solana/web3.js";
 
-export const useSolanaGetProvider = async () => {
+export const useSolanaGetProvider = () => {
   const wallet = useWallet();
   const opts = {
     preflightCommitment: "processed" as "processed",
