@@ -14,6 +14,6 @@ export const handleRequestAuth = async (authToken: any) => {
     const res = await dataRes.json();
     return res;
   } catch (error) {
-    console.log("You are not authorized");
+    return null;
   }
 };

@@ -15,3 +15,6 @@ export const CREATE_ACCOUNT = "Don't you have an account?";
 export const AUTH_FORGOT_PASSWORD = "Forgot Password";
 export const AUTH_RESET_PASSWORD = "Reset Password";
 export const AUTH_RESET_EMAIL = "Send Reset Email";
+export const LOCAL_STORAGE = {
+  JWT_TOKEN: "jwtToken",
+};
