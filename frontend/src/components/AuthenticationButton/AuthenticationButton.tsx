@@ -6,11 +6,11 @@ import { HOME, SIGN_IN } from "@/constants/routes";
 import { useIsRegistered } from "@/hooks/useIsRegistered";
 
 interface IsAuthenticatedProps {
-    isOpen: boolean;
-    setIsOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const IsAuthenticated = ({ isOpen, setIsOpen }: IsAuthenticatedProps) => {
+const AuthenticationButton = ({ isOpen, setIsOpen }: IsAuthenticatedProps) => {
   const [ isShowAuthorizationUser, setIsShowAuthorizationUser ] = useState<boolean>(false);
   const { isLoading } = useIsRegistered(setIsShowAuthorizationUser);
   const router = useRouter();
@@ -35,11 +35,11 @@ const IsAuthenticated = ({ isOpen, setIsOpen }: IsAuthenticatedProps) => {
         <Spinner />
       ) : (
         isShowAuthorizationUser
-          ? <p onClick={handleLogOut}>{AUTH_LOG_OUT}</p>
-          : <p onClick={handleSignIn}>{AUTH_SIGN_IN}</p>
+          ? <button onClick={handleLogOut}>{AUTH_LOG_OUT}</button>
+          : <button onClick={handleSignIn}>{AUTH_SIGN_IN}</button>
       )}
     </div>
   );
 };
 
-export default IsAuthenticated;
+export default AuthenticationButton;

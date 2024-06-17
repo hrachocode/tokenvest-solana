@@ -14,7 +14,7 @@ import tokenvest from "../../../public/images/tokenvest.svg";
 import burgerMenu from "../../../public/images/burger_menu.svg";
 import closeIcon from "../../../public/images/close.svg";
 import SquaresEffect from "../SquaresEffect/SquaresEffect";
-import IsAuthenticated from "../IsAuthenticated/IsAuthenticated";
+import AuthenticationButton from "../AuthenticationButton/AuthenticationButton";
 
 const Header = (): JSX.Element => {
   const router = useRouter();
@@ -126,7 +126,7 @@ const Header = (): JSX.Element => {
                 <p>{title}</p>
               </Link>
             )}
-          <IsAuthenticated isOpen={isOpen} setIsOpen={setIsOpen} />
+          <AuthenticationButton isOpen={isOpen} setIsOpen={setIsOpen} />
           <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "10px", borderRadius: "8px", transform: "skew(-12deg)" }} />
         </div>
       </div >

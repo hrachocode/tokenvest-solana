@@ -7,12 +7,35 @@ import { CMS_API, CMS_AUTH, CMS_RESET_PASSWORD } from "@/constants/cms";
 import { SIGN_IN } from "@/constants/routes";
 import { AUTH_PASSWORDS_NO_MATCH, AUTH_RESET_ERROR, AUTH_RESET_PASSWORD, AUTH_RESET_SUCCESS } from "../../constants/auth";
 import { TvInputPassword } from "@/components/TvInputPassword/TvInputPassword";
+import { GetServerSideProps } from "next";
 
-export default function ResetCallback() {
+interface ResetCallbackProps {
+  code: string;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { code } = context.query;
+
+  if (!code) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      code: code,
+    },
+  };
+};
+
+export default function ResetCallback({ code }: ResetCallbackProps) {
   const [ newPassword, setNewPassword ] = useState<string>("");
   const [ confirmPassword, setConfirmPassword ] = useState<string>("");
   const router = useRouter();
-  const { code } = router.query;
 
   const handleResetPassword = async (event: FormEvent) => {
     event.preventDefault();

@@ -10,10 +10,10 @@ import { CMS_API, CMS_AUTH, CMS_LOCAL, CMS_REGISTER } from "@/constants/cms";
 import { VALIDATION_EMAIL, VALIDATION_PASSWORD } from "@/constants/validation";
 import { SIGN_IN } from "@/constants/routes";
 import { AUTH_EMAIL_MESSAGE, AUTH_PASSWORDS_NO_MATCH, AUTH_SIGN_UP, AUTH_SIGN_UP_ERROR } from "../../constants/auth";
-import { generateRandomString } from "@/utils/generateRandomString";
 import { TvInputPassword } from "@/components/TvInputPassword/TvInputPassword";
 
 export default function SignUp() {
+  const [ userName, setUserName ] = useState<string>("");
   const [ email, setEmail ] = useState<string>("");
   const [ password, setPassword ] = useState<string>("");
   const [ confirmPassword, setConfirmPassword ] = useState<string>("");
@@ -34,7 +34,7 @@ export default function SignUp() {
     }
 
     const signUpInfo = {
-      "username": generateRandomString(8),
+      "username": userName,
       "email": email,
       "password": password,
     };
@@ -44,6 +44,8 @@ export default function SignUp() {
 
       if (signUpResponse.user) {
         showNotification(AUTH_EMAIL_MESSAGE);
+
+        setUserName("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
@@ -61,6 +63,12 @@ export default function SignUp() {
     <div className="secondaryFlex w-full pt-[60px]">
       <form onSubmit={handleSignUp} className="flex flex-col w-full md:w-[32%] px-4 mx-4 py-[32px] rounded-[24px] bg-backgroundTertiary">
         <p className="text-center text-[28px] sm:text-[32px] md:text-[48px] font-[500]">{AUTH_SIGN_UP}</p>
+        <TvInput
+          value={userName}
+          labelName="Username"
+          placeholderName="User Name"
+          onChange={({ target: { value = "" } = {} }) => setUserName(value)}
+        />
         <TvInput
           value={email}
           labelName="Email"
