@@ -74,3 +74,5 @@ export const USER_INFO: any = {
 };
 
 export const COMING_SOON: string = "COMING SOON!";
+
+export const CURRENCY = "USDC";

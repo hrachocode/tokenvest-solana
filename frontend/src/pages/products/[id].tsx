@@ -1,8 +1,8 @@
 import { TvButton } from "@/components/TvButton/TvButton";
-import { PRODUCTS } from "@/constants/routes";
+import { PRODUCTS, SIGN_IN } from "@/constants/routes";
 import TvProductImage from "@/components/TvProductImage/TvProductImage";
 import { CMS_API, CMS_PRODUCTS, POPULATE_ALL } from "@/constants/cms";
-import { COMING_SOON, COMPLETE, DRAFT, INVEST } from "@/constants/general";
+import { COMING_SOON, COMPLETE, CURRENCY, DRAFT, INVEST } from "@/constants/general";
 import { ICMSProduct, IProduct } from "@/interfaces/cmsinterace";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
 import { receiveDate } from "@/utils/productUtils";
@@ -19,6 +19,8 @@ import { marked } from "marked";
 import TvUserPopUp from "@/components/TvUserPopUp/TvUserPopUp";
 import { useWallet } from "@solana/wallet-adapter-react";
 import TvVideo from "@/components/TvVideo/TvVideo";
+import { useSolanaGetBalance } from "@/hooks/useSolanaGetBalance";
+import { useIsRegistered } from "@/hooks/useIsRegistered";
 
 const TvInvestBox = dynamic(() => import("../../components/TvInvestBox/TvInvestBox"), {
   ssr: false
@@ -112,11 +114,14 @@ export default function Product({
   const [ IsUserPopUp, setIsUserPopUp ] = useState(false);
   const [ isDraftButton, setIsDraftButton ] = useState(isDraft);
   const [ resRaisedAmount, setResRaisedAmount ] = useState<number>(raisedAmount);
+  const [ isShowAuthorizationUser, setIsShowAuthorizationUser ] = useState<boolean>(false);
+  const [ htmlContent, setHtmlContent ] = useState("");
   const dateText = receiveDate(initializeDate);
   const daysLeft = getDaysLeft(initializeDate, days);
   const raisedAmountProgres = getProgress(resRaisedAmount, raiseGoal);
-  const [ htmlContent, setContent ] = useState("");
-  const walletPublicKey = useWallet().publicKey?.toString();
+  const publicKey = useWallet().publicKey;
+  const balance = useSolanaGetBalance(id, publicKey);
+  const { isLoading } = useIsRegistered(setIsShowAuthorizationUser);
 
   useEffect(() => {
     (async () => {
@@ -141,7 +146,7 @@ export default function Product({
           img.setAttribute("src", updatedSrc);
         });
         const correctedHTML = doc.documentElement.outerHTML;
-        setContent(correctedHTML);
+        setHtmlContent(correctedHTML);
       }
     })();
   }, [ content ]);
@@ -175,7 +180,7 @@ export default function Product({
 
     if (+raisedAmount < +raiseGoal && daysLeft > 0) {
       return <TvButton animationBorderColor="#09202F" onClick={openPopup}>{INVEST}</TvButton>;
-    } else if (+raisedAmount >= +raiseGoal && daysLeft === 0 && walletPublicKey === ownerAddress) {
+    } else if (+raisedAmount >= +raiseGoal && daysLeft === 0 && publicKey?.toString() === ownerAddress) {
       return <TvFinishStartupButton productId={id} />;
     } else if (+raisedAmount < +raiseGoal && daysLeft === 0) {
       return <TvRefundStartupButton productId={id} />;
@@ -225,9 +230,10 @@ export default function Product({
               className="secondaryFlex h-full text-[26px] lg:text-[36px] xl:text-[42px] tracking-[4px] lg:tracking-[6px] xl:tracking-[8px] text-textTertiary comingsoon"
             >
               {COMING_SOON}
-            </div>
-            :
-            <div>
+            </div> : null
+          }
+          {
+            !isComingSoon && isShowAuthorizationUser ? <div>
               <div className="primaryFlex flex-col sm:flex-row gap-[16px] xl:gap-[28px]">
                 <div className="flex w-full bg-[#26545B] rounded-[16px]">
                   <Image alt="days" src={daysIcon} className="mx-[15px] xl:mx-[20px]" />
@@ -248,14 +254,30 @@ export default function Product({
               </div>
               <div className="mt-[32px] font-[600] ">
                 <p className="text-[24px] ">Raised Amount</p>
-                <p className="text-[20px] pb-[8px]">{`${resRaisedAmount} SOL`}</p>
+                <p className="text-[20px] pb-[8px]">{`${resRaisedAmount} USDC`}</p>
                 <div className="w-full bg-[#030B15] bg-opacity-[60%] rounded-full h-3">
                   <div style={{ width: `${raisedAmountProgres}%` }} className={"bg-backgroundSecondary h-3 rounded-full"}></div>
                 </div>
-                <p className="text-end text-[20px] pt-[5px] text-textPrimary">{`GOAL: ${raiseGoal} SOL`}</p>
+                <p className="text-end text-[20px] pt-[5px] text-textPrimary">{`GOAL: ${raiseGoal} ${CURRENCY}`}</p>
               </div>
+              {
+                balance ?
+                  <div className="pb-3">
+                    <span className="pr-2">YOUR BALANCE</span>
+                    <span className="text-textPrimary">{balance}{" "}{CURRENCY}</span>
+                  </div> : null
+              }
               {renderButton()}
-            </div>
+            </div> : null
+          }
+          {
+            !isLoading && !isComingSoon && !isShowAuthorizationUser ? <div
+              className="secondaryFlex h-full text-[26px] lg:text-[36px] xl:text-[42px] tracking-[4px] lg:tracking-[6px] xl:tracking-[8px] text-textTertiary comingsoon"
+            >
+              <a href={SIGN_IN} >
+                Please Sign In
+              </a>
+            </div> : null
           }
         </div>
       </div>

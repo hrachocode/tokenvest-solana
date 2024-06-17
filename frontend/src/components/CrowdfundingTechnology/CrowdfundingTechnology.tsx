@@ -11,7 +11,7 @@ const CrowdfundingTechnology = () => {
   return (
     <section ref={animationRef} className="secondaryFlex w-full flex-col relative px-[60px] overflow-hidden">
       <SquaresEffect animationRef={animationRef} />
-      <div className="primaryFlex max-w-[1317px] w-full mt-[80px] lg:mt-[150px] pointer-events-none z-50">
+      <div className="primaryFlex max-w-[1317px] w-full mt-[80px] lg:mt-[150px] pointer-events-none">
         <h1 className="text-center leading-normal font-[700]">
           Revolutionizing <span className="text-textTertiary">Crowdfunding</span> with Web 3.0 Technology
         </h1>

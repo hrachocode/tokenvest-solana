@@ -8,6 +8,7 @@ const TvVideo = ({ videoLink, title }: { videoLink: string, title?: string }) =>
         <iframe className="w-full h-full object-cover rounded-lg"
           src={videoLink}
           title="YouTube video player"
+          allowFullScreen
         />
       </div>
     </div>

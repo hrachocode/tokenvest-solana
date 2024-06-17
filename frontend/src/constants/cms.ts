@@ -1,4 +1,11 @@
 export const CMS_API: string = "/api";
+export const CMS_AUTH: string = "/auth";
+export const CMS_LOCAL: string = "/local";
+export const CMS_USERS: string = "/users";
+export const CMS_USER: string = "/me";
+export const CMS_REGISTER: string = "/register";
+export const CMS_FORGOT_PASSWORD = "/forgot-password";
+export const CMS_RESET_PASSWORD = "/reset-password";
 export const CMS_PRODUCTS: string = "/products";
 export const CMS_NOTIFICATIONS: string = "/notifications";
 export const CMS_CATEGORIES: string = "/categories";

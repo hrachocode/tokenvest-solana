@@ -14,6 +14,7 @@ import tokenvest from "../../../public/images/tokenvest.svg";
 import burgerMenu from "../../../public/images/burger_menu.svg";
 import closeIcon from "../../../public/images/close.svg";
 import SquaresEffect from "../SquaresEffect/SquaresEffect";
+import AuthenticationButton from "../AuthenticationButton/AuthenticationButton";
 
 const Header = (): JSX.Element => {
   const router = useRouter();
@@ -113,18 +114,19 @@ const Header = (): JSX.Element => {
               <Image alt="close" src={closeIcon} width={40} height={40} onClick={toggleNavbar} />
           }
         </div>
-        <div className={`${isOpen ? "top-[75px] left-0 opacity-100" : ""} secondaryFlex md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-backgroundPrimary md:bg-transparent `}>
+        <div className={`${isOpen ? "top-[75px] left-0 opacity-100" : ""} secondaryFlex flex-col md:flex-row md:static absolute w-full left-0 md:py-0 py-4 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-500 bg-backgroundPrimary md:bg-transparent `}>
           {
-            ROUTES.map((item, index) =>
+            ROUTES.map(({ slug, title }) =>
               <Link
                 className="hover:underline decoration-2 decoration-[#79FDFF] underline-offset-[16px] text-[16px] md:text-[20px] p-2 md:p-4 hover:text-textPrimary"
-                key={index + 1}
-                href={item.slug}
+                key={slug}
+                href={slug}
                 onClick={toggleNavbar}
               >
-                <p>{item.title}</p>
+                <p>{title}</p>
               </Link>
             )}
+          <AuthenticationButton isOpen={isOpen} setIsOpen={setIsOpen} />
           <WalletMultiButton style={{ background: "#28dbd1", marginLeft: "10px", borderRadius: "8px", transform: "skew(-12deg)" }} />
         </div>
       </div >
